@@ -41,6 +41,3 @@
     "cypress:open": "if [ -d ./project ]; then NODE_ENV=development ./project/node_modules/cypress/bin/cypress open; else NODE_ENV=development ../../../node_modules/cypress/bin/cypress open; fi"
   }
 }
-evelopment ./project/node_modules/cypress/bin/cypress open; else NODE_ENV=development ../../../node_modules/cypress/bin/cypress open; fi"
-  }
-}
