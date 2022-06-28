@@ -5,10 +5,18 @@ export const Schema = () => {
       {
         id: 'default',
         title: 'Default',
-        fields: ['customProp'],
+        fields: ['id', 'height', 'customProp'],
       },
     ],
     properties: {
+      id: {
+        title: 'ArcGIS map id',
+        type: 'string',
+      },
+      height: {
+        title: 'Height',
+        type: 'number',
+      },
       customProp: {
         title: 'Custom prop',
         description: 'Select customization',

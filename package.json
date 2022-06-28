@@ -17,6 +17,7 @@
     "url": "git@github.com:eea/volto-eea-map.git"
   },
   "dependencies": {
+    "esri-loader": "3.5.0",
     "@plone/scripts": "*"
   },
   "devDependencies": {
