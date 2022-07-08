@@ -4,9 +4,8 @@ pipeline {
   environment {
         GIT_NAME = "volto-eea-map"
         NAMESPACE = "@eeacms"
-        SONARQUBE_TAGS = "volto.eea.europa.eu"
+        SONARQUBE_TAGS = "volto.eea.europa.eu,forest.eea.europa.eu"
         DEPENDENCIES = ""
-        VOLTO = "alpha"
     }
 
   stages {
