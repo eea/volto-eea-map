@@ -2,19 +2,25 @@ import React from 'react';
 import { SidebarPortal } from '@plone/volto/components';
 import InlineForm from '@plone/volto/components/manage/Form/InlineForm';
 import { Schema } from './Schema';
-import Map from './Map';
-import config from './config';
+import Webmap from './components/Webmap';
+import MapEditor from './components/widgets/MapEditor';
+import './styles/map.css';
 
 const Edit = (props) => {
   const { block, data, onChangeBlock, selected } = props;
-  const mapId = data?.id;
-  const mapHeight = data?.height;
 
   if (__SERVER__) return '';
 
   return (
     <>
-      <Map id={mapId} height={mapHeight} cfg={config} />
+      <div className="map-edit-container">
+        <div style={{ width: '40%' }}>
+          <MapEditor data={data} block={block} onChangeBlock={onChangeBlock} />
+        </div>
+        <div style={{ width: '60%' }}>
+          <Webmap data={data} />
+        </div>
+      </div>
       <SidebarPortal selected={selected}>
         <InlineForm
           schema={Schema()}

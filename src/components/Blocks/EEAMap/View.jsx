@@ -1,15 +1,12 @@
 import React from 'react';
-import Map from './Map';
-import config from './config';
+import Webmap from './components/Webmap';
 
 const View = (props) => {
   const { data } = props || {};
-  const mapId = data?.id;
-  const mapHeight = data?.height;
 
   if (__SERVER__) return '';
 
-  return <Map id={mapId} height={mapHeight} cfg={config} />;
+  return <Webmap data={data} />;
 };
 
 export default View;
