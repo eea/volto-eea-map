@@ -13,14 +13,8 @@ const Edit = (props) => {
 
   return (
     <>
-      <div className="map-edit-container">
-        <div style={{ width: '40%' }}>
-          <MapEditor data={data} block={block} onChangeBlock={onChangeBlock} />
-        </div>
-        <div style={{ width: '60%' }}>
-          <Webmap data={data} />
-        </div>
-      </div>
+      <MapEditor data={data} block={block} onChangeBlock={onChangeBlock} />
+      <Webmap data={data} />
       <SidebarPortal selected={selected}>
         <InlineForm
           schema={Schema()}

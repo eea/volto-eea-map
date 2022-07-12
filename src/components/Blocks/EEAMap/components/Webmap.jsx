@@ -23,7 +23,7 @@ export const filterToWhereParams = (map_filters) => {
 };
 
 const Webmap = (props) => {
-  const { data = {} } = props;
+  const { data = {}, editMode } = props;
   const { base_layer, map_layers, id, height } = data;
   // map_filters, map_service_url, layer,
   const options = {
@@ -103,7 +103,7 @@ const Webmap = (props) => {
       <div>{mapIsUpdating ? 'Waiting for map server...' : ''}</div>
       <div
         style={{
-          height: height ? `${height}px` : '300px',
+          height: height && !editMode ? `${height}px` : '450px',
         }}
         ref={mapRef}
         className="esri-map"

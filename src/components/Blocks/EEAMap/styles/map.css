@@ -1,3 +1,14 @@
 .map-edit-container {
   display: flex;
 }
+
+.map-modal-trigger-button {
+  margin-bottom: 10px !important;
+}
+
+#map-editor-modal {
+  width: 95% !important;
+  top: auto;
+  left: auto !important;
+  height: 75%;
+}
