@@ -31,7 +31,6 @@ const Webmap = (props) => {
   };
   const mapRef = React.useRef();
   const [modules, setModules] = React.useState({});
-  const [mapIsUpdating, setMapIsUpdating] = React.useState(false);
   const modules_loaded = React.useRef(false);
 
   // Load the ESRI JS API
@@ -54,6 +53,7 @@ const Webmap = (props) => {
     if (Object.keys(modules).length === 0) return {};
 
     const { Map, MapView, FeatureLayer, MapImageLayer } = modules;
+    console.log('maplayers', map_layers);
     let layers = map_layers
       .filter(({ map_service_url, layer }) => map_service_url && layer)
       .map(({ map_service_url, layer }) => {
@@ -88,9 +88,7 @@ const Webmap = (props) => {
 
     if (layers && layers.length > 0) {
       view.whenLayerView(layers[0]).then((layerView) => {
-        layerView.watch('updating', (val) => {
-          setMapIsUpdating(true);
-        });
+        layerView.watch('updating', (val) => {});
       });
     }
     return { view, map };
@@ -100,7 +98,6 @@ const Webmap = (props) => {
 
   return (
     <div>
-      <div>{mapIsUpdating ? 'Waiting for map server...' : ''}</div>
       <div
         style={{
           height: height && !editMode ? `${height}px` : '450px',

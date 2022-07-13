@@ -1,6 +1,6 @@
 import React from 'react';
 import { SidebarPortal } from '@plone/volto/components';
-import InlineForm from '@plone/volto/components/manage/Form/InlineForm';
+import BlockDataForm from '@plone/volto/components/manage/Form/BlockDataForm';
 import { Schema } from './Schema';
 import Webmap from './components/Webmap';
 import MapEditor from './components/widgets/MapEditor';
@@ -16,7 +16,7 @@ const Edit = (props) => {
       <MapEditor data={data} block={block} onChangeBlock={onChangeBlock} />
       <Webmap data={data} />
       <SidebarPortal selected={selected}>
-        <InlineForm
+        <BlockDataForm
           schema={Schema()}
           title="EEA map component block"
           onChangeField={(id, value) => {

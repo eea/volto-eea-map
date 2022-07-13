@@ -52,6 +52,7 @@ const LayerTab = ({ index, layer, onChangeBlock, block, data }) => {
       let mapData = await fetchLayers(serviceUrl);
       setCheckColor('green');
       setMapData(mapData);
+      setServiceUrlError('');
       if (mapData.layers && mapData.layers.length > 0) {
         setAvailableLayers(
           mapData.layers.map((layer, i) => {

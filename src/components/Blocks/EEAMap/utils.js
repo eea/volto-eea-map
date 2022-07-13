@@ -7,6 +7,9 @@ const fetchLayers = async (url) => {
     throw { message: error.message, status: error.cod };
   }
   const data = await res.json();
+  if (data.error && data.error.code === 400) {
+    throw { message: data.error.message.message, status: data.status };
+  }
   return data;
 };
 
