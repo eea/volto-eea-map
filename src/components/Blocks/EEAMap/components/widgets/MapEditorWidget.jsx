@@ -2,7 +2,7 @@ import React from 'react';
 import { Tab, Modal, Button, Grid } from 'semantic-ui-react';
 import Webmap from '../Webmap';
 import LayersPanel from './LayersPanel';
-import { useSelector } from 'react-redux';
+import BaseLayerWidget from './BaseLayerWidget';
 import { FormFieldWrapper } from '@plone/volto/components';
 
 const panelsSchema = [
@@ -12,7 +12,7 @@ const panelsSchema = [
   },
   {
     menuItem: 'Base Layer',
-    Panel: () => <p>base layer modifications</p>,
+    Panel: BaseLayerWidget,
   },
 ];
 
@@ -37,10 +37,10 @@ const MapEditorWidget = (props) => {
         <Modal.Content scrolling>
           <Grid>
             <Grid.Row>
-              <Grid.Column width={3}>
+              <Grid.Column width={4}>
                 <Tab
                   menu={{ fluid: true, vertical: true, tabular: true }}
-                  grid={{ paneWidth: 10, tabWidth: 2 }}
+                  grid={{ paneWidth: 8, tabWidth: 4 }}
                   panes={panelsSchema.map((p, i) => {
                     return {
                       menuItem: p.menuItem,
@@ -57,7 +57,7 @@ const MapEditorWidget = (props) => {
                   })}
                 />
               </Grid.Column>
-              <Grid.Column width={9}>
+              <Grid.Column width={8}>
                 <Webmap data={value} editMode={true} />
               </Grid.Column>
             </Grid.Row>
