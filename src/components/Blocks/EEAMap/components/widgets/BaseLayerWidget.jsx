@@ -27,7 +27,9 @@ const base_layers = [
 });
 
 const BaseLayerWidget = ({ data, onChange, block }) => {
-  const [baseLayer, setBaseLayer] = React.useState('');
+  const [baseLayer, setBaseLayer] = React.useState(
+    data.base_layer ? data.base_layer : '',
+  );
 
   const handleSave = () => {
     onChange('map_data', {

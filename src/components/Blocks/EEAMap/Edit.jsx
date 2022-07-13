@@ -9,10 +9,12 @@ const Edit = (props) => {
   const { block, data, onChangeBlock, selected } = props;
   const schema = React.useMemo(() => Schema(props), [props]);
 
+  const { map_data = {} } = data;
+
   if (__SERVER__) return '';
   return (
     <>
-      <Webmap data={data} />
+      <Webmap data={map_data} />
       <SidebarPortal selected={selected}>
         <BlockDataForm
           block={block}

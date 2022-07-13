@@ -26,7 +26,6 @@ const Webmap = (props) => {
   const { data = {}, editMode } = props;
   const { base_layer = {}, map_layers = [], id, height } = data;
   // map_filters, map_service_url, layer,
-  console.log(data, 'data');
   const options = {
     css: true,
   };
