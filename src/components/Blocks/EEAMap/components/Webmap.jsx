@@ -24,8 +24,9 @@ export const filterToWhereParams = (map_filters) => {
 
 const Webmap = (props) => {
   const { data = {}, editMode } = props;
-  const { base_layer, map_layers, id, height } = data;
+  const { base_layer = {}, map_layers = [], id, height } = data;
   // map_filters, map_service_url, layer,
+  console.log(data, 'data');
   const options = {
     css: true,
   };
@@ -53,30 +54,33 @@ const Webmap = (props) => {
     if (Object.keys(modules).length === 0) return {};
 
     const { Map, MapView, FeatureLayer, MapImageLayer } = modules;
-    console.log('maplayers', map_layers);
-    let layers = map_layers
-      .filter(({ map_service_url, layer }) => map_service_url && layer)
-      .map(({ map_service_url, layer }) => {
-        const url = `${map_service_url}/${layer}`;
+    let layers =
+      map_layers &&
+      map_layers.length > 0 &&
+      map_layers
+        .filter(({ map_service_url, layer }) => map_service_url && layer)
+        .map(({ map_service_url, layer }) => {
+          const url = `${map_service_url}/${layer}`;
 
-        let mapLayer;
-        console.log('thelayer', layer);
-        switch (layer.type) {
-          case 'Raster Layer':
-            mapLayer = new MapImageLayer({
-              url: map_service_url, //  uses the map service directly
-            });
-            break;
-          case 'Feature Layer':
-            mapLayer = new FeatureLayer({ url });
-            break;
-          default:
-            break;
-        }
-        return mapLayer;
-      });
+          let mapLayer;
 
-    console.log('layers', layers);
+          //TODO: add more layers and error catch for unrecognized layer
+
+          switch (layer.type) {
+            case 'Raster Layer':
+              mapLayer = new MapImageLayer({
+                url: map_service_url, //  uses the map service directly
+              });
+              break;
+            case 'Feature Layer':
+              mapLayer = new FeatureLayer({ url });
+              break;
+            default:
+              break;
+          }
+          return mapLayer;
+        });
+
     const map = new Map({
       basemap: base_layer || 'hybrid',
       layers,

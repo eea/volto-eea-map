@@ -1,7 +1,8 @@
 import { EEAMapEdit, EEAMapView } from '@eeacms/volto-eea-map/components';
 import world from '@plone/volto/icons/world.svg';
+import MapEditorWidget from './components/Blocks/EEAMap/components/widgets/MapEditorWidget';
 
-const applyConfig = (config) => {
+export default (config) => {
   config.blocks.blocksConfig.eea_map_block = {
     id: 'eea_map_block', // The name (id) of the block
     title: 'EEA Map', // The display name of the block
@@ -14,8 +15,23 @@ const applyConfig = (config) => {
       addPermission: [], // Future proof (not implemented yet) add user permission role(s)
       view: [], // Future proof (not implemented yet) view user role(s)
     },
+    variations: [
+      {
+        id: 'default',
+        title: 'EEA Map (default)',
+        isDefault: true,
+        view: EEAMapView,
+      },
+      {
+        id: 'extra',
+        title: 'Extra variation (expand if needed)',
+        isDefault: true,
+        view: EEAMapView,
+      },
+    ],
   };
+
+  config.widgets.widget.map_edit_widget = MapEditorWidget;
+
   return config;
 };
-
-export default applyConfig;

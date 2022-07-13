@@ -9,7 +9,7 @@ import closeSVG from '@plone/volto/icons/clear.svg';
 
 import { fetchLayers } from '../../utils';
 
-const LayerTab = ({ index, layer, onChangeBlock, block, data }) => {
+const LayerSelectWidget = ({ index, layer, onChange, block, data }) => {
   const [mapData, setMapData] = React.useState(layer.map_data);
   const [checkColor, setCheckColor] = React.useState('');
   const [serviceUrlError, setServiceUrlError] = React.useState('');
@@ -20,7 +20,7 @@ const LayerTab = ({ index, layer, onChangeBlock, block, data }) => {
   );
 
   const handleDeleteLayer = (index) => {
-    onChangeBlock(block, {
+    onChange('map_data', {
       ...data,
       map_layers: [
         ...data.map_layers.slice(0, index),
@@ -36,7 +36,7 @@ const LayerTab = ({ index, layer, onChangeBlock, block, data }) => {
       available_layers: availableLayers,
       map_data: mapData,
     };
-    onChangeBlock(block, {
+    onChange('map_data', {
       ...data,
       map_layers: [
         ...data.map_layers.slice(0, index),
@@ -132,4 +132,4 @@ const LayerTab = ({ index, layer, onChangeBlock, block, data }) => {
   );
 };
 
-export default LayerTab;
+export default LayerSelectWidget;

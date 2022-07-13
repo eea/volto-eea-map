@@ -2,12 +2,25 @@ import React from 'react';
 import { Tab, Modal, Button, Grid } from 'semantic-ui-react';
 import Webmap from '../Webmap';
 import LayersPanel from './LayersPanel';
+import { useSelector } from 'react-redux';
+import { FormFieldWrapper } from '@plone/volto/components';
 
-const MapEditor = ({ onChangeBlock, data, block }) => {
+const panelsSchema = [
+  {
+    menuItem: 'Layers',
+    Panel: LayersPanel,
+  },
+  {
+    menuItem: 'Base Layer',
+    Panel: () => <p>base layer modifications</p>,
+  },
+];
+
+const MapEditorWidget = (props) => {
   const [open, setOpen] = React.useState(false);
-
+  const { onChange = {}, block = {}, value = {} } = props;
   return (
-    <div>
+    <FormFieldWrapper {...props}>
       <Modal
         id="map-editor-modal"
         style={{ width: '95% !important' }}
@@ -16,7 +29,9 @@ const MapEditor = ({ onChangeBlock, data, block }) => {
         onOpen={() => setOpen(true)}
         open={open}
         trigger={
-          <Button className="map-modal-trigger-button">Open Map Editor</Button>
+          <Button size="tiny" className="map-modal-trigger-button">
+            Open Map Editor
+          </Button>
         }
       >
         <Modal.Content scrolling>
@@ -26,31 +41,31 @@ const MapEditor = ({ onChangeBlock, data, block }) => {
                 <Tab
                   menu={{ fluid: true, vertical: true, tabular: true }}
                   grid={{ paneWidth: 10, tabWidth: 2 }}
-                  panes={[
-                    {
-                      menuItem: 'Layers',
+                  panes={panelsSchema.map((p, i) => {
+                    return {
+                      menuItem: p.menuItem,
                       render: () => (
                         <Tab.Pane>
-                          <LayersPanel
+                          <p.Panel
                             block={block}
-                            onChangeBlock={onChangeBlock}
-                            data={data}
+                            onChange={onChange}
+                            data={value}
                           />
                         </Tab.Pane>
                       ),
-                    },
-                  ]}
+                    };
+                  })}
                 />
               </Grid.Column>
               <Grid.Column width={9}>
-                <Webmap data={data} editMode={true} />
+                <Webmap data={value} editMode={true} />
               </Grid.Column>
             </Grid.Row>
           </Grid>
         </Modal.Content>
       </Modal>
-    </div>
+    </FormFieldWrapper>
   );
 };
 
-export default MapEditor;
+export default MapEditorWidget;

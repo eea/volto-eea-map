@@ -1,17 +1,14 @@
 export const Schema = () => {
   return {
-    title: 'EEA Map',
+    title: 'EEA Map Block',
     fieldsets: [
       {
         id: 'default',
         title: 'Default',
-        fields: ['id', 'height', 'base_layer', 'customProp'],
+        fields: ['height', 'base_layer', 'map_data'],
       },
     ],
     properties: {
-      id: {
-        title: 'Map Server URL',
-      },
       base_layer: {
         title: 'Base topographic layer',
         choices: [
@@ -38,10 +35,10 @@ export const Schema = () => {
         title: 'Height',
         type: 'number',
       },
-      customProp: {
-        title: 'Custom prop',
-        description: 'Select customization',
-        default: 'default',
+      map_data: {
+        title: 'Edit map',
+        description: 'Open the map customization interface',
+        widget: 'map_edit_widget',
       },
     },
     required: [],

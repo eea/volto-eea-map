@@ -1,18 +1,28 @@
 import React from 'react';
 import { Button, Input, Select, Label } from 'semantic-ui-react';
-import LayerTab from './LayerTab';
+import LayerSelectWidget from './LayerSelectWidget';
 
-const LayersPanel = ({ data, onChangeBlock, block }) => {
+const LayersPanel = ({ data, onChange, block }) => {
   const { map_layers } = data || {};
 
   React.useEffect(() => {
-    if (!map_layers) {
-      onChangeBlock(block, { ...data, map_layers: [] });
+    if (!data.map_layers) {
+      onChange('map_data', {
+        ...data,
+        map_layers: [
+          {
+            map_service_url: '',
+            layer: '',
+            available_layers: [],
+            map_data: {},
+          },
+        ],
+      });
     }
   }, [data, block]);
 
   const handleAddLayer = () => {
-    onChangeBlock(block, {
+    onChange('map_data', {
       ...data,
       map_layers: [
         ...data.map_layers,
@@ -26,11 +36,11 @@ const LayersPanel = ({ data, onChangeBlock, block }) => {
       {map_layers &&
         map_layers.length > 0 &&
         map_layers.map((layer, i) => (
-          <LayerTab
-            id={i}
+          <LayerSelectWidget
+            key={i}
             index={i}
             layer={layer}
-            onChangeBlock={onChangeBlock}
+            onChange={onChange}
             block={block}
             data={data}
           />
