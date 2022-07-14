@@ -24,8 +24,13 @@ export const filterToWhereParams = (map_filters) => {
 
 const Webmap = (props) => {
   const { data = {}, editMode } = props;
-  const { base_layer = {}, map_layers = [], id, height } = data;
-  // map_filters, map_service_url, layer,
+  const { base = {}, layers = {}, id, height } = data;
+
+  const { base_layer = '' } = base;
+
+  const map_layers =
+    layers && layers.map_layers && layers.map_layers.map((l, i) => l.map_layer);
+
   const options = {
     css: true,
   };

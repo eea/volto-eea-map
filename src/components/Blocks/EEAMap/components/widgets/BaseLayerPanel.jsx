@@ -26,22 +26,19 @@ const base_layers = [
   return { key: n, value: n, text: n };
 });
 
-const BaseLayerWidget = ({ data, onChange, block }) => {
-  const [baseLayer, setBaseLayer] = React.useState(
-    data.base_layer ? data.base_layer : '',
-  );
+const BaseLayerPanel = (props) => {
+  const { value = {}, onChange } = props;
+
+  const [baseLayer, setBaseLayer] = React.useState(value ? value : '');
 
   const handleSave = () => {
-    onChange('map_data', {
-      ...data,
-      base_layer: baseLayer,
-    });
+    onChange('base_layer', baseLayer);
   };
 
   return (
     <Grid>
       <Grid.Row>
-        <h2>Select base layer:</h2>
+        <h4>Select base layer:</h4>
         <Select
           onChange={(e, { value }) => setBaseLayer(value)}
           style={{ width: '100%' }}
@@ -61,4 +58,4 @@ const BaseLayerWidget = ({ data, onChange, block }) => {
   );
 };
 
-export default BaseLayerWidget;
+export default BaseLayerPanel;

@@ -2,29 +2,32 @@ import React from 'react';
 import { Tab, Modal, Button, Grid } from 'semantic-ui-react';
 import Webmap from '../Webmap';
 import LayersPanel from './LayersPanel';
-import BaseLayerWidget from './BaseLayerWidget';
-import { FormFieldWrapper } from '@plone/volto/components';
+import BaseLayerPanel from './BaseLayerPanel';
+import { FormFieldWrapper, InlineForm } from '@plone/volto/components';
 
-const panelsSchema = [
+import { panelsSchema } from './panelsSchema';
+
+const panelsSchemaInit = [
   {
     menuItem: 'Layers',
     Panel: LayersPanel,
   },
   {
     menuItem: 'Base Layer',
-    Panel: BaseLayerWidget,
+    Panel: BaseLayerPanel,
   },
 ];
 
 const MapEditorWidget = (props) => {
   const [open, setOpen] = React.useState(false);
   const { onChange = {}, block = {}, value = {} } = props;
+
+  const dataForm = { map_data: value };
   return (
     <FormFieldWrapper {...props}>
       <Modal
         id="map-editor-modal"
         style={{ width: '95% !important' }}
-        size="fullscreen"
         onClose={() => setOpen(false)}
         onOpen={() => setOpen(true)}
         open={open}
@@ -38,10 +41,10 @@ const MapEditorWidget = (props) => {
           <Grid>
             <Grid.Row>
               <Grid.Column width={4}>
-                <Tab
+                {/* <Tab
                   menu={{ fluid: true, vertical: true, tabular: true }}
                   grid={{ paneWidth: 8, tabWidth: 4 }}
-                  panes={panelsSchema.map((p, i) => {
+                  panes={panelsSchemaInit.map((p, i) => {
                     return {
                       menuItem: p.menuItem,
                       render: () => (
@@ -55,6 +58,13 @@ const MapEditorWidget = (props) => {
                       ),
                     };
                   })}
+                /> */}
+                <InlineForm
+                  block={block}
+                  title={panelsSchema.title}
+                  schema={panelsSchema}
+                  onChangeField={onChange}
+                  formData={dataForm}
                 />
               </Grid.Column>
               <Grid.Column width={8}>

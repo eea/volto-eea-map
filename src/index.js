@@ -1,6 +1,9 @@
 import { EEAMapEdit, EEAMapView } from '@eeacms/volto-eea-map/components';
 import world from '@plone/volto/icons/world.svg';
+import BaseLayerPanel from './components/Blocks/EEAMap/components/widgets/BaseLayerPanel';
+import LayerSelectWidget from './components/Blocks/EEAMap/components/widgets/LayerSelectWidget';
 import MapEditorWidget from './components/Blocks/EEAMap/components/widgets/MapEditorWidget';
+import ObjectTypesWidget from './components/Blocks/EEAMap/components/widgets/ObjectTypesWidget';
 
 export default (config) => {
   config.blocks.blocksConfig.eea_map_block = {
@@ -32,6 +35,9 @@ export default (config) => {
   };
 
   config.widgets.widget.map_edit_widget = MapEditorWidget;
+  config.widgets.widget.map_base_layer_widget = BaseLayerPanel;
+  config.widgets.widget.map_layers_widget = LayerSelectWidget;
+  config.widgets.widget.object_types_widget = ObjectTypesWidget;
 
   return config;
 };

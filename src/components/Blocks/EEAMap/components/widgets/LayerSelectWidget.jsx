@@ -9,45 +9,22 @@ import closeSVG from '@plone/volto/icons/clear.svg';
 
 import { fetchLayers } from '../../utils';
 
-const LayerSelectWidget = ({ index, layer, onChange, block, data }) => {
-  const [mapData, setMapData] = React.useState(layer.map_data);
+const LayerSelectWidget = (props) => {
+  const { onChange, value = {}, id } = props;
+
+  const { available_layers, map_data, map_service_url, layer } = value;
+
+  const [mapData, setMapData] = React.useState(map_data);
   const [checkColor, setCheckColor] = React.useState('');
   const [serviceUrlError, setServiceUrlError] = React.useState('');
-  const [serviceUrl, setServiceUrl] = React.useState(layer.map_service_url);
-  const [selectedLayer, setSelectedLayer] = React.useState(layer.layer);
+  const [serviceUrl, setServiceUrl] = React.useState(map_service_url);
+  const [selectedLayer, setSelectedLayer] = React.useState(layer);
   const [availableLayers, setAvailableLayers] = React.useState(
-    layer.available_layers,
+    available_layers,
   );
 
-  const handleDeleteLayer = (index) => {
-    onChange('map_data', {
-      ...data,
-      map_layers: [
-        ...data.map_layers.slice(0, index),
-        ...data.map_layers.slice(index + 1),
-      ],
-    });
-  };
-
-  const handleSaveLayer = () => {
-    const newLayer = {
-      layer: selectedLayer,
-      map_service_url: serviceUrl,
-      available_layers: availableLayers,
-      map_data: mapData,
-    };
-    onChange('map_data', {
-      ...data,
-      map_layers: [
-        ...data.map_layers.slice(0, index),
-        newLayer,
-        ...data.map_layers.slice(index + 1),
-      ],
-    });
-  };
-
   const handleServiceUrlCheck = async () => {
-    //fetch url, save it, populate layers options
+    // fetch url, save it, populate layers options
     try {
       let mapData = await fetchLayers(serviceUrl);
       setCheckColor('green');
@@ -60,10 +37,26 @@ const LayerSelectWidget = ({ index, layer, onChange, block, data }) => {
           }),
         );
       }
+      onChange(id, {
+        layer: selectedLayer,
+        map_service_url: serviceUrl,
+        available_layers: availableLayers,
+        map_data: mapData,
+      });
     } catch (e) {
       setCheckColor('youtube');
       setServiceUrlError({ error: e.message, status: e.status });
     }
+  };
+
+  const handleSelectLayer = (layer) => {
+    setSelectedLayer(layer);
+    onChange(id, {
+      layer,
+      map_service_url: serviceUrl,
+      available_layers: availableLayers,
+      map_data: mapData,
+    });
   };
 
   return (
@@ -76,7 +69,7 @@ const LayerSelectWidget = ({ index, layer, onChange, block, data }) => {
     >
       <Grid>
         <Grid.Row>
-          <h2>Layer {index + 1}</h2>
+          <h2>Layer</h2>
         </Grid.Row>
         <Grid.Row>
           <p style={{ fontSize: '13px', fontWeight: 'bold' }}>Service URL</p>
@@ -106,27 +99,14 @@ const LayerSelectWidget = ({ index, layer, onChange, block, data }) => {
         <Grid.Row>
           <p style={{ fontSize: '13px', fontWeight: 'bold' }}>Layer</p>
           <Select
-            onChange={(e, { value }) => setSelectedLayer(value)}
+            onChange={(e, { value }) => handleSelectLayer(value)}
             style={{ width: '100%' }}
             options={availableLayers}
             placeholder="Select layer"
             value={selectedLayer}
           />
         </Grid.Row>
-        <Grid.Row stretched>
-          <Button color="green" icon size="tiny" onClick={handleSaveLayer}>
-            <Icon name={saveSVG} size="16px" title="Save changes" />
-          </Button>
-          <Button
-            icon
-            size="tiny"
-            color="youtube"
-            style={{ marginLeft: 'auto' }}
-            onClick={() => handleDeleteLayer(index)}
-          >
-            <Icon name={deleteSVG} size="16px" title="Delete block" />
-          </Button>
-        </Grid.Row>
+        <Grid.Row stretched></Grid.Row>
       </Grid>
     </div>
   );
