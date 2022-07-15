@@ -62,46 +62,46 @@ const LayerSelectWidget = (props) => {
   return (
     <div
       style={{
-        margin: '10px 0',
-        padding: '5px 0',
-        borderBottom: '2px solid lightgray',
+        padding: '0 5px',
       }}
     >
       <Grid>
+        <h4>Service URL</h4>
         <Grid.Row>
-          <h2>Layer</h2>
-        </Grid.Row>
-        <Grid.Row>
-          <p style={{ fontSize: '13px', fontWeight: 'bold' }}>Service URL</p>
           <Input
             type="text"
             onChange={(e, { value }) => setServiceUrl(value)}
             style={{ width: '100%' }}
             value={serviceUrl}
-            action
-            actionPosition="right"
-          >
-            <input />
+          />
+          <Grid.Row>
             <Button
+              style={{
+                margin: '10px 0',
+                display: 'flex',
+                alignItems: 'center',
+              }}
               color={checkColor}
-              size="tiny"
-              type="submit"
               onClick={handleServiceUrlCheck}
             >
+              <p style={{ fontSize: '14px', margin: '0', marginRight: '5px' }}>
+                Check Url
+              </p>
               <Icon
                 name={serviceUrlError ? closeSVG : checkSVG}
-                size="14px"
+                style={{ marginLeft: '5px' }}
                 title="Check Url"
+                size="17px"
               />
             </Button>
-          </Input>
+          </Grid.Row>
         </Grid.Row>
+        <h4>Layer</h4>
         <Grid.Row>
-          <p style={{ fontSize: '13px', fontWeight: 'bold' }}>Layer</p>
           <Select
             onChange={(e, { value }) => handleSelectLayer(value)}
-            style={{ width: '100%' }}
             options={availableLayers}
+            style={{ width: '100%' }}
             placeholder="Select layer"
             value={selectedLayer}
           />

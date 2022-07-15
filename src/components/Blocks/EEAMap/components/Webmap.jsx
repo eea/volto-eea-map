@@ -29,8 +29,11 @@ const Webmap = (props) => {
   const { base_layer = '' } = base;
 
   const map_layers =
-    layers && layers.map_layers && layers.map_layers.map((l, i) => l.map_layer);
-
+    layers &&
+    layers.map_layers &&
+    layers.map_layers
+      .filter(({ map_layer }) => map_layer)
+      .map((l, i) => l.map_layer);
   const options = {
     css: true,
   };

@@ -49,11 +49,10 @@ const MapLayersSchema = {
       fields: ['map_layers'],
     },
   ],
-  //TODO: object list widget with map layers widget
   properties: {
     map_layers: {
-      title: 'Edit map',
-      description: 'Open the map customization interface',
+      title: 'Map Layers',
+      description: 'Add/Edit Map Layers',
       widget: 'object_list',
       schema: LayerSchema,
     },

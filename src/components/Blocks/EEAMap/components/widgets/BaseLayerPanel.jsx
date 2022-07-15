@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button, Grid, Select } from 'semantic-ui-react';
-import { Icon } from '@plone/volto/components';
 
 import saveSVG from '@plone/volto/icons/save.svg';
 
@@ -31,30 +30,25 @@ const BaseLayerPanel = (props) => {
 
   const [baseLayer, setBaseLayer] = React.useState(value ? value : '');
 
-  const handleSave = () => {
+  const handleBaseLayerChange = (baseLayer) => {
     onChange('base_layer', baseLayer);
   };
 
   return (
-    <Grid>
-      <Grid.Row>
-        <h4>Select base layer:</h4>
-        <Select
-          onChange={(e, { value }) => setBaseLayer(value)}
-          style={{ width: '100%' }}
-          options={base_layers}
-          placeholder="Select layer"
-          value={baseLayer}
-        />
-      </Grid.Row>
-      <Grid.Row>
-        <Button>
-          <Button color="green" icon onClick={handleSave}>
-            <Icon name={saveSVG} size="16px" title="Save changes" />
-          </Button>
-        </Button>
-      </Grid.Row>
-    </Grid>
+    <div style={{ margin: '10px 0' }}>
+      <Grid>
+        <Grid.Row>
+          <h4>Base layer:</h4>
+          <Select
+            onChange={(e, { value }) => handleBaseLayerChange(value)}
+            style={{ width: '100%' }}
+            options={base_layers}
+            placeholder="Select layer"
+            value={value}
+          />
+        </Grid.Row>
+      </Grid>
+    </div>
   );
 };
 

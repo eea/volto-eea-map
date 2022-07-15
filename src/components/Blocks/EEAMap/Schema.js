@@ -5,32 +5,10 @@ export const Schema = () => {
       {
         id: 'default',
         title: 'Default',
-        fields: ['height', 'base_layer', 'map_data'],
+        fields: ['height', 'map_data'],
       },
     ],
     properties: {
-      base_layer: {
-        title: 'Base topographic layer',
-        choices: [
-          'dark-gray',
-          'dark-gray-vector',
-          'gray',
-          'gray-vector',
-          'hybrid',
-          'national-geographic',
-          'oceans',
-          'osm',
-          'satellite',
-          'streets',
-          'streets-navigation-vector',
-          'streets-night-vector',
-          'streets-relief-vector',
-          'streets-vector',
-          'terrain',
-          'topo',
-          'topo-vector',
-        ].map((n) => [n, n]),
-      },
       height: {
         title: 'Height',
         type: 'number',
