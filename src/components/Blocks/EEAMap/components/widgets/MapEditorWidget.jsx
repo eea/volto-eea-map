@@ -1,34 +1,37 @@
 import React from 'react';
-import { Tab, Modal, Button, Grid } from 'semantic-ui-react';
+import { Modal, Button, Grid } from 'semantic-ui-react';
 import Webmap from '../Webmap';
-import LayersPanel from './LayersPanel';
-import BaseLayerPanel from './BaseLayerPanel';
 import { FormFieldWrapper, InlineForm } from '@plone/volto/components';
 
 import { panelsSchema } from './panelsSchema';
 
-const panelsSchemaInit = [
-  {
-    menuItem: 'Layers',
-    Panel: LayersPanel,
-  },
-  {
-    menuItem: 'Base Layer',
-    Panel: BaseLayerPanel,
-  },
-];
-
 const MapEditorWidget = (props) => {
   const [open, setOpen] = React.useState(false);
-  const { onChange = {}, block = {}, value = {} } = props;
+  const { onChange = {}, block = {}, value = {}, id } = props;
+  const [intValue, setIntValue] = React.useState(value);
 
-  const dataForm = { map_data: value };
+  const dataForm = { map_data: intValue };
+
+  const handleApplyChanges = () => {
+    onChange(id, intValue);
+    setOpen(false);
+  };
+
+  const handleClose = () => {
+    setIntValue(value);
+    setOpen(false);
+  };
+
+  const handleChangeField = (id, fieldVal) => {
+    setIntValue(fieldVal);
+  };
+
   return (
     <FormFieldWrapper {...props}>
       <Modal
         id="map-editor-modal"
         style={{ width: '95% !important' }}
-        onClose={() => setOpen(false)}
+        onClose={handleClose}
         onOpen={() => setOpen(true)}
         open={open}
         trigger={
@@ -41,38 +44,28 @@ const MapEditorWidget = (props) => {
           <Grid>
             <Grid.Row>
               <Grid.Column width={4}>
-                {/* <Tab
-                  menu={{ fluid: true, vertical: true, tabular: true }}
-                  grid={{ paneWidth: 8, tabWidth: 4 }}
-                  panes={panelsSchemaInit.map((p, i) => {
-                    return {
-                      menuItem: p.menuItem,
-                      render: () => (
-                        <Tab.Pane>
-                          <p.Panel
-                            block={block}
-                            onChange={onChange}
-                            data={value}
-                          />
-                        </Tab.Pane>
-                      ),
-                    };
-                  })}
-                /> */}
                 <InlineForm
                   block={block}
                   title={panelsSchema.title}
                   schema={panelsSchema}
-                  onChangeField={onChange}
+                  onChangeField={(id, value) => {
+                    handleChangeField(id, value);
+                  }}
                   formData={dataForm}
                 />
               </Grid.Column>
               <Grid.Column width={8}>
-                <Webmap data={value} editMode={true} />
+                <Webmap data={intValue} editMode={true} />
               </Grid.Column>
             </Grid.Row>
           </Grid>
         </Modal.Content>
+        <Modal.Actions>
+          <Button onClick={() => setOpen(false)}>Close</Button>
+          <Button color="green" onClick={handleApplyChanges}>
+            Apply changes
+          </Button>
+        </Modal.Actions>
       </Modal>
     </FormFieldWrapper>
   );
