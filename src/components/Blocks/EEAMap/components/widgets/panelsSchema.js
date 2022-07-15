@@ -1,6 +1,3 @@
-import internalSVG from '@plone/volto/icons/nav.svg';
-import hashlinkSVG from 'volto-slate/icons/hashlink.svg';
-
 const BaseLayerSchema = {
   title: 'Base Layer',
   fieldsets: [
@@ -76,12 +73,10 @@ export const panelsSchema = {
       schemas: [
         {
           id: 'base',
-          icon: internalSVG,
           schema: BaseLayerSchema,
         },
         {
           id: 'layers',
-          icon: hashlinkSVG,
           schema: MapLayersSchema,
         },
       ],

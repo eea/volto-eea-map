@@ -22,7 +22,7 @@ export const ObjectTypesWidget = (props) => {
           active={activeTab === index}
           key={id}
         >
-          <Icon size="24px" name={icon} title={schema.title} />
+          <p style={{ fontSize: '14px', fontWeight: 'bold' }}>{schema.title}</p>
         </Menu.Item>
       ),
       render: () => {
@@ -43,7 +43,14 @@ export const ObjectTypesWidget = (props) => {
     };
   };
 
-  return <Tab panes={schemas.map(createTab)} activeIndex={activeTab} />;
+  return (
+    <Tab
+      menu={{ fluid: true, vertical: true, tabular: true }}
+      panes={schemas.map(createTab)}
+      activeIndex={activeTab}
+      grid={{ paneWidth: 8, tabWidth: 4 }}
+    />
+  );
 };
 
 export default ObjectTypesWidget;
