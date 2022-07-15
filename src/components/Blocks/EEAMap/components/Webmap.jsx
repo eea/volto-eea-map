@@ -7,20 +7,10 @@ const MODULES = [
   'esri/views/MapView',
   'esri/layers/FeatureLayer',
   'esri/layers/MapImageLayer',
+  'esri/widgets/Legend',
+  'esri/widgets/Expand',
+  'esri/widgets/Print',
 ];
-
-export const filterToWhereParams = (map_filters) => {
-  //  `Country_co = 'DK'`
-  let acc = '';
-  Object.keys(map_filters).forEach((name) => {
-    if (map_filters[name]) {
-      if (acc) acc += ' AND ';
-      acc += `${name} = '${map_filters[name]}' `;
-    }
-  });
-
-  return acc;
-};
 
 const Webmap = (props) => {
   const { data = {}, editMode } = props;
@@ -41,17 +31,32 @@ const Webmap = (props) => {
   const [modules, setModules] = React.useState({});
   const modules_loaded = React.useRef(false);
 
-  // Load the ESRI JS API
+  //TODO: add mechanism for legend/print edit
+  const show_legend = true;
+  const show_print = true;
+
+
   React.useEffect(() => {
     if (!modules_loaded.current) {
       modules_loaded.current = true;
       loadModules(MODULES, options).then((modules) => {
-        const [Map, MapView, FeatureLayer, MapImageLayer] = modules;
+        const [
+          Map,
+          MapView,
+          FeatureLayer,
+          MapImageLayer,
+          Legend,
+          Expand,
+          Print,
+        ] = modules;
         setModules({
           Map,
           MapView,
           FeatureLayer,
           MapImageLayer,
+          Legend,
+          Expand,
+          Print,
         });
       });
     }
@@ -60,7 +65,15 @@ const Webmap = (props) => {
   const esri = React.useMemo(() => {
     if (Object.keys(modules).length === 0) return {};
 
-    const { Map, MapView, FeatureLayer, MapImageLayer } = modules;
+    const {
+      Map,
+      MapView,
+      FeatureLayer,
+      MapImageLayer,
+      Legend,
+      Expand,
+      Print,
+    } = modules;
     let layers =
       map_layers &&
       map_layers.length > 0 &&
@@ -76,7 +89,7 @@ const Webmap = (props) => {
           switch (layer.type) {
             case 'Raster Layer':
               mapLayer = new MapImageLayer({
-                url: map_service_url, //  uses the map service directly
+                url: map_service_url,
               });
               break;
             case 'Feature Layer':
@@ -97,6 +110,35 @@ const Webmap = (props) => {
       map,
     });
 
+    if (show_legend) {
+      const legend = new Expand({
+        content: new Legend({
+          view: view,
+          style: 'classic', // other styles include 'classic'
+        }),
+        view: view,
+        expanded: false,
+        expandIconClass: 'esri-icon-legend',
+        expandTooltip: 'Legend',
+        classNames:'some-cool-expand'
+      });
+      view.ui.add(legend, 'top-right');
+    }
+
+
+    if (show_print) {
+      const print = new Expand({
+        content: new Print({
+          view: view,
+        }),
+        view: view,
+        expanded: false,
+        expandIconClass: 'esri-icon-printer',
+        expandTooltip: 'Print',
+      });
+      view.ui.add(print, 'top-right');
+    }
+
     if (layers && layers.length > 0) {
       view.whenLayerView(layers[0]).then((layerView) => {
         layerView.watch('updating', (val) => {});
@@ -115,7 +157,8 @@ const Webmap = (props) => {
         }}
         ref={mapRef}
         className="esri-map"
-      ></div>
+      >
+      </div>
     </div>
   );
 };

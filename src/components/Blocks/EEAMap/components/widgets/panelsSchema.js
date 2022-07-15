@@ -10,7 +10,6 @@ const BaseLayerSchema = {
   properties: {
     base_layer: {
       title: 'Base layer configuration',
-      //description: 'Open the map customization interface',
       widget: 'map_base_layer_widget',
       defaultValue: 'topo',
     },
@@ -30,7 +29,6 @@ const LayerSchema = {
   properties: {
     map_layer: {
       title: 'Map layer configuration',
-      //description: 'Open the map customization interface',
       widget: 'map_layers_widget',
     },
   },

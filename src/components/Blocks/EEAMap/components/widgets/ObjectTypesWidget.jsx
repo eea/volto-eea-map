@@ -1,15 +1,12 @@
 import React from 'react';
 import { Menu, Tab } from 'semantic-ui-react';
-import { Icon, ObjectWidget } from '@plone/volto/components';
+import { ObjectWidget } from '@plone/volto/components';
 
 export const ObjectTypesWidget = (props) => {
   const { schemas, value = {}, onChange, errors = {}, id } = props;
   const objectId = id;
 
-  const schemaIds = schemas.map(({ id }) => id);
-  const defaultActiveTab = value
-    ? schemaIds.indexOf(Object.keys(value)[0])
-    : null;
+  const defaultActiveTab = 0;
 
   const [activeTab, setActiveTab] = React.useState(
     defaultActiveTab > -1 ? defaultActiveTab : 0,
