@@ -12,3 +12,7 @@
   left: auto !important;
   height: 75%;
 }
+
+#map-widget-toggle {
+  color: blue !important;
+}

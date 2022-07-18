@@ -55,6 +55,42 @@ const MapLayersSchema = {
   required: [],
 };
 
+const LegendSchema = {
+  title: 'Legend',
+  fieldsets: [
+    {
+      id: 'default',
+      title: 'Legend',
+      fields: ['legend'],
+    },
+  ],
+  properties: {
+    legend: {
+      title: 'Legend',
+      widget: 'legend_widget',
+    },
+  },
+  required: [],
+};
+
+const PrintSchema = {
+  title: 'Print',
+  fieldsets: [
+    {
+      id: 'default',
+      title: 'Print',
+      fields: ['print'],
+    },
+  ],
+  properties: {
+    print: {
+      title: 'Print',
+      widget: 'print_widget',
+    },
+  },
+  required: [],
+};
+
 export const panelsSchema = {
   title: 'Map Editor',
   fieldsets: [
@@ -76,6 +112,14 @@ export const panelsSchema = {
         {
           id: 'layers',
           schema: MapLayersSchema,
+        },
+        {
+          id: 'legend',
+          schema: LegendSchema,
+        },
+        {
+          id: 'print',
+          schema: PrintSchema,
         },
       ],
     },

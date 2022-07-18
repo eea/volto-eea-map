@@ -28,8 +28,6 @@ const base_layers = [
 const BaseLayerPanel = (props) => {
   const { value = {}, onChange } = props;
 
-  const [baseLayer, setBaseLayer] = React.useState(value ? value : '');
-
   const handleBaseLayerChange = (baseLayer) => {
     onChange('base_layer', baseLayer);
   };

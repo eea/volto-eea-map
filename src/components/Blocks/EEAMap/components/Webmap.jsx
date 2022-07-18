@@ -14,7 +14,7 @@ const MODULES = [
 
 const Webmap = (props) => {
   const { data = {}, editMode } = props;
-  const { base = {}, layers = {}, id, height } = data;
+  const { base = {}, layers = {}, id, height, legend = {}, print = {} } = data;
 
   const { base_layer = '' } = base;
 
@@ -30,11 +30,6 @@ const Webmap = (props) => {
   const mapRef = React.useRef();
   const [modules, setModules] = React.useState({});
   const modules_loaded = React.useRef(false);
-
-  //TODO: add mechanism for legend/print edit
-  const show_legend = true;
-  const show_print = true;
-
 
   React.useEffect(() => {
     if (!modules_loaded.current) {
@@ -110,7 +105,7 @@ const Webmap = (props) => {
       map,
     });
 
-    if (show_legend) {
+    if (legend?.legend?.show_legend) {
       const legend = new Expand({
         content: new Legend({
           view: view,
@@ -120,13 +115,12 @@ const Webmap = (props) => {
         expanded: false,
         expandIconClass: 'esri-icon-legend',
         expandTooltip: 'Legend',
-        classNames:'some-cool-expand'
+        classNames: 'some-cool-expand',
       });
       view.ui.add(legend, 'top-right');
     }
 
-
-    if (show_print) {
+    if (print?.print?.show_print) {
       const print = new Expand({
         content: new Print({
           view: view,
@@ -157,8 +151,7 @@ const Webmap = (props) => {
         }}
         ref={mapRef}
         className="esri-map"
-      >
-      </div>
+      ></div>
     </div>
   );
 };
