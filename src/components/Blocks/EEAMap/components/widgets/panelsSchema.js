@@ -91,6 +91,24 @@ const PrintSchema = {
   required: [],
 };
 
+const ZoomSchema = {
+  title: 'Zoom',
+  fieldsets: [
+    {
+      id: 'default',
+      title: 'Zoom',
+      fields: ['zoom'],
+    },
+  ],
+  properties: {
+    zoom: {
+      title: 'Zoom',
+      widget: 'zoom_widget',
+    },
+  },
+  required: [],
+};
+
 export const panelsSchema = {
   title: 'Map Editor',
   fieldsets: [
@@ -120,6 +138,10 @@ export const panelsSchema = {
         {
           id: 'print',
           schema: PrintSchema,
+        },
+        {
+          id: 'zoom',
+          schema: ZoomSchema,
         },
       ],
     },

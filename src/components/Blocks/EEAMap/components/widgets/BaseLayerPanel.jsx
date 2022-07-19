@@ -1,7 +1,5 @@
 import React from 'react';
-import { Button, Grid, Select } from 'semantic-ui-react';
-
-import saveSVG from '@plone/volto/icons/save.svg';
+import { Grid, Select } from 'semantic-ui-react';
 
 const base_layers = [
   'dark-gray',

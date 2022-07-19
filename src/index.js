@@ -6,6 +6,7 @@ import LegendWidget from './components/Blocks/EEAMap/components/widgets/LegendWi
 import MapEditorWidget from './components/Blocks/EEAMap/components/widgets/MapEditorWidget';
 import ObjectTypesWidget from './components/Blocks/EEAMap/components/widgets/ObjectTypesWidget';
 import PrintWidget from './components/Blocks/EEAMap/components/widgets/PrintWidget';
+import ZoomWidget from './components/Blocks/EEAMap/components/widgets/ZoomWidget';
 
 export default (config) => {
   config.blocks.blocksConfig.eea_map_block = {
@@ -42,6 +43,7 @@ export default (config) => {
   config.widgets.widget.object_types_widget = ObjectTypesWidget;
   config.widgets.widget.legend_widget = LegendWidget;
   config.widgets.widget.print_widget = PrintWidget;
+  config.widgets.widget.zoom_widget = ZoomWidget;
 
   return config;
 };

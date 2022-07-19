@@ -10,11 +10,20 @@ const MODULES = [
   'esri/widgets/Legend',
   'esri/widgets/Expand',
   'esri/widgets/Print',
+  'esri/widgets/Zoom',
 ];
 
 const Webmap = (props) => {
   const { data = {}, editMode } = props;
-  const { base = {}, layers = {}, id, height, legend = {}, print = {} } = data;
+  const {
+    base = {},
+    layers = {},
+    id,
+    height,
+    legend = {},
+    print = {},
+    zoom = {},
+  } = data;
 
   const { base_layer = '' } = base;
 
@@ -43,6 +52,7 @@ const Webmap = (props) => {
           Legend,
           Expand,
           Print,
+          Zoom,
         ] = modules;
         setModules({
           Map,
@@ -52,6 +62,7 @@ const Webmap = (props) => {
           Legend,
           Expand,
           Print,
+          Zoom,
         });
       });
     }
@@ -68,6 +79,7 @@ const Webmap = (props) => {
       Legend,
       Expand,
       Print,
+      Zoom,
     } = modules;
     let layers =
       map_layers &&
@@ -103,10 +115,31 @@ const Webmap = (props) => {
     const view = new MapView({
       container: mapRef.current,
       map,
+      center: zoom?.zoom?.center ? zoom?.zoom?.center : [0, 40],
+      zoom: zoom?.zoom?.zoom_level ? zoom?.zoom?.zoom_level : 2,
+      ui: {
+        components: ['attribution'],
+      },
     });
 
+    if (zoom?.zoom?.show_zoom) {
+      const zoomPosition =
+        zoom && zoom.zoom && zoom.zoom.position
+          ? zoom.zoom.position
+          : 'top-right';
+      const zoomWidget = new Zoom({
+        view: view,
+      });
+      view.ui.add(zoomWidget, zoomPosition);
+    }
+
     if (legend?.legend?.show_legend) {
-      const legend = new Expand({
+      const legendPosition =
+        legend && legend.legend && legend.legend.position
+          ? legend.legend.position
+          : 'top-right';
+
+      const legendWidget = new Expand({
         content: new Legend({
           view: view,
           style: 'classic', // other styles include 'classic'
@@ -117,11 +150,15 @@ const Webmap = (props) => {
         expandTooltip: 'Legend',
         classNames: 'some-cool-expand',
       });
-      view.ui.add(legend, 'top-right');
+      view.ui.add(legendWidget, legendPosition);
     }
 
     if (print?.print?.show_print) {
-      const print = new Expand({
+      const printPosition =
+        print && print.print && print.print.position
+          ? print.print.position
+          : 'top-right';
+      const printWidget = new Expand({
         content: new Print({
           view: view,
         }),
@@ -130,7 +167,7 @@ const Webmap = (props) => {
         expandIconClass: 'esri-icon-printer',
         expandTooltip: 'Print',
       });
-      view.ui.add(print, 'top-right');
+      view.ui.add(printWidget, printPosition);
     }
 
     if (layers && layers.length > 0) {
