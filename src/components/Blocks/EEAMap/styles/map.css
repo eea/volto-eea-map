@@ -10,9 +10,13 @@
   width: 95% !important;
   top: auto;
   left: auto !important;
-  height: 75%;
 }
 
 #map-widget-toggle {
   color: blue !important;
+}
+
+.map-text-view {
+  display: flex;
+  padding: 1rem 0;
 }

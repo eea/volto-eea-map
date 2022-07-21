@@ -109,6 +109,46 @@ const ZoomSchema = {
   required: [],
 };
 
+const GeneralSchema = {
+  title: 'General',
+  fieldsets: [
+    {
+      id: 'default',
+      title: 'General',
+      fields: [
+        'show_sources',
+        'show_description',
+        'description',
+        'show_download',
+        'show_viewer',
+      ],
+    },
+  ],
+  properties: {
+    show_sources: {
+      title: 'Show sources',
+      type: 'boolean',
+    },
+    show_description: {
+      title: 'Show description',
+      type: 'boolean',
+    },
+    description: {
+      title: 'Description',
+      type: 'text',
+    },
+    show_download: {
+      title: 'Show download',
+      type: 'boolean',
+    },
+    show_viewer: {
+      title: 'Show web viewer',
+      type: 'boolean',
+    },
+  },
+  required: [],
+};
+
 export const panelsSchema = {
   title: 'Map Editor',
   fieldsets: [
@@ -123,6 +163,10 @@ export const panelsSchema = {
       title: 'Panels',
       widget: 'object_types_widget',
       schemas: [
+        {
+          id: 'general',
+          schema: GeneralSchema,
+        },
         {
           id: 'base',
           schema: BaseLayerSchema,

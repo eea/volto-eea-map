@@ -184,7 +184,7 @@ const Webmap = (props) => {
     <div>
       <div
         style={{
-          height: height && !editMode ? `${height}px` : '450px',
+          height: height && !editMode ? `${height}px` : '500px',
         }}
         ref={mapRef}
         className="esri-map"
