@@ -1,3 +1,5 @@
+import { base_layers } from '../../constants';
+
 const BaseLayerSchema = {
   title: 'Base Layer',
   fieldsets: [
@@ -9,9 +11,8 @@ const BaseLayerSchema = {
   ],
   properties: {
     base_layer: {
-      title: 'Base layer configuration',
-      widget: 'map_base_layer_widget',
-      defaultValue: 'topo',
+      title: 'Base Layer',
+      choices: base_layers,
     },
   },
   required: [],
@@ -54,38 +55,27 @@ const MapLayersSchema = {
   },
   required: [],
 };
-
-const LegendSchema = {
-  title: 'Legend',
-  fieldsets: [
-    {
-      id: 'default',
-      title: 'Legend',
-      fields: ['legend'],
-    },
-  ],
-  properties: {
-    legend: {
-      title: 'Legend',
-      widget: 'legend_widget',
-    },
-  },
-  required: [],
-};
-
 const PrintSchema = {
   title: 'Print',
   fieldsets: [
     {
       id: 'default',
       title: 'Print',
-      fields: ['print'],
+      fields: ['show_print', 'position'],
     },
   ],
   properties: {
-    print: {
-      title: 'Print',
-      widget: 'print_widget',
+    show_print: {
+      title: 'Show print',
+      type: 'boolean',
+    },
+    position: {
+      title: 'Print position',
+      choices: ['bottom-right', 'bottom-left', 'top-right', 'top-left'].map(
+        (n) => {
+          return [n, n];
+        },
+      ),
     },
   },
   required: [],
@@ -97,13 +87,33 @@ const ZoomSchema = {
     {
       id: 'default',
       title: 'Zoom',
-      fields: ['zoom'],
+      fields: ['show_zoom', 'position', 'zoom_level', 'long', 'lat'],
     },
   ],
   properties: {
-    zoom: {
-      title: 'Zoom',
-      widget: 'zoom_widget',
+    show_zoom: {
+      title: 'Show zoom',
+      type: 'boolean',
+    },
+    position: {
+      title: 'Zoom position',
+      choices: ['bottom-right', 'bottom-left', 'top-right', 'top-left'].map(
+        (n) => {
+          return [n, n];
+        },
+      ),
+    },
+    zoom_level: {
+      title: 'Zoom level',
+      type: 'number',
+    },
+    long: {
+      title: 'Longitude',
+      type: 'number',
+    },
+    lat: {
+      title: 'Latitude',
+      type: 'number',
     },
   },
   required: [],
@@ -174,10 +184,6 @@ export const panelsSchema = {
         {
           id: 'layers',
           schema: MapLayersSchema,
-        },
-        {
-          id: 'legend',
-          schema: LegendSchema,
         },
         {
           id: 'print',

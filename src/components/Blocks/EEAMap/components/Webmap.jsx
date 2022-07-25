@@ -70,7 +70,6 @@ const Webmap = (props) => {
 
   const esri = React.useMemo(() => {
     if (Object.keys(modules).length === 0) return {};
-
     const {
       Map,
       MapView,
@@ -115,18 +114,15 @@ const Webmap = (props) => {
     const view = new MapView({
       container: mapRef.current,
       map,
-      center: zoom?.zoom?.center ? zoom?.zoom?.center : [0, 40],
-      zoom: zoom?.zoom?.zoom_level ? zoom?.zoom?.zoom_level : 2,
+      center: zoom?.long && zoom?.lat ? [zoom.long, zoom.lat] : [0, 40],
+      zoom: zoom?.zoom_level ? zoom?.zoom_level : 2,
       ui: {
         components: ['attribution'],
       },
     });
 
-    if (zoom?.zoom?.show_zoom) {
-      const zoomPosition =
-        zoom && zoom.zoom && zoom.zoom.position
-          ? zoom.zoom.position
-          : 'top-right';
+    if (zoom?.show_zoom) {
+      const zoomPosition = zoom && zoom.position ? zoom.position : 'top-right';
       const zoomWidget = new Zoom({
         view: view,
       });
@@ -153,11 +149,9 @@ const Webmap = (props) => {
       view.ui.add(legendWidget, legendPosition);
     }
 
-    if (print?.print?.show_print) {
+    if (print?.show_print) {
       const printPosition =
-        print && print.print && print.print.position
-          ? print.print.position
-          : 'top-right';
+        print && print.position ? print.position : 'top-right';
       const printWidget = new Expand({
         content: new Print({
           view: view,
