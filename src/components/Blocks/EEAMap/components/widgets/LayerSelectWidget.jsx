@@ -2,12 +2,10 @@ import React from 'react';
 import { Icon } from '@plone/volto/components';
 import { Input, Select, Button, Grid } from 'semantic-ui-react';
 
-import deleteSVG from '@plone/volto/icons/delete.svg';
 import checkSVG from '@plone/volto/icons/check.svg';
-import saveSVG from '@plone/volto/icons/save.svg';
 import closeSVG from '@plone/volto/icons/clear.svg';
 
-import { fetchLayers } from '../../utils';
+import { fetchArcgisData } from '../../utils';
 
 const LayerSelectWidget = (props) => {
   const { onChange, value = {}, id } = props;
@@ -26,7 +24,7 @@ const LayerSelectWidget = (props) => {
   const handleServiceUrlCheck = async () => {
     // fetch url, save it, populate layers options
     try {
-      let mapData = await fetchLayers(serviceUrl);
+      let mapData = await fetchArcgisData(serviceUrl);
       setCheckColor('green');
       setMapData(mapData);
       setServiceUrlError('');

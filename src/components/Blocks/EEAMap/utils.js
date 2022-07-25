@@ -1,6 +1,6 @@
 import { getBaseUrl } from '@plone/volto/helpers';
 
-const fetchLayers = async (url) => {
+const fetchArcgisData = async (url) => {
   const res = await fetch(`${getBaseUrl('')}/cors-proxy/${url}?f=json`);
   if (res.status !== 200) {
     const error = await res.json();
@@ -13,4 +13,4 @@ const fetchLayers = async (url) => {
   return data;
 };
 
-export { fetchLayers };
+export { fetchArcgisData };

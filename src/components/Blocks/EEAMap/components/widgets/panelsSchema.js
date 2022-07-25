@@ -127,6 +127,7 @@ const GeneralSchema = {
       title: 'General',
       fields: [
         'show_sources',
+        'show_legend',
         'show_description',
         'description',
         'show_download',
@@ -137,6 +138,10 @@ const GeneralSchema = {
   properties: {
     show_sources: {
       title: 'Show sources',
+      type: 'boolean',
+    },
+    show_legend: {
+      title: 'Show legend',
       type: 'boolean',
     },
     show_description: {
