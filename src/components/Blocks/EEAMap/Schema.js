@@ -5,13 +5,21 @@ export const Schema = () => {
       {
         id: 'default',
         title: 'Default',
-        fields: ['height', 'map_data'],
+        fields: ['show_description', 'description', 'height', 'map_data'],
       },
     ],
     properties: {
       height: {
         title: 'Height',
         type: 'number',
+      },
+      show_description: {
+        title: 'Show description',
+        type: 'boolean',
+      },
+      description: {
+        title: 'Description',
+        type: 'text',
       },
       map_data: {
         title: 'Edit map',

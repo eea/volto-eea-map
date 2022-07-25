@@ -125,14 +125,7 @@ const GeneralSchema = {
     {
       id: 'default',
       title: 'General',
-      fields: [
-        'show_sources',
-        'show_legend',
-        'show_description',
-        'description',
-        'show_download',
-        'show_viewer',
-      ],
+      fields: ['show_sources', 'show_legend', 'show_download', 'show_viewer'],
     },
   ],
   properties: {
@@ -143,14 +136,6 @@ const GeneralSchema = {
     show_legend: {
       title: 'Show legend',
       type: 'boolean',
-    },
-    show_description: {
-      title: 'Show description',
-      type: 'boolean',
-    },
-    description: {
-      title: 'Description',
-      type: 'text',
     },
     show_download: {
       title: 'Show download',

@@ -14,18 +14,15 @@ const Edit = (props) => {
   const { block, data, onChangeBlock, selected } = props;
   const schema = React.useMemo(() => Schema(props), [props]);
 
-  const { map_data = {} } = data;
+  const { map_data = {}, description, show_description } = data;
   const { general = {} } = map_data;
 
   if (__SERVER__) return '';
-
   return (
     <>
       <Webmap data={map_data} />
       {general.show_legend && <LegendWidget data={map_data} />}
-      {general.show_description && general.description && (
-        <TextView text={general.description} />
-      )}
+      {show_description && description && <TextView text={description} />}
       {(general.show_download || general.show_viewer) && (
         <div
           style={{ display: 'flex', justifyContent: 'end', margin: '10px 0' }}
