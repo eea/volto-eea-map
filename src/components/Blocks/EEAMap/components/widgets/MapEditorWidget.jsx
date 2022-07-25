@@ -69,9 +69,6 @@ const MapEditorWidget = (props) => {
                   title="Sources"
                   id="sources"
                   onChange={(_, provider_url) => {
-                    // this.setState({
-                    //   value: { ...this.state.value, provider_url },
-                    // });
                     console.log('provurl', provider_url);
                   }}
                   // value={this.state.value?.provider_url}
@@ -79,7 +76,7 @@ const MapEditorWidget = (props) => {
                 />
               </Grid.Column>
               <Grid.Column width={4}>
-                <Button onClick={() => setOpen(false)}>Close</Button>
+                <Button onClick={handleClose}>Close</Button>
                 <Button color="green" onClick={handleApplyChanges}>
                   Apply changes
                 </Button>
