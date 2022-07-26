@@ -7,9 +7,9 @@
 }
 
 #map-editor-modal {
-  width: 95% !important;
   top: auto;
   left: auto !important;
+  width: 95% !important;
 }
 
 #map-widget-toggle {
