@@ -18,8 +18,7 @@
   },
   "dependencies": {
     "esri-loader": "3.5.0",
-    "@plone/scripts": "*",
-    "@eeacms/volto-datablocks": "*"
+    "@plone/scripts": "*"
   },
   "devDependencies": {
     "@cypress/code-coverage": "^3.9.5",

@@ -2,7 +2,6 @@ import React from 'react';
 import { Modal, Button, Grid } from 'semantic-ui-react';
 import Webmap from '../Webmap';
 import { FormFieldWrapper, InlineForm } from '@plone/volto/components';
-import { PickObjectWidget } from '@eeacms/volto-datablocks/components';
 
 import { panelsSchema } from './panelsSchema';
 
@@ -64,17 +63,7 @@ const MapEditorWidget = (props) => {
         <Modal.Actions>
           <Grid>
             <Grid.Row>
-              <Grid.Column width={8}>
-                <PickObjectWidget
-                  title="Sources"
-                  id="sources"
-                  // onChange={(_, provider_url) => {
-                  //   console.log('provurl', provider_url);
-                  // }}
-                  // value={this.state.value?.provider_url}
-                  showReload={true}
-                />
-              </Grid.Column>
+              <Grid.Column width={8}></Grid.Column>
               <Grid.Column width={4}>
                 <Button onClick={handleClose}>Close</Button>
                 <Button color="green" onClick={handleApplyChanges}>
