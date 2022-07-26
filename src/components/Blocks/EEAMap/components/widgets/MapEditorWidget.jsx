@@ -68,9 +68,9 @@ const MapEditorWidget = (props) => {
                 <PickObjectWidget
                   title="Sources"
                   id="sources"
-                  onChange={(_, provider_url) => {
-                    console.log('provurl', provider_url);
-                  }}
+                  // onChange={(_, provider_url) => {
+                  //   console.log('provurl', provider_url);
+                  // }}
                   // value={this.state.value?.provider_url}
                   showReload={true}
                 />

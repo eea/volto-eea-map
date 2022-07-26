@@ -14,12 +14,11 @@ const MODULES = [
 ];
 
 const Webmap = (props) => {
-  const { data = {}, editMode } = props;
+  const { data = {}, editMode, height } = props;
   const {
     base = {},
     layers = {},
     id,
-    height,
     legend = {},
     print = {},
     zoom = {},
@@ -173,7 +172,6 @@ const Webmap = (props) => {
   }, [modules, base_layer, map_layers]);
 
   const currentLayerView = esri.view?.layerViews?.items?.[0];
-
   return (
     <div>
       <div

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Input, Select, Label } from 'semantic-ui-react';
+import { Button } from 'semantic-ui-react';
 import LayerSelectWidget from './LayerSelectWidget';
 
 const LayersPanel = ({ data, onChange, block }) => {
@@ -19,7 +19,7 @@ const LayersPanel = ({ data, onChange, block }) => {
         ],
       });
     }
-  }, [data, block]);
+  }, [data, block, onChange]);
 
   const handleAddLayer = () => {
     onChange('map_data', {

@@ -1,3 +1,4 @@
+/* eslint-disable no-throw-literal */
 import { getBaseUrl } from '@plone/volto/helpers';
 
 const fetchArcgisData = async (url) => {
