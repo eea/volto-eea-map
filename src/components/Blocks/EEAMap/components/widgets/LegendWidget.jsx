@@ -34,7 +34,7 @@ const LegendWidget = (props) => {
 
   React.useEffect(() => {
     fetchLegend(activeLayer.map_service_url + '/legend');
-  }, [data]);
+  }, [data, activeLayer.map_service_url]);
 
   return (
     <>

@@ -10,10 +10,10 @@ const View = (props) => {
   if (__SERVER__) return '';
 
   return (
-    <div>
+    <>
       <Webmap data={map_data} />
       <ExtraViews data={data} />
-    </div>
+    </>
   );
 };
 

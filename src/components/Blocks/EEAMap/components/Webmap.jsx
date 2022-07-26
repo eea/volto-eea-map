@@ -7,6 +7,7 @@ const MODULES = [
   'esri/views/MapView',
   'esri/layers/FeatureLayer',
   'esri/layers/MapImageLayer',
+  'esri/layers/GroupLayer',
   'esri/widgets/Legend',
   'esri/widgets/Expand',
   'esri/widgets/Print',
@@ -48,6 +49,7 @@ const Webmap = (props) => {
           MapView,
           FeatureLayer,
           MapImageLayer,
+          GroupLayer,
           Legend,
           Expand,
           Print,
@@ -58,6 +60,7 @@ const Webmap = (props) => {
           MapView,
           FeatureLayer,
           MapImageLayer,
+          GroupLayer,
           Legend,
           Expand,
           Print,
@@ -74,6 +77,7 @@ const Webmap = (props) => {
       MapView,
       FeatureLayer,
       MapImageLayer,
+      GroupLayer,
       Legend,
       Expand,
       Print,
@@ -90,7 +94,6 @@ const Webmap = (props) => {
           let mapLayer;
 
           //TODO: add more layers and error catch for unrecognized layer
-
           switch (layer.type) {
             case 'Raster Layer':
               mapLayer = new MapImageLayer({
@@ -99,6 +102,9 @@ const Webmap = (props) => {
               break;
             case 'Feature Layer':
               mapLayer = new FeatureLayer({ url });
+              break;
+            case 'Group Layer':
+              mapLayer = new GroupLayer({ url });
               break;
             default:
               break;
