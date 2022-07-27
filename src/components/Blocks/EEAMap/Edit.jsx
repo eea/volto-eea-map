@@ -11,7 +11,7 @@ import {
 } from '@eeacms/volto-embed';
 
 const Edit = (props) => {
-  const { block, data, onChangeBlock, selected, id } = props;
+  const { block, data, onChangeBlock, selected } = props;
   const schema = React.useMemo(() => Schema(props), [props]);
 
   const { map_data = {}, height } = data;

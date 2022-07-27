@@ -4,7 +4,7 @@ import ExtraViews from './components/widgets/ExtraViews';
 import { PrivacyProtection } from '@eeacms/volto-embed';
 
 const View = (props) => {
-  const { data, id } = props || {};
+  const { data } = props || {};
 
   const { map_data = {} } = data;
 

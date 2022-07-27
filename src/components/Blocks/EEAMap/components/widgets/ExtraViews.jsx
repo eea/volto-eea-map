@@ -2,7 +2,6 @@ import React from 'react';
 import { Button } from 'semantic-ui-react';
 import { Icon } from '@plone/volto/components';
 
-import TextView from '../TextView';
 import LegendWidget from './LegendWidget';
 import { serializeNodes } from 'volto-slate/editor/render';
 
