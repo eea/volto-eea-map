@@ -5,7 +5,7 @@ export const Schema = () => {
       {
         id: 'default',
         title: 'Default',
-        fields: ['show_description', 'description', 'height', 'map_data'],
+        fields: ['description', 'height', 'map_data'],
       },
     ],
     properties: {
@@ -13,13 +13,9 @@ export const Schema = () => {
         title: 'Height',
         type: 'number',
       },
-      show_description: {
-        title: 'Show description',
-        type: 'boolean',
-      },
       description: {
         title: 'Description',
-        type: 'text',
+        widget: 'slate',
       },
       map_data: {
         title: 'Edit map',

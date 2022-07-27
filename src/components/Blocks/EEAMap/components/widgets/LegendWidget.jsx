@@ -47,7 +47,9 @@ const LegendWidget = (props) => {
                 legendLayers.map((layer, index) => {
                   return (
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
-                      <h5>{layer?.layerName}</h5>
+                      <h5 style={{ marginTop: '10px', marginBottom: '5px' }}>
+                        {layer?.layerName}
+                      </h5>
                       <LayerLegend data={layer.legend} />
                     </div>
                   );

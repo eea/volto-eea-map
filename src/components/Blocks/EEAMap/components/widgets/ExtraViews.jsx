@@ -4,17 +4,18 @@ import { Icon } from '@plone/volto/components';
 
 import TextView from '../TextView';
 import LegendWidget from './LegendWidget';
+import { serializeNodes } from 'volto-slate/editor/render';
 
 import worldSVG from '@plone/volto/icons/world.svg';
 import downloadSVG from '@plone/volto/icons/download.svg';
 
 const ExtraViews = ({ data }) => {
-  const { map_data = {}, description, show_description } = data;
+  const { map_data = {}, description } = data;
   const { general = {} } = map_data;
   return (
     <>
       {general.show_legend && <LegendWidget data={map_data} />}
-      {show_description && description && <TextView text={description} />}
+      {description && serializeNodes(description)}
       {(general.show_download || general.show_viewer) && (
         <div
           style={{ display: 'flex', justifyContent: 'end', margin: '10px 0' }}

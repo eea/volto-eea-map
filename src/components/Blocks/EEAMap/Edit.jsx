@@ -5,22 +5,29 @@ import { Schema } from './Schema';
 import Webmap from './components/Webmap';
 import './styles/map.css';
 import ExtraViews from './components/widgets/ExtraViews';
+import {
+  PrivacyProtection,
+  addPrivacyProtectionToSchema,
+} from '@eeacms/volto-embed';
 
 const Edit = (props) => {
-  const { block, data, onChangeBlock, selected } = props;
+  const { block, data, onChangeBlock, selected, id } = props;
   const schema = React.useMemo(() => Schema(props), [props]);
 
   const { map_data = {}, height } = data;
   if (__SERVER__) return '';
+
   return (
-    <>
-      <Webmap data={map_data} height={height} />
-      <ExtraViews data={data} />
+    <div>
+      <PrivacyProtection data={data} {...props}>
+        <Webmap data={map_data} height={height} />
+        <ExtraViews data={data} />
+      </PrivacyProtection>
       <SidebarPortal selected={selected}>
         <BlockDataForm
           block={block}
           title={schema.title}
-          schema={schema}
+          schema={addPrivacyProtectionToSchema(schema)}
           onChangeField={(id, value) => {
             onChangeBlock(block, {
               ...data,
@@ -30,7 +37,7 @@ const Edit = (props) => {
           formData={data}
         />
       </SidebarPortal>
-    </>
+    </div>
   );
 };
 

@@ -16,9 +16,15 @@
     "type": "git",
     "url": "git@github.com:eea/volto-eea-map.git"
   },
+  "addons": [
+    "@eeacms/volto-embed",
+    "volto-slate"
+  ],
   "dependencies": {
     "esri-loader": "3.5.0",
-    "@plone/scripts": "*"
+    "@plone/scripts": "*",
+    "@eeacms/volto-embed": "^2.0.1",
+    "volto-slate": "*"
   },
   "devDependencies": {
     "@cypress/code-coverage": "^3.9.5",
