@@ -10,7 +10,14 @@ import { fetchArcgisData } from '../../utils';
 const LayerSelectWidget = (props) => {
   const { onChange, value = {}, id } = props;
 
-  const { available_layers, map_data, map_service_url, layer } = value;
+  const {
+    available_layers,
+    map_data,
+    map_service_url,
+    layer,
+    fields = [],
+    query = '',
+  } = value;
 
   const [mapData, setMapData] = React.useState(map_data);
   const [checkColor, setCheckColor] = React.useState('');
@@ -20,6 +27,7 @@ const LayerSelectWidget = (props) => {
   const [availableLayers, setAvailableLayers] = React.useState(
     available_layers,
   );
+  const [layerQuery, setLayerQuery] = React.useState(query);
 
   const handleServiceUrlCheck = async () => {
     // fetch url, save it, populate layers options
@@ -36,6 +44,7 @@ const LayerSelectWidget = (props) => {
         );
       }
       onChange(id, {
+        ...value,
         layer: selectedLayer,
         map_service_url: serviceUrl,
         available_layers: availableLayers,
@@ -47,15 +56,36 @@ const LayerSelectWidget = (props) => {
     }
   };
 
-  const handleSelectLayer = (layer) => {
+  const handleLayerFetch = async (service_url, id) => {
+    try {
+      let fullLayer = await fetchArcgisData(`${service_url}/${id}`);
+      return fullLayer;
+    } catch (e) {}
+  };
+
+  const handleSelectLayer = async (layer) => {
+    const fullLayer = await handleLayerFetch(serviceUrl, layer.id);
     setSelectedLayer(layer);
     onChange(id, {
+      ...value,
       layer,
+      fields: fullLayer.fields,
       map_service_url: serviceUrl,
       available_layers: availableLayers,
       map_data: mapData,
+      query: '',
+    });
+    setLayerQuery('');
+  };
+
+  const handleQueryLayer = () => {
+    onChange(id, {
+      ...value,
+      query: layerQuery,
     });
   };
+
+  console.log(value);
 
   return (
     <div
@@ -104,7 +134,36 @@ const LayerSelectWidget = (props) => {
             value={selectedLayer}
           />
         </Grid.Row>
-        <Grid.Row stretched></Grid.Row>
+        <h4>Query Layer</h4>
+        <Grid.Row stretched>
+          <Input
+            type="text"
+            onChange={(e, { value }) => setLayerQuery(value)}
+            style={{ width: '100%' }}
+            value={layerQuery}
+          />
+          <Button
+            style={{
+              margin: '10px 0',
+              display: 'flex',
+              alignItems: 'center',
+            }}
+            color={checkColor}
+            onClick={handleQueryLayer}
+          >
+            <p style={{ fontSize: '14px', margin: '0', marginRight: '5px' }}>
+              Query Layer
+            </p>
+          </Button>
+        </Grid.Row>
+        <p style={{ fontSize: '12px', fontWeight: 'bold' }}>
+          Available Fields:
+        </p>
+        {fields &&
+          fields.length > 0 &&
+          fields.map((field, id) => (
+            <p style={{ fontSize: '12px' }}>{field.alias}</p>
+          ))}
       </Grid>
     </div>
   );
