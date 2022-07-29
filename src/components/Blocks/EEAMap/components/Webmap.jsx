@@ -36,6 +36,7 @@ const Webmap = (props) => {
   const options = {
     css: true,
   };
+
   const mapRef = React.useRef();
   const [modules, setModules] = React.useState({});
   const modules_loaded = React.useRef(false);
@@ -88,12 +89,10 @@ const Webmap = (props) => {
       map_layers.length > 0 &&
       map_layers
         .filter(({ map_service_url, layer }) => map_service_url && layer)
-        .map(({ map_service_url, layer }) => {
+        .map(({ map_service_url, layer, query = '' }) => {
           const url = `${map_service_url}/${layer}`;
 
           let mapLayer;
-
-          //TODO: add more layers and error catch for unrecognized layer
           switch (layer.type) {
             case 'Raster Layer':
               mapLayer = new MapImageLayer({
@@ -101,7 +100,10 @@ const Webmap = (props) => {
               });
               break;
             case 'Feature Layer':
-              mapLayer = new FeatureLayer({ url });
+              mapLayer = new FeatureLayer({
+                url,
+                definitionExpression: query,
+              });
               break;
             case 'Group Layer':
               mapLayer = new GroupLayer({ url });
@@ -112,10 +114,18 @@ const Webmap = (props) => {
           return mapLayer;
         });
 
+    // //this next layer will be used to filter country and intersect with existing layer
+    // const allCountriesLayer = new FeatureLayer({
+    //   url:
+    //     'https://trial.discomap.eea.europa.eu/arcgis/rest/services/CLMS/WorldCountries/MapServer/1',
+    //   definitionExpression: `(CNTR_ID = 'BG')`,
+    // });
+
     const map = new Map({
       basemap: base_layer || 'hybrid',
       layers,
     });
+
     const view = new MapView({
       container: mapRef.current,
       map,

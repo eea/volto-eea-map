@@ -1,6 +1,7 @@
 import React from 'react';
 import Webmap from './components/Webmap';
 import ExtraViews from './components/widgets/ExtraViews';
+import { PrivacyProtection } from '@eeacms/volto-embed';
 
 const View = (props) => {
   const { data } = props || {};
@@ -10,10 +11,12 @@ const View = (props) => {
   if (__SERVER__) return '';
 
   return (
-    <>
-      <Webmap data={map_data} />
-      <ExtraViews data={data} />
-    </>
+    <div>
+      <PrivacyProtection data={data} {...props}>
+        <Webmap data={map_data} />
+        <ExtraViews data={data} />
+      </PrivacyProtection>
+    </div>
   );
 };
 
