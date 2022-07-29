@@ -27,13 +27,18 @@ const LegendWidget = (props) => {
   const activeLayer = map_layers.length > 0 ? map_layers[0]?.map_layer : '';
   const fetchLegend = async (url) => {
     let legendData = await fetchArcgisData(url);
-    const { layers = [] } = legendData;
 
-    setLegendLayers(layers);
+    //TODO: configure this for multiple layers
+    const { layers = [] } = legendData;
+    const selectedLayerLedend = layers.filter(
+      (l, i) => l.layerId === activeLayer.layer.id,
+    );
+    setLegendLayers(selectedLayerLedend);
   };
 
   React.useEffect(() => {
-    fetchLegend(activeLayer.map_service_url + '/legend');
+    fetchLegend(`${activeLayer.map_service_url}/legend`);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, activeLayer.map_service_url]);
 
   return (

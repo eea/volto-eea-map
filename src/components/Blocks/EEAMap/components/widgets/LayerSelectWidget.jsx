@@ -85,8 +85,6 @@ const LayerSelectWidget = (props) => {
     });
   };
 
-  console.log(value);
-
   return (
     <div
       style={{
