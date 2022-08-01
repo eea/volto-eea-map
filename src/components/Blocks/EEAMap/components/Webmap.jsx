@@ -114,13 +114,6 @@ const Webmap = (props) => {
           return mapLayer;
         });
 
-    // //this next layer will be used to filter country and intersect with existing layer
-    // const allCountriesLayer = new FeatureLayer({
-    //   url:
-    //     'https://trial.discomap.eea.europa.eu/arcgis/rest/services/CLMS/WorldCountries/MapServer/1',
-    //   definitionExpression: `(CNTR_ID = 'BG')`,
-    // });
-
     const map = new Map({
       basemap: base_layer || 'hybrid',
       layers,
@@ -135,6 +128,26 @@ const Webmap = (props) => {
         components: ['attribution'],
       },
     });
+
+    if (layers && layers[0]) {
+      view.whenLayerView(layers[0]).then(function (layerView) {
+
+        layerView.watch('updating', function (val) {
+          console.log('updating', val);
+          //  view.goTo(response.extent);
+
+          if (!val) {
+            layerView.queryExtent().then(function (response) {
+              console.log('res', response);
+              ///go to the extent of all the graphics in the layer view
+              console.log('got extent', response.extent);
+              if (response.extent) view.goTo(response.extent);
+              view.goTo(extent);
+            });
+          }
+        });
+      });
+    }
 
     if (zoom?.show_zoom) {
       const zoomPosition = zoom && zoom.position ? zoom.position : 'top-right';
