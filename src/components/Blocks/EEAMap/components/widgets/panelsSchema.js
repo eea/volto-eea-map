@@ -101,7 +101,6 @@ const ZoomSchema = {
     show_zoom: {
       title: 'Show zoom',
       type: 'boolean',
-      value: true,
     },
     centerOnExtent: {
       title: 'Center on extent',
