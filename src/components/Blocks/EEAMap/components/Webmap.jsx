@@ -129,16 +129,15 @@ const Webmap = (props) => {
       },
     });
 
-    if (layers && layers[0]) {
+    if (layers && layers[0] && zoom && zoom.centerOnExtent) {
       view.whenLayerView(layers[0]).then(function (layerView) {
         layerView.watch('updating', function (val) {
           //  view.goTo(response.extent);
 
-          if (!val) {
+          if (!val && layerView) {
             layerView.queryExtent().then(function (response) {
               ///go to the extent of all the graphics in the layer view
               if (response.extent) view.goTo(response.extent);
-              view.goTo(extent);
             });
           }
         });

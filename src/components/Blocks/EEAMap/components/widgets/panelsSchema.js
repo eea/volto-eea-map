@@ -87,13 +87,26 @@ const ZoomSchema = {
     {
       id: 'default',
       title: 'Zoom',
-      fields: ['show_zoom', 'position', 'zoom_level', 'long', 'lat'],
+      fields: [
+        'show_zoom',
+        'centerOnExtent',
+        'position',
+        'zoom_level',
+        'long',
+        'lat',
+      ],
     },
   ],
   properties: {
     show_zoom: {
       title: 'Show zoom',
       type: 'boolean',
+      value: true,
+    },
+    centerOnExtent: {
+      title: 'Center on extent',
+      type: 'boolean',
+      description: 'This will override latitude/longitude/zoom level',
     },
     position: {
       title: 'Zoom position',
