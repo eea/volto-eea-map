@@ -24,7 +24,7 @@ export const ObjectTypesWidget = (props) => {
       ),
       render: () => {
         return (
-          <Tab.Pane>
+          <Tab.Pane style={{ padding: '0' }}>
             <ObjectWidget
               schema={schema}
               id={id}
@@ -45,7 +45,7 @@ export const ObjectTypesWidget = (props) => {
       menu={{ fluid: true, vertical: true, tabular: true }}
       panes={schemas.map(createTab)}
       activeIndex={activeTab}
-      grid={{ paneWidth: 8, tabWidth: 4 }}
+      grid={{ paneWidth: 9, tabWidth: 3 }}
     />
   );
 };

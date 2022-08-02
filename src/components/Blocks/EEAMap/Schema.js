@@ -5,7 +5,15 @@ export const Schema = () => {
       {
         id: 'default',
         title: 'Default',
-        fields: ['description', 'height', 'map_data'],
+        fields: [
+          'description',
+          'height',
+          'map_data',
+          'show_sources',
+          'show_legend',
+          'show_download',
+          'show_viewer',
+        ],
       },
     ],
     properties: {
@@ -21,6 +29,22 @@ export const Schema = () => {
         title: 'Edit map',
         description: 'Open the map customization interface',
         widget: 'map_edit_widget',
+      },
+      show_sources: {
+        title: 'Show sources',
+        type: 'boolean',
+      },
+      show_legend: {
+        title: 'Show legend',
+        type: 'boolean',
+      },
+      show_download: {
+        title: 'Show download',
+        type: 'boolean',
+      },
+      show_viewer: {
+        title: 'Show web viewer',
+        type: 'boolean',
       },
     },
     required: [],

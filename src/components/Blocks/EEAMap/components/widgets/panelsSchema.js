@@ -55,6 +55,7 @@ const MapLayersSchema = {
   },
   required: [],
 };
+
 const PrintSchema = {
   title: 'Print',
   fieldsets: [
@@ -81,110 +82,94 @@ const PrintSchema = {
   required: [],
 };
 
-const ZoomSchema = {
-  title: 'Zoom',
-  fieldsets: [
-    {
-      id: 'default',
-      title: 'Zoom',
-      fields: ['show_zoom', 'position', 'zoom_level', 'long', 'lat'],
+const ZoomSchema = ({ data = {} }) => {
+  const centerOnExtent = data?.map_data?.zoom?.centerOnExtent;
+
+  return {
+    title: 'Zoom',
+    fieldsets: [
+      {
+        id: 'default',
+        title: 'Zoom',
+        fields: [
+          'show_zoom',
+          'centerOnExtent',
+          'position',
+          ...(!centerOnExtent ? ['zoom_level', 'long', 'lat'] : []),
+        ],
+      },
+    ],
+    properties: {
+      show_zoom: {
+        title: 'Show zoom',
+        type: 'boolean',
+      },
+      centerOnExtent: {
+        title: 'Center on extent',
+        type: 'boolean',
+        description: 'This will override latitude/longitude/zoom level',
+      },
+      position: {
+        title: 'Zoom position',
+        choices: ['bottom-right', 'bottom-left', 'top-right', 'top-left'].map(
+          (n) => {
+            return [n, n];
+          },
+        ),
+      },
+      zoom_level: {
+        title: 'Zoom level',
+        type: 'number',
+      },
+      long: {
+        title: 'Longitude',
+        type: 'number',
+      },
+      lat: {
+        title: 'Latitude',
+        type: 'number',
+      },
     },
-  ],
-  properties: {
-    show_zoom: {
-      title: 'Show zoom',
-      type: 'boolean',
-    },
-    position: {
-      title: 'Zoom position',
-      choices: ['bottom-right', 'bottom-left', 'top-right', 'top-left'].map(
-        (n) => {
-          return [n, n];
-        },
-      ),
-    },
-    zoom_level: {
-      title: 'Zoom level',
-      type: 'number',
-    },
-    long: {
-      title: 'Longitude',
-      type: 'number',
-    },
-    lat: {
-      title: 'Latitude',
-      type: 'number',
-    },
-  },
-  required: [],
+    required: [],
+  };
 };
 
-const GeneralSchema = {
-  title: 'General',
-  fieldsets: [
-    {
-      id: 'default',
-      title: 'General',
-      fields: ['show_sources', 'show_legend', 'show_download', 'show_viewer'],
-    },
-  ],
-  properties: {
-    show_sources: {
-      title: 'Show sources',
-      type: 'boolean',
-    },
-    show_legend: {
-      title: 'Show legend',
-      type: 'boolean',
-    },
-    show_download: {
-      title: 'Show download',
-      type: 'boolean',
-    },
-    show_viewer: {
-      title: 'Show web viewer',
-      type: 'boolean',
-    },
-  },
-  required: [],
-};
+export default ({ data = {} }) => {
+  const zoomSchema = ZoomSchema({ data });
 
-export const panelsSchema = {
-  title: 'Map Editor',
-  fieldsets: [
-    {
-      id: 'default',
-      title: 'Map Editor Sections',
-      fields: ['map_data'],
+  return {
+    title: 'Map Editor',
+    fieldsets: [
+      {
+        id: 'default',
+        title: 'Map Editor Sections',
+        fields: ['map_data'],
+      },
+    ],
+    properties: {
+      map_data: {
+        title: 'Panels',
+        widget: 'object_types_widget',
+        schemas: [
+          {
+            id: 'base',
+            schema: BaseLayerSchema,
+          },
+          {
+            id: 'layers',
+            schema: MapLayersSchema,
+          },
+          {
+            id: 'print',
+            schema: PrintSchema,
+          },
+          {
+            id: 'zoom',
+            schema: zoomSchema,
+          },
+        ],
+      },
     },
-  ],
-  properties: {
-    map_data: {
-      title: 'Panels',
-      widget: 'object_types_widget',
-      schemas: [
-        {
-          id: 'general',
-          schema: GeneralSchema,
-        },
-        {
-          id: 'base',
-          schema: BaseLayerSchema,
-        },
-        {
-          id: 'layers',
-          schema: MapLayersSchema,
-        },
-        {
-          id: 'print',
-          schema: PrintSchema,
-        },
-        {
-          id: 'zoom',
-          schema: ZoomSchema,
-        },
-      ],
-    },
-  },
-  required: [],
+    required: [],
+  };
 };

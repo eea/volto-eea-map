@@ -3,7 +3,7 @@ import { Modal, Button, Grid } from 'semantic-ui-react';
 import Webmap from '../Webmap';
 import { FormFieldWrapper, InlineForm } from '@plone/volto/components';
 
-import { panelsSchema } from './panelsSchema';
+import PanelsSchema from './panelsSchema';
 
 const MapEditorWidget = (props) => {
   const [open, setOpen] = React.useState(false);
@@ -26,6 +26,8 @@ const MapEditorWidget = (props) => {
     setIntValue(fieldVal);
   };
 
+  let schema = PanelsSchema({ data: dataForm });
+
   return (
     <FormFieldWrapper {...props}>
       <Modal
@@ -46,8 +48,8 @@ const MapEditorWidget = (props) => {
               <Grid.Column width={4}>
                 <InlineForm
                   block={block}
-                  title={panelsSchema.title}
-                  schema={panelsSchema}
+                  title={schema.title}
+                  schema={schema}
                   onChangeField={(id, value) => {
                     handleChangeField(id, value);
                   }}
