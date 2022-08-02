@@ -21,14 +21,15 @@
     "volto-slate"
   ],
   "dependencies": {
-    "esri-loader": "3.5.0",
-    "@plone/scripts": "*",
     "@eeacms/volto-embed": "^2.0.1",
+    "@plone/scripts": "*",
+    "esri-loader": "3.5.0",
     "volto-slate": "*"
   },
   "devDependencies": {
     "@cypress/code-coverage": "^3.9.5",
-    "babel-plugin-transform-class-properties": "^6.24.1"
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "cypress": "10.3.1"
   },
   "scripts": {
     "release": "release-it",
