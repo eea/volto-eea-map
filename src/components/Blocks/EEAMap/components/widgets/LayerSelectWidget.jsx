@@ -4,6 +4,7 @@ import { Input, Select, Button, Grid } from 'semantic-ui-react';
 
 import checkSVG from '@plone/volto/icons/check.svg';
 import closeSVG from '@plone/volto/icons/clear.svg';
+import aheadSVG from '@plone/volto/icons/ahead.svg';
 
 import { fetchArcgisData } from '../../utils';
 
@@ -97,30 +98,26 @@ const LayerSelectWidget = (props) => {
           <Input
             type="text"
             onChange={(e, { value }) => setServiceUrl(value)}
-            style={{ width: '100%' }}
+            style={{ width: '70%' }}
             value={serviceUrl}
-          />
-          <Grid.Row>
+            action
+            actionPosition="right"
+          >
+            <input />
             <Button
-              style={{
-                margin: '10px 0',
-                display: 'flex',
-                alignItems: 'center',
-              }}
+              type="submit"
+              size="tiny"
+              compact
               color={checkColor}
               onClick={handleServiceUrlCheck}
             >
-              <p style={{ fontSize: '14px', margin: '0', marginRight: '5px' }}>
-                Check Url
-              </p>
               <Icon
                 name={serviceUrlError ? closeSVG : checkSVG}
-                style={{ marginLeft: '5px' }}
                 title="Check Url"
                 size="17px"
               />
             </Button>
-          </Grid.Row>
+          </Input>
         </Grid.Row>
         <h4>Layer</h4>
         <Grid.Row>
@@ -137,26 +134,28 @@ const LayerSelectWidget = (props) => {
           <Input
             type="text"
             onChange={(e, { value }) => setLayerQuery(value)}
-            style={{ width: '100%' }}
+            style={{ width: '70%' }}
             value={layerQuery}
-          />
-          <Button
-            style={{
-              margin: '10px 0',
-              display: 'flex',
-              alignItems: 'center',
-            }}
-            color={checkColor}
-            onClick={handleQueryLayer}
+            action
+            actionPosition="right"
           >
-            <p style={{ fontSize: '14px', margin: '0', marginRight: '5px' }}>
-              Query Layer
-            </p>
-          </Button>
+            <input />
+            <Button
+              type="submit"
+              size="tiny"
+              compact
+              color={'green'}
+              onClick={handleQueryLayer}
+            >
+              <Icon name={aheadSVG} title="Check Url" size="17px" />
+            </Button>
+          </Input>
         </Grid.Row>
-        <p style={{ fontSize: '12px', fontWeight: 'bold' }}>
-          Available Fields:
-        </p>
+        <Grid.Row>
+          <p style={{ fontSize: '12px', fontWeight: 'bold' }}>
+            Available Fields:
+          </p>
+        </Grid.Row>
         {fields &&
           fields.length > 0 &&
           fields.map((field, id) => (

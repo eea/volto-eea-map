@@ -8,7 +8,7 @@ const LayerLegend = ({ data }) => {
       {data.length > 0 &&
         data.map((item, i) => {
           return (
-            <span style={{ display: 'flex', alignItems: 'center' }}>
+            <span key={i} style={{ display: 'flex', alignItems: 'center' }}>
               <img alt="alt" src={`data:image/png;base64,${item.imageData}`} />
               <span style={{ fontSize: '13px' }}>{item.label}</span>
             </span>
@@ -49,9 +49,12 @@ const LegendWidget = (props) => {
             <Grid.Column>
               <h3>Legend:</h3>
               {legendLayers.length > 0 &&
-                legendLayers.map((layer, index) => {
+                legendLayers.map((layer, i) => {
                   return (
-                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <div
+                      key={i}
+                      style={{ display: 'flex', flexDirection: 'column' }}
+                    >
                       <h5 style={{ marginTop: '10px', marginBottom: '5px' }}>
                         {layer?.layerName}
                       </h5>
