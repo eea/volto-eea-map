@@ -18,8 +18,6 @@ const ExtraViews = ({ data }) => {
   } = data;
   return (
     <>
-      {show_legend && <LegendWidget data={map_data} />}
-      {description && serializeNodes(description)}
       {(show_download || show_viewer) && (
         <div
           style={{ display: 'flex', justifyContent: 'end', margin: '10px 0' }}
@@ -31,7 +29,9 @@ const ExtraViews = ({ data }) => {
               href={`${map_data.layers.map_layers[0].map_layer.map_service_url}?f=lyr&v=9.3`}
             >
               <Button size="tiny">
-                <Icon name={downloadSVG} title="Download" size="25px" />
+                <Button.Content>
+                  <Icon name={downloadSVG} title="Download" size="25px" />
+                </Button.Content>
               </Button>
             </a>
           )}
@@ -45,12 +45,16 @@ const ExtraViews = ({ data }) => {
               }
             >
               <Button size="tiny">
-                <Icon name={worldSVG} title="Check Url" size="25px" />
+                <Button.Content>
+                  <Icon name={worldSVG} title="View map" size="25px" />
+                </Button.Content>
               </Button>
             </a>
           )}
         </div>
       )}
+      {show_legend && <LegendWidget data={map_data} />}
+      {description && serializeNodes(description)}
     </>
   );
 };
