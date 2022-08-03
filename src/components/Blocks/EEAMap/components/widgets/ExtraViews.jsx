@@ -16,9 +16,10 @@ const ExtraViews = ({ data }) => {
     show_download,
     show_viewer,
   } = data;
+
   return (
     <>
-      {(show_download || show_viewer) && (
+      {map_data.layers?.map_layers[0] && (show_download || show_viewer) && (
         <div
           style={{ display: 'flex', justifyContent: 'end', margin: '10px 0' }}
         >

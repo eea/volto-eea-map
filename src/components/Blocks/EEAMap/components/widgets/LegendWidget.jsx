@@ -37,7 +37,9 @@ const LegendWidget = (props) => {
   };
 
   React.useEffect(() => {
-    fetchLegend(`${activeLayer.map_service_url}/legend`);
+    if (activeLayer) {
+      fetchLegend(`${activeLayer.map_service_url}/legend`);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, activeLayer.map_service_url]);
 
@@ -48,6 +50,11 @@ const LegendWidget = (props) => {
           <Grid.Row>
             <Grid.Column>
               <h3>Legend:</h3>
+              {!activeLayer && (
+                <p>
+                  No layer found for legend. Please add a map layer from editor.
+                </p>
+              )}
               {legendLayers.length > 0 &&
                 legendLayers.map((layer, i) => {
                   return (
