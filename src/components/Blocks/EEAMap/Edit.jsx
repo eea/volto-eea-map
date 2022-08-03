@@ -16,7 +16,7 @@ const Edit = (props) => {
 
   const { map_data = {}, height } = data;
   if (__SERVER__) return '';
-
+  console.log(data);
   return (
     <div>
       <PrivacyProtection data={data} {...props}>
@@ -29,6 +29,7 @@ const Edit = (props) => {
           title={schema.title}
           schema={addPrivacyProtectionToSchema(schema)}
           onChangeField={(id, value) => {
+            console.log('coming here', id, value);
             onChangeBlock(block, {
               ...data,
               [id]: value,
