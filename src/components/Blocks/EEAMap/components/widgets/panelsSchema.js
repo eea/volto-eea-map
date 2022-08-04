@@ -82,19 +82,21 @@ const PrintSchema = {
   required: [],
 };
 
-const ZoomSchema = ({ data = {} }) => {
-  const centerOnExtent = data?.map_data?.zoom?.centerOnExtent;
+const GeneralSchema = ({ data = {} }) => {
+  const centerOnExtent = data?.map_data?.general?.centerOnExtent;
 
   return {
-    title: 'Zoom',
+    title: 'General',
     fieldsets: [
       {
         id: 'default',
         title: 'Zoom',
         fields: [
+          'show_print',
+          'print_position',
           'show_zoom',
           'centerOnExtent',
-          'position',
+          'zoom_position',
           ...(!centerOnExtent ? ['zoom_level', 'long', 'lat'] : []),
         ],
       },
@@ -107,9 +109,10 @@ const ZoomSchema = ({ data = {} }) => {
       centerOnExtent: {
         title: 'Center on extent',
         type: 'boolean',
-        description: 'This will override latitude/longitude/zoom level',
+        description:
+          'This will override latitude/longitude/zoom level and will lock zoom/moving the map.',
       },
-      position: {
+      zoom_position: {
         title: 'Zoom position',
         choices: ['bottom-right', 'bottom-left', 'top-right', 'top-left'].map(
           (n) => {
@@ -129,13 +132,25 @@ const ZoomSchema = ({ data = {} }) => {
         title: 'Latitude',
         type: 'number',
       },
+      show_print: {
+        title: 'Show print',
+        type: 'boolean',
+      },
+      print_position: {
+        title: 'Print position',
+        choices: ['bottom-right', 'bottom-left', 'top-right', 'top-left'].map(
+          (n) => {
+            return [n, n];
+          },
+        ),
+      },
     },
     required: [],
   };
 };
 
 export default ({ data = {} }) => {
-  const zoomSchema = ZoomSchema({ data });
+  const generalSchema = GeneralSchema({ data });
 
   return {
     title: 'Map Editor',
@@ -152,20 +167,16 @@ export default ({ data = {} }) => {
         widget: 'object_types_widget',
         schemas: [
           {
+            id: 'general',
+            schema: generalSchema,
+          },
+          {
             id: 'base',
             schema: BaseLayerSchema,
           },
           {
             id: 'layers',
             schema: MapLayersSchema,
-          },
-          {
-            id: 'print',
-            schema: PrintSchema,
-          },
-          {
-            id: 'zoom',
-            schema: zoomSchema,
           },
         ],
       },

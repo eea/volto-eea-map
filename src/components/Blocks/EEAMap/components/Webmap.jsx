@@ -16,14 +16,7 @@ const MODULES = [
 
 const Webmap = (props) => {
   const { data = {}, editMode, height } = props;
-  const {
-    base = {},
-    layers = {},
-    id,
-    legend = {},
-    print = {},
-    zoom = {},
-  } = data;
+  const { base = {}, layers = {}, id, legend = {}, general = {} } = data;
 
   const { base_layer = '' } = base;
 
@@ -122,14 +115,15 @@ const Webmap = (props) => {
     const view = new MapView({
       container: mapRef.current,
       map,
-      center: zoom?.long && zoom?.lat ? [zoom.long, zoom.lat] : [0, 40],
-      zoom: zoom?.zoom_level ? zoom?.zoom_level : 2,
+      center:
+        general?.long && general?.lat ? [general.long, general.lat] : [0, 40],
+      zoom: general?.zoom_level ? general?.zoom_level : 2,
       ui: {
         components: ['attribution'],
       },
     });
 
-    if (layers && layers[0] && zoom && zoom.centerOnExtent) {
+    if (layers && layers[0] && general && general.centerOnExtent) {
       view.whenLayerView(layers[0]).then(function (layerView) {
         layerView.watch('updating', function (val) {
           //  view.goTo(response.extent);
@@ -144,8 +138,9 @@ const Webmap = (props) => {
       });
     }
 
-    if (zoom?.show_zoom) {
-      const zoomPosition = zoom && zoom.position ? zoom.position : 'top-right';
+    if (general?.show_zoom) {
+      const zoomPosition =
+        general && general.zoom_position ? general.zoom_position : 'top-right';
       const zoomWidget = new Zoom({
         view: view,
       });
@@ -172,9 +167,11 @@ const Webmap = (props) => {
       view.ui.add(legendWidget, legendPosition);
     }
 
-    if (print?.show_print) {
+    if (general?.show_print) {
       const printPosition =
-        print && print.position ? print.position : 'top-right';
+        general && general.print_position
+          ? general.print_position
+          : 'top-right';
       const printWidget = new Expand({
         content: new Print({
           view: view,
