@@ -103,4 +103,4 @@ const LegendWidget = (props) => {
   );
 };
 
-export default LegendWidget;
+export default React.memo(LegendWidget);

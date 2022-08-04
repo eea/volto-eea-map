@@ -15,12 +15,12 @@ const MapEditorWidget = (props) => {
     onChange(id, intValue);
 
     //set map data for screenshot
-    if (intValue.layers?.map_layers[0].map_layer?.map_service_url) {
-      onChange(
-        'url',
-        `${intValue.layers?.map_layers[0].map_layer?.map_service_url}?f=jsapi`,
-      );
-    }
+    // if (intValue.layers?.map_layers[0].map_layer?.map_service_url) {
+    //   onChange(
+    //     'url',
+    //     `${intValue.layers?.map_layers[0].map_layer?.map_service_url}?f=jsapi`,
+    //   );
+    // }
     setOpen(false);
   };
 

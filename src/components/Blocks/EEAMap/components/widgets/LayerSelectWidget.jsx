@@ -9,7 +9,9 @@ import aheadSVG from '@plone/volto/icons/ahead.svg';
 import { fetchArcgisData } from '../../utils';
 
 const LayerSelectWidget = (props) => {
-  const { onChange, value = {}, id } = props;
+  const { onChange, id } = props;
+
+  const value = React.useMemo(() => props.value || {}, [props.value]);
 
   const {
     available_layers,

@@ -16,7 +16,6 @@ const Edit = (props) => {
 
   const { map_data = {}, height } = data;
   if (__SERVER__) return '';
-
   return (
     <div>
       <PrivacyProtection data={data} {...props}>

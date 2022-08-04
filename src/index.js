@@ -5,6 +5,21 @@ import MapEditorWidget from './components/Blocks/EEAMap/components/widgets/MapEd
 import ObjectTypesWidget from './components/Blocks/EEAMap/components/widgets/ObjectTypesWidget';
 
 export default (config) => {
+  config.settings.allowed_cors_destinations = [
+    ...(config.settings.allowed_cors_destinations || []),
+    'land.discomap.eea.europa.eu',
+    'marine.discomap.eea.europa.eu',
+    'climate.discomap.eea.europa.eu',
+    'image.discomap.eea.europa.eu',
+    'ldp.discomap.eea.europa.eu',
+    'bio.discomap.eea.europa.eu',
+    'air.discomap.eea.europa.eu',
+    'maratlas.discomap.eea.europa.eu',
+    'forest.discomap.eea.europa.eu',
+    'water.discomap.eea.europa.eu',
+    'noise.discomap.eea.europa.eu',
+    'copernicus.discomap.eea.europa.eu',
+  ];
   config.blocks.blocksConfig.eea_map_block = {
     id: 'eea_map_block', // The name (id) of the block
     title: 'EEA Map', // The display name of the block

@@ -15,15 +15,11 @@ const MODULES = [
 ];
 
 const Webmap = (props) => {
-  const { data = {}, editMode, height } = props;
-  const {
-    base = {},
-    layers = {},
-    id,
-    legend = {},
-    print = {},
-    zoom = {},
-  } = data;
+  const { editMode, height } = props;
+
+  const data = React.useMemo(() => props.data || {}, [props.data]);
+
+  const { base = {}, layers = {}, id, legend = {}, general = {} } = data;
 
   const { base_layer = '' } = base;
 
@@ -39,6 +35,7 @@ const Webmap = (props) => {
 
   const mapRef = React.useRef();
   const [modules, setModules] = React.useState({});
+
   const modules_loaded = React.useRef(false);
 
   React.useEffect(() => {
@@ -122,30 +119,28 @@ const Webmap = (props) => {
     const view = new MapView({
       container: mapRef.current,
       map,
-      center: zoom?.long && zoom?.lat ? [zoom.long, zoom.lat] : [0, 40],
-      zoom: zoom?.zoom_level ? zoom?.zoom_level : 2,
+      center:
+        general?.long && general?.lat ? [general.long, general.lat] : [0, 40],
+      zoom: general?.zoom_level ? general?.zoom_level : 2,
       ui: {
         components: ['attribution'],
       },
     });
 
-    if (layers && layers[0] && zoom && zoom.centerOnExtent) {
-      view.whenLayerView(layers[0]).then(function (layerView) {
-        layerView.watch('updating', function (val) {
-          //  view.goTo(response.extent);
-
-          if (!val && layerView) {
-            layerView.queryExtent().then(function (response) {
-              ///go to the extent of all the graphics in the layer view
-              if (response.extent) view.goTo(response.extent);
-            });
-          }
+    if (layers && layers[0] && general && general.centerOnExtent) {
+      const firstLayer = layers[0];
+      firstLayer
+        .when(() => {
+          return firstLayer.queryExtent();
+        })
+        .then((response) => {
+          view.goTo(response.extent);
         });
-      });
     }
 
-    if (zoom?.show_zoom) {
-      const zoomPosition = zoom && zoom.position ? zoom.position : 'top-right';
+    if (general?.show_zoom) {
+      const zoomPosition =
+        general && general.zoom_position ? general.zoom_position : 'top-right';
       const zoomWidget = new Zoom({
         view: view,
       });
@@ -172,9 +167,11 @@ const Webmap = (props) => {
       view.ui.add(legendWidget, legendPosition);
     }
 
-    if (print?.show_print) {
+    if (general?.show_print) {
       const printPosition =
-        print && print.position ? print.position : 'top-right';
+        general && general.print_position
+          ? general.print_position
+          : 'top-right';
       const printWidget = new Expand({
         content: new Print({
           view: view,
@@ -209,4 +206,4 @@ const Webmap = (props) => {
   );
 };
 
-export default Webmap;
+export default React.memo(Webmap);
