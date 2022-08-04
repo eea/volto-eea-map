@@ -56,32 +56,6 @@ const MapLayersSchema = {
   required: [],
 };
 
-const PrintSchema = {
-  title: 'Print',
-  fieldsets: [
-    {
-      id: 'default',
-      title: 'Print',
-      fields: ['show_print', 'position'],
-    },
-  ],
-  properties: {
-    show_print: {
-      title: 'Show print',
-      type: 'boolean',
-    },
-    position: {
-      title: 'Print position',
-      choices: ['bottom-right', 'bottom-left', 'top-right', 'top-left'].map(
-        (n) => {
-          return [n, n];
-        },
-      ),
-    },
-  },
-  required: [],
-};
-
 const GeneralSchema = ({ data = {} }) => {
   const centerOnExtent = data?.map_data?.general?.centerOnExtent;
 
