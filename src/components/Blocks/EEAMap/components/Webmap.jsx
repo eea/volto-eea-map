@@ -126,8 +126,6 @@ const Webmap = (props) => {
     if (layers && layers[0] && general && general.centerOnExtent) {
       view.whenLayerView(layers[0]).then(function (layerView) {
         layerView.watch('updating', function (val) {
-          //  view.goTo(response.extent);
-
           if (!val && layerView) {
             layerView.queryExtent().then(function (response) {
               ///go to the extent of all the graphics in the layer view
@@ -206,4 +204,4 @@ const Webmap = (props) => {
   );
 };
 
-export default Webmap;
+export default React.memo(Webmap);
