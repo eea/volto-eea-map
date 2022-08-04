@@ -35,6 +35,7 @@ const Webmap = (props) => {
 
   const mapRef = React.useRef();
   const [modules, setModules] = React.useState({});
+
   const modules_loaded = React.useRef(false);
 
   React.useEffect(() => {
@@ -127,16 +128,14 @@ const Webmap = (props) => {
     });
 
     if (layers && layers[0] && general && general.centerOnExtent) {
-      view.whenLayerView(layers[0]).then(function (layerView) {
-        layerView.watch('updating', function (val) {
-          if (!val && layerView) {
-            layerView.queryExtent().then(function (response) {
-              ///go to the extent of all the graphics in the layer view
-              if (response.extent) view.goTo(response.extent);
-            });
-          }
+      const firstLayer = layers[0];
+      firstLayer
+        .when(() => {
+          return firstLayer.queryExtent();
+        })
+        .then((response) => {
+          view.goTo(response.extent);
         });
-      });
     }
 
     if (general?.show_zoom) {
