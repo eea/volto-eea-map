@@ -18,7 +18,7 @@ const ExtraViews = ({ data }) => {
   } = data;
 
   return (
-    <>
+    <div className="extra-eea-map-content">
       {map_data.layers?.map_layers[0] && (show_download || show_viewer) && (
         <div
           style={{ display: 'flex', justifyContent: 'end', margin: '10px 0' }}
@@ -56,7 +56,7 @@ const ExtraViews = ({ data }) => {
       )}
       {show_legend && <LegendWidget data={map_data} />}
       {description && serializeNodes(description)}
-    </>
+    </div>
   );
 };
 

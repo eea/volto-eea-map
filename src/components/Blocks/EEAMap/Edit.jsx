@@ -2,26 +2,18 @@ import React from 'react';
 import { SidebarPortal } from '@plone/volto/components';
 import BlockDataForm from '@plone/volto/components/manage/Form/BlockDataForm';
 import { Schema } from './Schema';
-import Webmap from './components/Webmap';
+import View from './View';
+import { addPrivacyProtectionToSchema } from '@eeacms/volto-embed';
 import './styles/map.css';
-import ExtraViews from './components/widgets/ExtraViews';
-import {
-  PrivacyProtection,
-  addPrivacyProtectionToSchema,
-} from '@eeacms/volto-embed';
 
 const Edit = (props) => {
   const { block, data, onChangeBlock, selected } = props;
   const schema = React.useMemo(() => Schema(props), [props]);
 
-  const { map_data = {}, height } = data;
   if (__SERVER__) return '';
   return (
     <div>
-      <PrivacyProtection data={data} {...props}>
-        <Webmap data={map_data} height={height} />
-        <ExtraViews data={data} />
-      </PrivacyProtection>
+      <View data={data} />
       <SidebarPortal selected={selected}>
         <BlockDataForm
           block={block}
