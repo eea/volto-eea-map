@@ -50,12 +50,13 @@ const LayerLegend = ({ data, name }) => {
 };
 
 const LegendWidget = (props) => {
-  const { data = {} } = props;
+  const data = React.useMemo(() => props.data, [props.data]);
   const { layers = {} } = data;
   const { map_layers = [] } = layers;
   const [legendLayers, setLegendLayers] = React.useState([]);
 
   const activeLayer = map_layers.length > 0 ? map_layers[0]?.map_layer : '';
+
   const fetchLegend = async (url) => {
     let legendData = await fetchArcgisData(url);
 

@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react';
 import { loadModules } from 'esri-loader';
 
@@ -19,7 +18,7 @@ const Webmap = (props) => {
 
   const data = React.useMemo(() => props.data || {}, [props.data]);
 
-  const { base = {}, layers = {}, id, legend = {}, general = {} } = data;
+  const { base = {}, layers = {}, legend = {}, general = {} } = data;
 
   const { base_layer = '' } = base;
 
@@ -68,6 +67,7 @@ const Webmap = (props) => {
     }
   }, [setModules, options]);
 
+  // eslint-disable-next-line no-unused-vars
   const esri = React.useMemo(() => {
     if (Object.keys(modules).length === 0) return {};
     const {
@@ -156,7 +156,7 @@ const Webmap = (props) => {
       const legendWidget = new Expand({
         content: new Legend({
           view: view,
-          style: 'classic', // other styles include 'classic'
+          style: 'classic',
         }),
         view: view,
         expanded: false,
@@ -190,9 +190,8 @@ const Webmap = (props) => {
       });
     }
     return { view, map };
-  }, [modules, base_layer, map_layers]);
+  }, [modules, base_layer, map_layers, general, legend]);
 
-  const currentLayerView = esri.view?.layerViews?.items?.[0];
   return (
     <div>
       <div
