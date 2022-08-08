@@ -3,6 +3,7 @@ import world from '@plone/volto/icons/world.svg';
 import LayerSelectWidget from './components/Blocks/EEAMap/components/widgets/LayerSelectWidget';
 import MapEditorWidget from './components/Blocks/EEAMap/components/widgets/MapEditorWidget';
 import ObjectTypesWidget from './components/Blocks/EEAMap/components/widgets/ObjectTypesWidget';
+import VisualizationEditorWidget from './components/Blocks/EEAMap/components/widgets/VisualizationEditorWidget';
 
 export default (config) => {
   config.settings.allowed_cors_destinations = [
@@ -51,6 +52,7 @@ export default (config) => {
   config.widgets.widget.map_edit_widget = MapEditorWidget;
   config.widgets.widget.map_layers_widget = LayerSelectWidget;
   config.widgets.widget.object_types_widget = ObjectTypesWidget;
+  config.widgets.id.map_view = VisualizationEditorWidget;
 
   return config;
 };
