@@ -7,7 +7,6 @@ import { VisibilitySensor } from '@eeacms/volto-datablocks/components';
 import PanelsSchema from './panelsSchema';
 
 const VisualizationEditorWidget = (props) => {
-  console.log(props, 'props');
   const [open, setOpen] = React.useState(false);
   const { onChange = {}, id } = props;
   const block = React.useMemo(() => props.block, [props.block]);
@@ -17,15 +16,7 @@ const VisualizationEditorWidget = (props) => {
 
   const dataForm = { map_data: intValue };
   const handleApplyChanges = () => {
-    //onChange(id, intValue);
-
-    //set map data for screenshot
-    // if (intValue.layers?.map_layers[0].map_layer?.map_service_url) {
-    //   onChange(
-    //     'url',
-    //     `${intValue.layers?.map_layers[0].map_layer?.map_service_url}?f=jsapi`,
-    //   );
-    // }
+    onChange(id, intValue);
     setOpen(false);
   };
 

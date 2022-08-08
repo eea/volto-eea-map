@@ -21,6 +21,7 @@ const Webmap = (props) => {
 
   const { base = {}, layers = {}, legend = {}, general = {} } = data;
 
+  console.log(data, 'dataher');
   const { base_layer = '' } = base;
 
   const map_layers =

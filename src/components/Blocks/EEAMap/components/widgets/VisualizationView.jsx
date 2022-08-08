@@ -1,12 +1,14 @@
 import React from 'react';
-import View from '../../View';
+import Webmap from '../Webmap';
 
 const VisualizationView = (props) => {
-  console.log('i got props', props);
+  const { content = {} } = props;
+
+  const { map_editor_widget = {} } = content;
+
   return (
     <div>
-      i got some pretty content in here
-      <View />
+      <Webmap data={map_editor_widget} />
     </div>
   );
 };
