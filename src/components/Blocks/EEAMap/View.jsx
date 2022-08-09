@@ -6,14 +6,13 @@ import { PrivacyProtection } from '@eeacms/volto-embed';
 const View = (props) => {
   const { data } = props || {};
 
-  const { map_data = {} } = data;
+  const { map_data = {}, height = '' } = data;
 
   if (__SERVER__) return '';
-
   return (
     <div>
       <PrivacyProtection data={data} {...props}>
-        <Webmap data={map_data} />
+        <Webmap data={map_data} height={height} />
         <ExtraViews data={data} />
       </PrivacyProtection>
     </div>
