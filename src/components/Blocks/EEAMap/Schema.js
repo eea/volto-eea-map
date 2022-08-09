@@ -6,6 +6,7 @@ export const Schema = () => {
         id: 'default',
         title: 'Default',
         fields: [
+          'vis_url',
           'description',
           'height',
           'map_data',
@@ -17,6 +18,10 @@ export const Schema = () => {
       },
     ],
     properties: {
+      vis_url: {
+        widget: 'object_by_path',
+        title: 'Visualization',
+      },
       height: {
         title: 'Height',
         type: 'number',

@@ -6,6 +6,9 @@ import ObjectTypesWidget from './components/Blocks/EEAMap/components/widgets/Obj
 import VisualizationEditorWidget from './components/Blocks/EEAMap/components/widgets/VisualizationEditorWidget';
 import VisualizationView from './components/Blocks/EEAMap/components/widgets/VisualizationView';
 
+import { data_visualizations } from './middlewares';
+import * as addonReducers from './reducers';
+
 export default (config) => {
   config.settings.allowed_cors_destinations = [
     ...(config.settings.allowed_cors_destinations || []),
@@ -55,9 +58,19 @@ export default (config) => {
   config.widgets.widget.object_types_widget = ObjectTypesWidget;
 
   //map editor for the visualization(content-type)
-  config.widgets.id.map_editor_widget = VisualizationEditorWidget;
+  config.widgets.id.map_visualization_data = VisualizationEditorWidget;
   //map viewer for the visualization(content-type)
   config.views.contentTypesViews.map_visualization = VisualizationView;
+
+  config.settings.storeExtenders = [
+    ...(config.settings.storeExtenders || []),
+    data_visualizations,
+  ];
+
+  config.addonReducers = {
+    ...config.addonReducers,
+    ...addonReducers,
+  };
 
   return config;
 };

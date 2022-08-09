@@ -4,11 +4,11 @@ import Webmap from '../Webmap';
 const VisualizationView = (props) => {
   const { content = {} } = props;
 
-  const { map_editor_widget = {} } = content;
+  const { map_visualization_data = {} } = content;
 
   return (
     <div>
-      <Webmap data={map_editor_widget} />
+      <Webmap data={map_visualization_data} />
     </div>
   );
 };
