@@ -18,8 +18,6 @@ const View = (props) => {
     }
   }, [data]);
 
-  if (__SERVER__) return '';
-
   return (
     <div>
       <PrivacyProtection data={data} {...props}>

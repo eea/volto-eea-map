@@ -10,7 +10,6 @@ const Edit = (props) => {
   const { block, data, onChangeBlock, selected } = props;
   const schema = React.useMemo(() => Schema(props), [props]);
 
-  if (__SERVER__) return '';
   return (
     <div>
       <View data={data} />

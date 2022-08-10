@@ -15,7 +15,7 @@ const MODULES = [
 ];
 
 const Webmap = (props) => {
-  const { editMode, height } = props;
+  const { editMode, height, id } = props;
 
   const data = React.useMemo(() => props.data || {}, [props.data]);
 
