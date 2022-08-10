@@ -16,7 +16,8 @@ const View = (props) => {
     if (vis_url) {
       props.getVisualization(vis_url);
     }
-  }, [data]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [vis_url]);
 
   return (
     <div>
