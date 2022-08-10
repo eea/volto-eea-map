@@ -1,0 +1,22 @@
+.map-edit-container {
+  display: flex;
+}
+
+.map-modal-trigger-button {
+  margin-bottom: 10px !important;
+}
+
+#map-editor-modal {
+  top: auto;
+  left: auto !important;
+  width: 95% !important;
+}
+
+#map-widget-toggle {
+  color: blue !important;
+}
+
+.map-text-view {
+  display: flex;
+  padding: 1rem 0;
+}
