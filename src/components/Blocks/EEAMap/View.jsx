@@ -9,16 +9,24 @@ import { PrivacyProtection } from '@eeacms/volto-embed';
 import { getVisualization } from '@eeacms/volto-eea-map/actions';
 
 const View = (props) => {
-  const { data } = props || {};
+  const { data, state, map_visualization } = props || {};
+  const {
+    map_data = {},
+    height = '',
+    use_visualization = false,
+    vis_url = '',
+  } = data;
 
-  const { map_data = {}, height = '' } = data;
-
+  //move it in a new ember-eea-map block
   // React.useEffect(() => {
-  //   const reqUrl = data.vis_url;
-  //   props.getVisualization(reqUrl);
+  //   if (use_visualization) {
+  //     const reqUrl = data.vis_url;
+  //     props.getVisualization(reqUrl);
+  //   }
   // }, [data]);
 
   if (__SERVER__) return '';
+
   return (
     <div>
       <PrivacyProtection data={data} {...props}>
@@ -31,11 +39,10 @@ const View = (props) => {
 
 export default View;
 
-//use get visualization to retrieve data from map viz
 // export default compose(
 //   connect(
 //     (state, props) => ({
-//       state,
+//       map_visualization: state.map_visualizations[props.data.vis_url],
 //     }),
 //     {
 //       getVisualization,

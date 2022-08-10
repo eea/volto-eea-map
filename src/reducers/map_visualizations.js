@@ -27,7 +27,7 @@ export default function data_providers(state = initialState, action = {}) {
         error: null,
         data: {
           ...state.data,
-          [path]: action.result.visualization,
+          [path]: action.result.map_visualization,
         },
         loaded: true,
         loading: false,

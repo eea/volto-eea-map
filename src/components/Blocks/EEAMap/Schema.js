@@ -1,4 +1,4 @@
-export const Schema = () => {
+export const Schema = (props) => {
   return {
     title: 'EEA Map Block',
     fieldsets: [
@@ -6,11 +6,10 @@ export const Schema = () => {
         id: 'default',
         title: 'Default',
         fields: [
-          'vis_url',
+          'map_data',
+          //...(use_visualization ? ['vis_url'] : ['map_data']),
           'description',
           'height',
-          'map_data',
-          'show_sources',
           'show_legend',
           'show_download',
           'show_viewer',
@@ -18,10 +17,16 @@ export const Schema = () => {
       },
     ],
     properties: {
-      vis_url: {
-        widget: 'object_by_path',
-        title: 'Visualization',
-      },
+      // use_visualization: {
+      //   title: 'Use visualization',
+      //   description:
+      //     'This setting will enable importing the map data from a visualization. If is enabled, editing the map manually will not be possible',
+      //   type: 'boolean',
+      // },
+      // vis_url: {
+      //   widget: 'object_by_path',
+      //   title: 'Visualization',
+      // },
       height: {
         title: 'Height',
         type: 'number',
@@ -34,10 +39,6 @@ export const Schema = () => {
         title: 'Edit map',
         description: 'Open the map customization interface',
         widget: 'map_edit_widget',
-      },
-      show_sources: {
-        title: 'Show sources',
-        type: 'boolean',
       },
       show_legend: {
         title: 'Show legend',
