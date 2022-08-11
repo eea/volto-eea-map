@@ -31,9 +31,9 @@
 }
 
 .map-edit-actions-container {
-  margin-left: auto;
-  margin-right: 10px;
   padding: 5px 0;
+  margin-right: 10px;
+  margin-left: auto;
 }
 
 .layer-reset-button {
@@ -42,14 +42,14 @@
 }
 
 .layer-check-button {
-  margin-left: auto !important;
   margin-top: 5px !important;
+  margin-left: auto !important;
   animation: fadeDown 0.2s ease-in;
 }
 
 .layer-submit-button {
-  margin-left: auto !important;
   margin-top: 5px !important;
+  margin-left: auto !important;
   animation: fadeDown 0.2s ease-in;
 }
 
@@ -58,6 +58,7 @@
     opacity: 0;
     transform: translate3d(0, -20%, 0);
   }
+
   to {
     opacity: 1;
     transform: translate3d(0, 0, 0);
