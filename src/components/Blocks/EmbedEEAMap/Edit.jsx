@@ -7,12 +7,12 @@ import { addPrivacyProtectionToSchema } from '@eeacms/volto-embed';
 import './styles/map.css';
 
 const Edit = (props) => {
-  const { block, data, onChangeBlock, selected, id } = props;
+  const { block, data, onChangeBlock, selected } = props;
   const schema = React.useMemo(() => Schema(props), [props]);
 
   return (
     <div>
-      <View data={data} id={id} />
+      <View data={data} />
       <SidebarPortal selected={selected}>
         <BlockDataForm
           block={block}

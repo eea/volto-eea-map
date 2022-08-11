@@ -20,3 +20,47 @@
   display: flex;
   padding: 1rem 0;
 }
+
+.map-editor-modal {
+  width: '95% !important';
+}
+
+.webmap-container {
+  position: sticky;
+  top: 10px;
+}
+
+.map-edit-actions-container {
+  padding: 5px 0;
+  margin-right: 10px;
+  margin-left: auto;
+}
+
+.layer-reset-button {
+  margin-top: 5px !important;
+  animation: fadeDown 0.2s ease-in;
+}
+
+.layer-check-button {
+  margin-top: 5px !important;
+  margin-left: auto !important;
+  animation: fadeDown 0.2s ease-in;
+}
+
+.layer-submit-button {
+  margin-top: 5px !important;
+  margin-left: auto !important;
+  animation: fadeDown 0.2s ease-in;
+}
+
+@keyframes fadeDown {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -20%, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}

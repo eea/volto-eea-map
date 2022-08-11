@@ -1,9 +1,10 @@
 import React from 'react';
 import { Menu, Tab } from 'semantic-ui-react';
 import { ObjectWidget } from '@plone/volto/components';
+import { withDeviceSize } from '@eeacms/volto-eea-map/hocs';
 
 export const ObjectTypesWidget = (props) => {
-  const { schemas, value = {}, onChange, errors = {}, id } = props;
+  const { schemas, value = {}, onChange, errors = {}, id, device } = props;
   const objectId = id;
 
   const defaultActiveTab = 0;
@@ -11,6 +12,7 @@ export const ObjectTypesWidget = (props) => {
   const [activeTab, setActiveTab] = React.useState(
     defaultActiveTab > -1 ? defaultActiveTab : 0,
   );
+
   const createTab = ({ schema, id, icon }, index) => {
     return {
       menuItem: () => (
@@ -42,7 +44,13 @@ export const ObjectTypesWidget = (props) => {
 
   return (
     <Tab
-      menu={{ fluid: true, vertical: true, tabular: true }}
+      menu={{
+        vertical:
+          device === 'computer' || device === 'tablet' || device === 'mobile'
+            ? false
+            : true,
+        tabular: true,
+      }}
       panes={schemas.map(createTab)}
       activeIndex={activeTab}
       grid={{ paneWidth: 9, tabWidth: 3 }}
@@ -50,4 +58,4 @@ export const ObjectTypesWidget = (props) => {
   );
 };
 
-export default ObjectTypesWidget;
+export default withDeviceSize(ObjectTypesWidget);

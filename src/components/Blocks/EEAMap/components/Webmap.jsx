@@ -1,5 +1,6 @@
 /* eslint-disable */
 import React from 'react';
+import { withDeviceSize } from '@eeacms/volto-eea-map/hocs';
 import { loadModules } from 'esri-loader';
 
 const MODULES = [
@@ -15,9 +16,10 @@ const MODULES = [
 ];
 
 const Webmap = (props) => {
-  const { editMode, height } = props;
+  const { editMode, height, id } = props;
 
   const data = React.useMemo(() => props.data || {}, [props.data]);
+  const device = React.useMemo(() => props.device || {}, [props.device]);
 
   const { base = {}, layers = {}, legend = {}, general = {} } = data;
 
@@ -139,9 +141,10 @@ const Webmap = (props) => {
         });
     }
 
-    if (general?.show_zoom) {
-      const zoomPosition =
-        general && general.zoom_position ? general.zoom_position : 'top-right';
+    const zoomPosition =
+      general && general.zoom_position ? general.zoom_position : '';
+
+    if (zoomPosition) {
       const zoomWidget = new Zoom({
         view: view,
       });
@@ -168,11 +171,10 @@ const Webmap = (props) => {
       view.ui.add(legendWidget, legendPosition);
     }
 
-    if (general?.show_print) {
-      const printPosition =
-        general && general.print_position
-          ? general.print_position
-          : 'top-right';
+    const printPosition =
+      general && general.print_position ? general.print_position : '';
+
+    if (printPosition) {
       const printWidget = new Expand({
         content: new Print({
           view: view,
@@ -197,7 +199,12 @@ const Webmap = (props) => {
     <div>
       <div
         style={{
-          height: height && !editMode ? `${height}px` : '500px',
+          height:
+            height && !editMode
+              ? `${height}px`
+              : device === 'tablet' || device === 'mobile'
+              ? '300px'
+              : '500px',
         }}
         ref={mapRef}
         className="esri-map"
@@ -206,4 +213,4 @@ const Webmap = (props) => {
   );
 };
 
-export default React.memo(Webmap);
+export default withDeviceSize(React.memo(Webmap));
