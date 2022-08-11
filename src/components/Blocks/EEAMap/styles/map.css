@@ -20,3 +20,12 @@
   display: flex;
   padding: 1rem 0;
 }
+
+.map-editor-modal {
+  width: '95% !important';
+}
+
+.webmap-container {
+  position: sticky;
+  top: 10px;
+}

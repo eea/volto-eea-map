@@ -114,7 +114,9 @@ const LayerSelectWidget = (props) => {
       }}
     >
       <Grid>
-        <h5>Service URL</h5>
+        <h5 style={{ padding: '0', margin: '15px 0px 5px 0px' }}>
+          Service URL
+        </h5>
         <Grid.Row>
           <Input
             type="text"
@@ -159,7 +161,7 @@ const LayerSelectWidget = (props) => {
         )}
         {availableLayers && availableLayers.length > 0 && (
           <>
-            <h5>Layer</h5>
+            <h5 style={{ padding: '0', margin: '15px 0px 5px 0px' }}>Layer</h5>
             <Grid.Row>
               <Select
                 onChange={(e, { value }) => handleSelectLayer(value)}
@@ -173,7 +175,9 @@ const LayerSelectWidget = (props) => {
         )}
         {availableLayers && fields && fields.length > 0 && (
           <>
-            <h5>Query Layer</h5>
+            <h5 style={{ padding: '0', margin: '15px 0px 5px 0px' }}>
+              Query Layer
+            </h5>
             <Grid.Row stretched>
               <Input
                 type="text"

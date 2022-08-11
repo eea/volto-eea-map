@@ -42,7 +42,8 @@ const MapEditorWidget = (props) => {
     <FormFieldWrapper {...props}>
       <Modal
         id="map-editor-modal"
-        style={{ width: '95% !important' }}
+        // style={{  }}
+        className="map-editor-modal"
         onClose={handleClose}
         onOpen={() => setOpen(true)}
         open={open}
@@ -55,7 +56,7 @@ const MapEditorWidget = (props) => {
         <Modal.Content scrolling>
           <Grid>
             <Grid.Row>
-              <Grid.Column width={4}>
+              <Grid.Column width={4} className="map-editor-column">
                 <InlineForm
                   block={block}
                   title={schema.title}
@@ -67,7 +68,9 @@ const MapEditorWidget = (props) => {
                 />
               </Grid.Column>
               <Grid.Column width={8}>
-                <Webmap data={intValue} editMode={true} />
+                <div className="webmap-container">
+                  <Webmap data={intValue} editMode={true} />
+                </div>
               </Grid.Column>
             </Grid.Row>
           </Grid>
