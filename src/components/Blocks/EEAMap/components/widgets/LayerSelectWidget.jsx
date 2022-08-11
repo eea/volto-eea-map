@@ -103,7 +103,7 @@ const LayerSelectWidget = (props) => {
     setServiceUrl(map_service_url);
     setCheckColor('');
     setAvailableLayers(available_layers);
-    setLayerQuery(layerQuery);
+    setLayerQuery(query);
     setSelectedLayer(layer);
   };
 
