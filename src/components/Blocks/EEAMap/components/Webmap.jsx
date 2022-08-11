@@ -139,9 +139,10 @@ const Webmap = (props) => {
         });
     }
 
-    if (general?.show_zoom) {
-      const zoomPosition =
-        general && general.zoom_position ? general.zoom_position : 'top-right';
+    const zoomPosition =
+      general && general.zoom_position ? general.zoom_position : '';
+
+    if (zoomPosition) {
       const zoomWidget = new Zoom({
         view: view,
       });
@@ -168,11 +169,10 @@ const Webmap = (props) => {
       view.ui.add(legendWidget, legendPosition);
     }
 
-    if (general?.show_print) {
-      const printPosition =
-        general && general.print_position
-          ? general.print_position
-          : 'top-right';
+    const printPosition =
+      general && general.print_position ? general.print_position : '';
+    
+      if (printPosition) {
       const printWidget = new Expand({
         content: new Print({
           view: view,

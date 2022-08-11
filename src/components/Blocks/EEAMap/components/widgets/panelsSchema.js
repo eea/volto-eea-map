@@ -66,25 +66,20 @@ const GeneralSchema = ({ data = {} }) => {
         id: 'default',
         title: 'Zoom',
         fields: [
-          'show_print',
           'print_position',
-          'show_zoom',
-          'centerOnExtent',
           'zoom_position',
+          'centerOnExtent',
           ...(!centerOnExtent ? ['zoom_level', 'long', 'lat'] : []),
         ],
       },
     ],
     properties: {
-      show_zoom: {
-        title: 'Show zoom',
-        type: 'boolean',
-      },
       centerOnExtent: {
         title: 'Center on extent',
         type: 'boolean',
         description:
           'This will override latitude/longitude/zoom level and will lock zoom/moving the map.',
+        default: true,
       },
       zoom_position: {
         title: 'Zoom position',
@@ -106,10 +101,7 @@ const GeneralSchema = ({ data = {} }) => {
         title: 'Latitude',
         type: 'number',
       },
-      show_print: {
-        title: 'Show print',
-        type: 'boolean',
-      },
+
       print_position: {
         title: 'Print position',
         choices: ['bottom-right', 'bottom-left', 'top-right', 'top-left'].map(

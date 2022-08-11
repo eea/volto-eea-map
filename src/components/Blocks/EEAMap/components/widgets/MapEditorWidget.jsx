@@ -61,6 +61,7 @@ const MapEditorWidget = (props) => {
                   title={schema.title}
                   schema={schema}
                   onChangeField={(id, value) => {
+                    console.log('changing stuff', value);
                     handleChangeField(id, value);
                   }}
                   formData={dataForm}
