@@ -5,6 +5,7 @@ import { Input, Select, Button, Grid } from 'semantic-ui-react';
 import checkSVG from '@plone/volto/icons/check.svg';
 import closeSVG from '@plone/volto/icons/clear.svg';
 import aheadSVG from '@plone/volto/icons/ahead.svg';
+import resetSVG from '@plone/volto/icons/reset.svg';
 
 import { fetchArcgisData } from '../../utils';
 
@@ -88,6 +89,24 @@ const LayerSelectWidget = (props) => {
     });
   };
 
+  const handleChangeServiceUrl = (value) => {
+    setServiceUrlError('');
+    setCheckColor('');
+    setServiceUrl(value);
+    setAvailableLayers('');
+    setLayerQuery('');
+    setSelectedLayer('');
+  };
+
+  const handleReset = () => {
+    setServiceUrlError('');
+    setServiceUrl(map_service_url);
+    setCheckColor('');
+    setAvailableLayers(available_layers);
+    setLayerQuery(layerQuery);
+    setSelectedLayer(layer);
+  };
+
   return (
     <div
       style={{
@@ -95,74 +114,104 @@ const LayerSelectWidget = (props) => {
       }}
     >
       <Grid>
-        <h4>Service URL</h4>
+        <h5>Service URL</h5>
         <Grid.Row>
           <Input
             type="text"
-            onChange={(e, { value }) => setServiceUrl(value)}
-            style={{ width: '70%' }}
+            onChange={(e, { value }) => handleChangeServiceUrl(value)}
+            style={{ width: '100%' }}
+            error={serviceUrlError}
             value={serviceUrl}
-            action
-            actionPosition="right"
-          >
-            <input />
+            // action
+            // actionPosition="right"
+          ></Input>
+
+          <span style={{ fontSize: '12px', color: 'darkred' }}>
+            {serviceUrlError.error}
+          </span>
+        </Grid.Row>
+        {serviceUrl && (
+          <Grid.Row>
+            {serviceUrl !== map_service_url && (
+              <Button
+                style={{ marginTop: '5px' }}
+                size="small"
+                compact
+                onClick={handleReset}
+              >
+                <Icon name={resetSVG} title="Reset" size="20px" />
+              </Button>
+            )}
             <Button
-              type="submit"
-              size="tiny"
-              compact
+              style={{ marginLeft: 'auto', marginTop: '5px' }}
+              size="small"
               color={checkColor}
+              compact
               onClick={handleServiceUrlCheck}
             >
               <Icon
                 name={serviceUrlError ? closeSVG : checkSVG}
-                title="Check Url"
-                size="17px"
+                title="Submit"
+                size="20px"
               />
             </Button>
-          </Input>
-        </Grid.Row>
-        <h4>Layer</h4>
-        <Grid.Row>
-          <Select
-            onChange={(e, { value }) => handleSelectLayer(value)}
-            options={availableLayers}
-            style={{ width: '100%' }}
-            placeholder="Select layer"
-            value={selectedLayer}
-          />
-        </Grid.Row>
-        <h4>Query Layer</h4>
-        <Grid.Row stretched>
-          <Input
-            type="text"
-            onChange={(e, { value }) => setLayerQuery(value)}
-            style={{ width: '70%' }}
-            value={layerQuery}
-            action
-            actionPosition="right"
-          >
-            <input />
-            <Button
-              type="submit"
-              size="tiny"
-              compact
-              color={'green'}
-              onClick={handleQueryLayer}
-            >
-              <Icon name={aheadSVG} title="Check Url" size="17px" />
-            </Button>
-          </Input>
-        </Grid.Row>
-        <Grid.Row>
-          <p style={{ fontSize: '12px', fontWeight: 'bold' }}>
-            Available Fields:
-          </p>
-        </Grid.Row>
-        {fields &&
-          fields.length > 0 &&
-          fields.map((field, id) => (
-            <p style={{ fontSize: '12px' }}>{field.alias}</p>
-          ))}
+          </Grid.Row>
+        )}
+        {availableLayers && availableLayers.length > 0 && (
+          <>
+            <h5>Layer</h5>
+            <Grid.Row>
+              <Select
+                onChange={(e, { value }) => handleSelectLayer(value)}
+                options={availableLayers}
+                style={{ width: '100%' }}
+                placeholder="Select layer"
+                value={selectedLayer}
+              />
+            </Grid.Row>
+          </>
+        )}
+        {availableLayers && fields && fields.length > 0 && (
+          <>
+            <h5>Query Layer</h5>
+            <Grid.Row stretched>
+              <Input
+                type="text"
+                style={{ width: '100%' }}
+                onChange={(e, { value }) => setLayerQuery(value)}
+                value={layerQuery}
+              ></Input>
+            </Grid.Row>
+            <Grid.Row>
+              <Button
+                style={{ marginLeft: 'auto', marginTop: '5px' }}
+                type="submit"
+                size="tiny"
+                compact
+                color={'green'}
+                onClick={handleQueryLayer}
+              >
+                <Icon name={aheadSVG} title="Check Url" size="20px" />
+              </Button>
+            </Grid.Row>
+            <Grid.Row>
+              <p
+                style={{
+                  fontSize: '13px',
+                  fontWeight: 'bold',
+                  color: 'darkgray',
+                }}
+              >
+                Available Fields:
+              </p>
+            </Grid.Row>
+            {fields.map((field, id) => (
+              <p style={{ fontSize: '12px', padding: '0 5px' }}>
+                {field.alias}
+              </p>
+            ))}
+          </>
+        )}
       </Grid>
     </div>
   );
