@@ -1,7 +1,7 @@
 import React from 'react';
 import { Menu, Tab } from 'semantic-ui-react';
 import { ObjectWidget } from '@plone/volto/components';
-import { withScreenSize } from '@eeacms/volto-eea-map/hocs';
+import { withDeviceSize } from '@eeacms/volto-eea-map/hocs';
 
 export const ObjectTypesWidget = (props) => {
   const { schemas, value = {}, onChange, errors = {}, id, device } = props;
@@ -58,4 +58,4 @@ export const ObjectTypesWidget = (props) => {
   );
 };
 
-export default withScreenSize(ObjectTypesWidget);
+export default withDeviceSize(ObjectTypesWidget);

@@ -17,6 +17,7 @@ export default function withDeviceSize(WrappedComponent) {
     };
 
     const getDeviceConfig = (width) => {
+      // semantic ui breakpoints
       if (width < 320) {
         return 'mobile';
       } else if (width >= 320 && width < 768) {

@@ -136,19 +136,19 @@ const LayerSelectWidget = (props) => {
           <Grid.Row>
             {serviceUrl !== map_service_url && (
               <Button
-                style={{ marginTop: '5px' }}
                 size="small"
                 compact
+                className="layer-reset-button"
                 onClick={handleReset}
               >
                 <Icon name={resetSVG} title="Reset" size="20px" />
               </Button>
             )}
             <Button
-              style={{ marginLeft: 'auto', marginTop: '5px' }}
               size="small"
               color={checkColor}
               compact
+              className="layer-check-button"
               onClick={handleServiceUrlCheck}
             >
               <Icon
@@ -186,18 +186,20 @@ const LayerSelectWidget = (props) => {
                 value={layerQuery}
               ></Input>
             </Grid.Row>
-            <Grid.Row>
-              <Button
-                style={{ marginLeft: 'auto', marginTop: '5px' }}
-                type="submit"
-                size="tiny"
-                compact
-                color={'green'}
-                onClick={handleQueryLayer}
-              >
-                <Icon name={aheadSVG} title="Check Url" size="20px" />
-              </Button>
-            </Grid.Row>
+            {layerQuery && (
+              <Grid.Row>
+                <Button
+                  type="submit"
+                  size="tiny"
+                  compact
+                  className="layer-submit-button "
+                  color={'green'}
+                  onClick={handleQueryLayer}
+                >
+                  <Icon name={aheadSVG} title="Check Url" size="20px" />
+                </Button>
+              </Grid.Row>
+            )}
             <Grid.Row>
               <p
                 style={{
