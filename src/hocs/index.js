@@ -1,3 +1,3 @@
-import withScreenSize from './withScreenSize';
+import withDeviceSize from './withDeviceSize';
 
-export { withScreenSize };
+export { withDeviceSize };

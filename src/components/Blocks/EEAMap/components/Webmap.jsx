@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React from 'react';
-import { withScreenSize } from '@eeacms/volto-eea-map/hocs';
+import { withDeviceSize } from '@eeacms/volto-eea-map/hocs';
 import { loadModules } from 'esri-loader';
 
 const MODULES = [
@@ -213,4 +213,4 @@ const Webmap = (props) => {
   );
 };
 
-export default withScreenSize(React.memo(Webmap));
+export default withDeviceSize(React.memo(Webmap));
