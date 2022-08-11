@@ -1,5 +1,6 @@
 /* eslint-disable */
 import React from 'react';
+import { withScreenSize } from '@eeacms/volto-eea-map/hocs';
 import { loadModules } from 'esri-loader';
 
 const MODULES = [
@@ -18,6 +19,7 @@ const Webmap = (props) => {
   const { editMode, height, id } = props;
 
   const data = React.useMemo(() => props.data || {}, [props.data]);
+  const device = React.useMemo(() => props.device || {}, [props.device]);
 
   const { base = {}, layers = {}, legend = {}, general = {} } = data;
 
@@ -171,8 +173,8 @@ const Webmap = (props) => {
 
     const printPosition =
       general && general.print_position ? general.print_position : '';
-    
-      if (printPosition) {
+
+    if (printPosition) {
       const printWidget = new Expand({
         content: new Print({
           view: view,
@@ -197,7 +199,12 @@ const Webmap = (props) => {
     <div>
       <div
         style={{
-          height: height && !editMode ? `${height}px` : '500px',
+          height:
+            height && !editMode
+              ? `${height}px`
+              : device === 'tablet' || device === 'mobile'
+              ? '300px'
+              : '500px',
         }}
         ref={mapRef}
         className="esri-map"
@@ -206,4 +213,4 @@ const Webmap = (props) => {
   );
 };
 
-export default React.memo(Webmap);
+export default withScreenSize(React.memo(Webmap));

@@ -42,7 +42,6 @@ const MapEditorWidget = (props) => {
     <FormFieldWrapper {...props}>
       <Modal
         id="map-editor-modal"
-        // style={{  }}
         className="map-editor-modal"
         onClose={handleClose}
         onOpen={() => setOpen(true)}
@@ -54,37 +53,39 @@ const MapEditorWidget = (props) => {
         }
       >
         <Modal.Content scrolling>
-          <Grid>
-            <Grid.Row>
-              <Grid.Column width={4} className="map-editor-column">
-                <InlineForm
-                  block={block}
-                  title={schema.title}
-                  schema={schema}
-                  onChangeField={(id, value) => {
-                    handleChangeField(id, value);
-                  }}
-                  formData={dataForm}
-                />
-              </Grid.Column>
-              <Grid.Column width={8}>
-                <div className="webmap-container">
-                  <Webmap data={intValue} editMode={true} />
-                </div>
-              </Grid.Column>
-            </Grid.Row>
+          <Grid stackable reversed="mobile vertically tablet vertically">
+            <Grid.Column
+              mobile={12}
+              tablet={12}
+              computer={5}
+              className="map-editor-column"
+            >
+              <InlineForm
+                block={block}
+                title={schema.title}
+                schema={schema}
+                onChangeField={(id, value) => {
+                  handleChangeField(id, value);
+                }}
+                formData={dataForm}
+              />
+            </Grid.Column>
+            <Grid.Column mobile={12} tablet={12} computer={7}>
+              <div className="webmap-container">
+                <Webmap data={intValue} editMode={true} />
+              </div>
+            </Grid.Column>
           </Grid>
         </Modal.Content>
         <Modal.Actions>
           <Grid>
             <Grid.Row>
-              <Grid.Column width={8}></Grid.Column>
-              <Grid.Column width={4}>
+              <div className="map-edit-actions-container">
                 <Button onClick={handleClose}>Close</Button>
                 <Button color="green" onClick={handleApplyChanges}>
                   Apply changes
                 </Button>
-              </Grid.Column>
+              </div>
             </Grid.Row>
           </Grid>
         </Modal.Actions>

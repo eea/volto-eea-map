@@ -29,3 +29,9 @@
   position: sticky;
   top: 10px;
 }
+
+.map-edit-actions-container {
+  margin-left: auto;
+  margin-right: 10px;
+  padding: 5px 0;
+}
