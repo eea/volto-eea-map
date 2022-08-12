@@ -24,7 +24,7 @@
     "@eeacms/volto-embed": "^2.0.1",
     "@plone/scripts": "*",
     "esri-loader": "3.5.0",
-    "react-querybuilder": "4.5.1",
+    "react-querybuilder": "4.2.3",
     "volto-slate": "*"
   },
   "devDependencies": {

@@ -62,7 +62,6 @@ const MapEditorWidget = (props) => {
             >
               <InlineForm
                 block={block}
-                //title={schema.title}
                 schema={schema}
                 onChangeField={(id, value) => {
                   handleChangeField(id, value);

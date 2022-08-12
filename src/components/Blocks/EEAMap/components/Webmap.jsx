@@ -92,7 +92,6 @@ const Webmap = (props) => {
         .filter(({ map_service_url, layer }) => map_service_url && layer)
         .map(({ map_service_url, layer, query = '' }) => {
           const url = `${map_service_url}/${layer}`;
-
           let mapLayer;
           switch (layer.type) {
             case 'Raster Layer':

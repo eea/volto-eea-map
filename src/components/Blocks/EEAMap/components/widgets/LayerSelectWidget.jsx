@@ -3,6 +3,10 @@ import { Icon } from '@plone/volto/components';
 import { Input, Select, Button, Grid } from 'semantic-ui-react';
 import { QueryBuilder } from 'react-querybuilder';
 import 'react-querybuilder/dist/query-builder.css';
+// import {
+//   bootstrapControlClassnames,
+//   bootstrapControlElements,
+// } from 'react-querybuilder/bootstrap';
 
 import checkSVG from '@plone/volto/icons/check.svg';
 import closeSVG from '@plone/volto/icons/clear.svg';
@@ -109,11 +113,9 @@ const LayerSelectWidget = (props) => {
     setServiceUrl(map_service_url);
     setCheckColor('');
     setAvailableLayers(available_layers);
-    setBuiltQuery(query);
+    setBuiltQuery('');
     setSelectedLayer(layer);
   };
-
-  //console.log('builtQuery', builtQuery ? formatQuery(builtQuery, 'sql') : '');
 
   return (
     <div
@@ -201,6 +203,9 @@ const LayerSelectWidget = (props) => {
                 })}
                 query={builtQuery}
                 onQueryChange={(q) => setBuiltQuery(q)}
+                enableDragAndDrop={false}
+                //controlElements={bootstrapControlElements}
+                //controlClassnames={bootstrapControlClassnames}
               />
             </Grid.Row>
             {builtQuery && (
@@ -230,7 +235,7 @@ const LayerSelectWidget = (props) => {
             </Grid.Row>
             {fields.map((field, id) => (
               <p style={{ fontSize: '12px', padding: '0 5px' }}>
-                {field.alias}
+                <strong>{field.alias}</strong> ({field.type})
               </p>
             ))}
           </>

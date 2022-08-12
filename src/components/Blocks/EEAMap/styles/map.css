@@ -96,12 +96,11 @@
 }
 
 .rule-remove {
-  padding: 1px 5px !important;
-  border: 2px solid red !important;
+  padding: 1px 6px !important;
+  border: 2px solid #d02144 !important;
   border-radius: 50px;
-  color: red;
+  color: #d02144;
   cursor: pointer;
-  font-weight: bold;
 }
 
 @keyframes fadeDown {
