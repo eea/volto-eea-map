@@ -53,6 +53,56 @@
   animation: fadeDown 0.2s ease-in;
 }
 
+.ruleGroup {
+  border: 1px solid lightgray !important;
+  margin: 10px 0;
+  background-color: transparent !important;
+}
+
+.ruleGroup-addRule {
+  padding: 7px 10px !important;
+  background-color: darkgray !important;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.ruleGroup-addGroup {
+  padding: 7px 10px !important;
+  background-color: darkgray !important;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.ruleGroup-combinators {
+  padding: 0.3em 0 !important;
+}
+
+.rule-operators {
+  padding: 0.3em 0 !important;
+}
+
+.rule-value {
+  padding: 0.3em 0 !important;
+}
+
+.rule-fields {
+  padding: 0.3em 0 !important;
+}
+
+.rule-remove {
+  padding: 1px 6px !important;
+  border: 2px solid #d02144 !important;
+  border-radius: 50px;
+  color: #d02144;
+  cursor: pointer;
+}
+
 @keyframes fadeDown {
   from {
     opacity: 0;

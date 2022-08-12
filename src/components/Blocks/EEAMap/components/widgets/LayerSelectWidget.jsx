@@ -1,6 +1,12 @@
 import React from 'react';
 import { Icon } from '@plone/volto/components';
 import { Input, Select, Button, Grid } from 'semantic-ui-react';
+import { QueryBuilder } from 'react-querybuilder';
+import 'react-querybuilder/dist/query-builder.css';
+// import {
+//   bootstrapControlClassnames,
+//   bootstrapControlElements,
+// } from 'react-querybuilder/bootstrap';
 
 import checkSVG from '@plone/volto/icons/check.svg';
 import closeSVG from '@plone/volto/icons/clear.svg';
@@ -31,7 +37,9 @@ const LayerSelectWidget = (props) => {
   const [availableLayers, setAvailableLayers] = React.useState(
     available_layers,
   );
-  const [layerQuery, setLayerQuery] = React.useState(query);
+  //const [layerQuery, setLayerQuery] = React.useState(query);
+
+  const [builtQuery, setBuiltQuery] = React.useState(query);
 
   const handleServiceUrlCheck = async () => {
     // fetch url, save it, populate layers options
@@ -79,14 +87,16 @@ const LayerSelectWidget = (props) => {
       map_data: mapData,
       query: '',
     });
-    setLayerQuery('');
+    setBuiltQuery('');
   };
 
   const handleQueryLayer = () => {
-    onChange(id, {
-      ...value,
-      query: layerQuery,
-    });
+    if (builtQuery) {
+      onChange(id, {
+        ...value,
+        query: builtQuery,
+      });
+    }
   };
 
   const handleChangeServiceUrl = (value) => {
@@ -94,7 +104,7 @@ const LayerSelectWidget = (props) => {
     setCheckColor('');
     setServiceUrl(value);
     setAvailableLayers('');
-    setLayerQuery('');
+    setBuiltQuery('');
     setSelectedLayer('');
   };
 
@@ -103,7 +113,7 @@ const LayerSelectWidget = (props) => {
     setServiceUrl(map_service_url);
     setCheckColor('');
     setAvailableLayers(available_layers);
-    setLayerQuery(query);
+    setBuiltQuery('');
     setSelectedLayer(layer);
   };
 
@@ -179,14 +189,26 @@ const LayerSelectWidget = (props) => {
               Query Layer
             </h5>
             <Grid.Row stretched>
-              <Input
+              {/* <Input
                 type="text"
                 style={{ width: '100%' }}
                 onChange={(e, { value }) => setLayerQuery(value)}
                 value={layerQuery}
-              ></Input>
+              ></Input> */}
             </Grid.Row>
-            {layerQuery && (
+            <Grid.Row>
+              <QueryBuilder
+                fields={fields.map((fi, i) => {
+                  return { name: fi.name, label: fi.name };
+                })}
+                query={builtQuery}
+                onQueryChange={(q) => setBuiltQuery(q)}
+                enableDragAndDrop={false}
+                //controlElements={bootstrapControlElements}
+                //controlClassnames={bootstrapControlClassnames}
+              />
+            </Grid.Row>
+            {builtQuery && (
               <Grid.Row>
                 <Button
                   type="submit"
@@ -213,7 +235,7 @@ const LayerSelectWidget = (props) => {
             </Grid.Row>
             {fields.map((field, id) => (
               <p style={{ fontSize: '12px', padding: '0 5px' }}>
-                {field.alias}
+                <strong>{field.alias}</strong> ({field.type})
               </p>
             ))}
           </>

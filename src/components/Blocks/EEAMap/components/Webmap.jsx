@@ -2,6 +2,7 @@
 import React from 'react';
 import { withDeviceSize } from '@eeacms/volto-eea-map/hocs';
 import { loadModules } from 'esri-loader';
+import { formatQuery } from 'react-querybuilder';
 
 const MODULES = [
   'esri/Map',
@@ -91,7 +92,6 @@ const Webmap = (props) => {
         .filter(({ map_service_url, layer }) => map_service_url && layer)
         .map(({ map_service_url, layer, query = '' }) => {
           const url = `${map_service_url}/${layer}`;
-
           let mapLayer;
           switch (layer.type) {
             case 'Raster Layer':
@@ -102,7 +102,7 @@ const Webmap = (props) => {
             case 'Feature Layer':
               mapLayer = new FeatureLayer({
                 url,
-                definitionExpression: query,
+                definitionExpression: query ? formatQuery(query, 'sql') : '',
               });
               break;
             case 'Group Layer':
