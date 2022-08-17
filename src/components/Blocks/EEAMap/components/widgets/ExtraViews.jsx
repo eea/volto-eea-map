@@ -74,7 +74,7 @@ const ExtraViews = ({ data }) => {
               ))}
             </div>
           ) : (
-            <p>Data provenance is not set for this visualization</p>
+            <p>Data provenance is not set for visualization used or page</p>
           )}
         </>
       )}

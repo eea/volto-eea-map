@@ -6,7 +6,6 @@ import { compose } from 'redux';
 import { PrivacyProtection } from '@eeacms/volto-embed';
 import Webmap from '../EEAMap/components/Webmap';
 import ExtraViews from '../EEAMap/components/widgets/ExtraViews';
-import { getVisualization } from '@eeacms/volto-eea-map/actions';
 import { getContent } from '@plone/volto/actions';
 
 const View = (props) => {
@@ -49,11 +48,9 @@ const View = (props) => {
 export default compose(
   connect(
     (state, props) => ({
-      state,
       viz_content: state.content.subrequests?.[props.id]?.data,
     }),
     {
-      getVisualization,
       getContent,
     },
   ),
