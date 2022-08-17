@@ -103,6 +103,18 @@
   cursor: pointer;
 }
 
+.map_source_title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 5px !important;
+  margin-top: 15px !important;
+}
+
+.map_source_description {
+  font-size: 14px;
+  margin: 5px 0 !important;
+}
+
 @keyframes fadeDown {
   from {
     opacity: 0;

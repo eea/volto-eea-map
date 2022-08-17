@@ -7,26 +7,20 @@ export const Schema = (props) => {
         title: 'Default',
         fields: [
           'map_data',
-          //...(use_visualization ? ['vis_url'] : ['map_data']),
           'description',
           'height',
           'show_legend',
           'show_download',
           'show_viewer',
+          'show_sources',
         ],
       },
     ],
     properties: {
-      // use_visualization: {
-      //   title: 'Use visualization',
-      //   description:
-      //     'This setting will enable importing the map data from a visualization. If is enabled, editing the map manually will not be possible',
-      //   type: 'boolean',
-      // },
-      // vis_url: {
-      //   widget: 'object_by_path',
-      //   title: 'Visualization',
-      // },
+      show_sources: {
+        title: 'Show sources',
+        type: 'boolean',
+      },
       height: {
         title: 'Height',
         type: 'number',
