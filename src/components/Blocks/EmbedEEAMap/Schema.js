@@ -12,6 +12,7 @@ export const Schema = (props) => {
           'show_legend',
           'show_download',
           'show_viewer',
+          'show_sources',
         ],
       },
     ],
@@ -27,6 +28,10 @@ export const Schema = (props) => {
       description: {
         title: 'Description',
         widget: 'slate',
+      },
+      show_sources: {
+        title: 'Show sources',
+        type: 'boolean',
       },
       show_legend: {
         title: 'Show legend',

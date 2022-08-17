@@ -3,10 +3,6 @@ import { Icon } from '@plone/volto/components';
 import { Input, Select, Button, Grid } from 'semantic-ui-react';
 import { QueryBuilder } from 'react-querybuilder';
 import 'react-querybuilder/dist/query-builder.css';
-// import {
-//   bootstrapControlClassnames,
-//   bootstrapControlElements,
-// } from 'react-querybuilder/bootstrap';
 
 import checkSVG from '@plone/volto/icons/check.svg';
 import closeSVG from '@plone/volto/icons/clear.svg';
@@ -37,7 +33,6 @@ const LayerSelectWidget = (props) => {
   const [availableLayers, setAvailableLayers] = React.useState(
     available_layers,
   );
-  //const [layerQuery, setLayerQuery] = React.useState(query);
 
   const [builtQuery, setBuiltQuery] = React.useState(query);
 
@@ -188,14 +183,6 @@ const LayerSelectWidget = (props) => {
             <h5 style={{ padding: '0', margin: '15px 0px 5px 0px' }}>
               Query Layer
             </h5>
-            <Grid.Row stretched>
-              {/* <Input
-                type="text"
-                style={{ width: '100%' }}
-                onChange={(e, { value }) => setLayerQuery(value)}
-                value={layerQuery}
-              ></Input> */}
-            </Grid.Row>
             <Grid.Row>
               <QueryBuilder
                 fields={fields.map((fi, i) => {
@@ -204,8 +191,6 @@ const LayerSelectWidget = (props) => {
                 query={builtQuery}
                 onQueryChange={(q) => setBuiltQuery(q)}
                 enableDragAndDrop={false}
-                //controlElements={bootstrapControlElements}
-                //controlClassnames={bootstrapControlClassnames}
               />
             </Grid.Row>
             {builtQuery && (

@@ -6,15 +6,18 @@ import { compose } from 'redux';
 import { PrivacyProtection } from '@eeacms/volto-embed';
 import Webmap from '../EEAMap/components/Webmap';
 import ExtraViews from '../EEAMap/components/widgets/ExtraViews';
-import { getVisualization } from '@eeacms/volto-eea-map/actions';
+import { getContent } from '@plone/volto/actions';
 
 const View = (props) => {
-  const { data, map_visualization } = props || {};
+  const { data, viz_content = {}, id } = props || {};
   const { height = '', vis_url = '' } = data;
+
+  const { map_visualization_data = '', data_provenance = {} } =
+    viz_content || {};
 
   React.useEffect(() => {
     if (vis_url) {
-      props.getVisualization(vis_url);
+      props.getContent(vis_url, null, id);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [vis_url]);
@@ -22,13 +25,19 @@ const View = (props) => {
   return (
     <div>
       <PrivacyProtection data={data} {...props}>
-        {map_visualization && (
+        {map_visualization_data && (
           <div>
-            <Webmap data={map_visualization.data} height={height} />
-            <ExtraViews data={{ ...data, map_data: map_visualization.data }} />
+            <Webmap data={map_visualization_data} height={height} />
+            <ExtraViews
+              data={{
+                ...data,
+                data_provenance,
+                map_data: map_visualization_data,
+              }}
+            />
           </div>
         )}
-        {!map_visualization && (
+        {!map_visualization_data && (
           <p>No map view to show. Set visualization in block configuration.</p>
         )}
       </PrivacyProtection>
@@ -39,10 +48,10 @@ const View = (props) => {
 export default compose(
   connect(
     (state, props) => ({
-      map_visualization: state.map_visualizations.data[props.data.vis_url],
+      viz_content: state.content.subrequests?.[props.id]?.data,
     }),
     {
-      getVisualization,
+      getContent,
     },
   ),
 )(View);
