@@ -5,6 +5,7 @@ import {
   EmbedMapEdit,
 } from '@eeacms/volto-eea-map/components';
 import world from '@plone/volto/icons/world.svg';
+import DataQueryWidget from './components/Blocks/EEAMap/components/widgets/DataQueryWidget';
 import LayerSelectWidget from './components/Blocks/EEAMap/components/widgets/LayerSelectWidget';
 import MapEditorWidget from './components/Blocks/EEAMap/components/widgets/MapEditorWidget';
 import ObjectTypesWidget from './components/Blocks/EEAMap/components/widgets/ObjectTypesWidget';
@@ -89,6 +90,7 @@ export default (config) => {
   config.widgets.widget.map_edit_widget = MapEditorWidget;
   config.widgets.widget.map_layers_widget = LayerSelectWidget;
   config.widgets.widget.object_types_widget = ObjectTypesWidget;
+  config.widgets.widget.data_query_widget = DataQueryWidget;
 
   //map editor for the visualization(content-type)
   config.widgets.id.map_visualization_data = VisualizationEditorWidget;

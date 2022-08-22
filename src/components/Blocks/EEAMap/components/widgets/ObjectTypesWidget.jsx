@@ -4,7 +4,15 @@ import { ObjectWidget } from '@plone/volto/components';
 import { withDeviceSize } from '@eeacms/volto-eea-map/hocs';
 
 export const ObjectTypesWidget = (props) => {
-  const { schemas, value = {}, onChange, errors = {}, id, device } = props;
+  const {
+    schemas,
+    value = {},
+    onChange,
+    errors = {},
+    id,
+    device,
+    block,
+  } = props;
   const objectId = id;
 
   const defaultActiveTab = 0;
@@ -30,6 +38,7 @@ export const ObjectTypesWidget = (props) => {
             <ObjectWidget
               schema={schema}
               id={id}
+              block={block}
               errors={errors}
               value={value[id] || {}}
               onChange={(schemaId, v) => {

@@ -37,7 +37,6 @@ const MapEditorWidget = (props) => {
   };
 
   let schema = PanelsSchema({ data: dataForm });
-
   return (
     <FormFieldWrapper {...props}>
       <Modal
