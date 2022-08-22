@@ -115,6 +115,10 @@
   font-size: 14px;
 }
 
+.data-query-widget-field {
+  margin: 10px 0;
+}
+
 @keyframes fadeDown {
   from {
     opacity: 0;

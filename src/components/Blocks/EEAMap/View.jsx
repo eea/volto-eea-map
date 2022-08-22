@@ -9,11 +9,10 @@ import { PrivacyProtection } from '@eeacms/volto-embed';
 import { getContent } from '@plone/volto/actions';
 
 const View = (props) => {
-  const { data, id, path, data_provenance } = props || {};
+  const { data, id, path } = props || {};
   const { map_data = {}, height = '' } = data;
 
   React.useEffect(() => {
-    //   get content from document
     if (path) {
       props.getContent(path, null, id);
     }
@@ -24,7 +23,7 @@ const View = (props) => {
     <div>
       <PrivacyProtection data={data} {...props}>
         <Webmap data={map_data} height={height} id={id} />
-        <ExtraViews data={{ ...data, data_provenance }} />
+        <ExtraViews data={data} />
       </PrivacyProtection>
     </div>
   );
@@ -33,6 +32,7 @@ const View = (props) => {
 export default compose(
   connect(
     (state, props) => ({
+      data_query: state.content.subrequests?.[props.id]?.data?.data_query,
       data_provenance:
         state.content.subrequests?.[props.id]?.data?.data_provenance,
     }),

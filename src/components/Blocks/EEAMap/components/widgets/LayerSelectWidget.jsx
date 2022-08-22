@@ -4,6 +4,11 @@ import { Input, Select, Button, Grid } from 'semantic-ui-react';
 import { QueryBuilder } from 'react-querybuilder';
 import 'react-querybuilder/dist/query-builder.css';
 
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+
+import { getContent } from '@plone/volto/actions';
+
 import checkSVG from '@plone/volto/icons/check.svg';
 import closeSVG from '@plone/volto/icons/clear.svg';
 import aheadSVG from '@plone/volto/icons/ahead.svg';
@@ -12,7 +17,7 @@ import resetSVG from '@plone/volto/icons/reset.svg';
 import { fetchArcgisData } from '../../utils';
 
 const LayerSelectWidget = (props) => {
-  const { onChange, id } = props;
+  const { onChange, id, data_query } = props;
 
   const value = React.useMemo(() => props.value || {}, [props.value]);
 
@@ -62,6 +67,55 @@ const LayerSelectWidget = (props) => {
       setServiceUrlError({ error: e.message, status: e.status });
     }
   };
+
+  React.useEffect(() => {
+    props.getContent('', null, id);
+    //    eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  React.useEffect(() => {
+    if (query && !builtQuery) {
+      setBuiltQuery(query);
+    }
+  }, [query, builtQuery]);
+
+  React.useEffect(() => {
+    //detect existing queries in block content. If it exists. Apply matching queries to layer on fresh layer load
+    if (
+      map_service_url &&
+      layer &&
+      !query &&
+      data_query &&
+      data_query.length > 0
+    ) {
+      let autoQuery = {
+        combinator: 'or',
+        rules: [],
+      };
+      data_query.forEach((param, i) => {
+        if (
+          fields &&
+          fields.length > 0 &&
+          fields.filter(
+            (field, j) => field.name === param.alias || field.name === param.i,
+          ).length > 0
+        ) {
+          autoQuery.rules = [
+            ...autoQuery.rules,
+            { field: param.alias || param.i, operator: '=', value: param.v[0] },
+          ];
+        }
+      });
+      if (autoQuery.rules.length > 0) {
+        onChange(id, {
+          ...value,
+          query: autoQuery,
+        });
+        setBuiltQuery(autoQuery);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [map_service_url, layer, query, data_query, fields]);
 
   const handleLayerFetch = async (service_url, id) => {
     try {
@@ -129,8 +183,6 @@ const LayerSelectWidget = (props) => {
             style={{ width: '100%' }}
             error={serviceUrlError}
             value={serviceUrl}
-            // action
-            // actionPosition="right"
           ></Input>
 
           <span style={{ fontSize: '12px', color: 'darkred' }}>
@@ -230,4 +282,14 @@ const LayerSelectWidget = (props) => {
   );
 };
 
-export default LayerSelectWidget;
+export default compose(
+  connect(
+    (state, props) => ({
+      content: state.content.data,
+      data_query: state.content.data.data_query,
+    }),
+    {
+      getContent,
+    },
+  ),
+)(LayerSelectWidget);

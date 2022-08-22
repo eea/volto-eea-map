@@ -13,6 +13,7 @@ export const Schema = (props) => {
           'show_download',
           'show_viewer',
           'show_sources',
+          'data_query_params',
         ],
       },
     ],
@@ -45,6 +46,10 @@ export const Schema = (props) => {
       show_viewer: {
         title: 'Show web viewer',
         type: 'boolean',
+      },
+      data_query_params: {
+        title: 'Data query parameters',
+        widget: 'data_query_widget',
       },
     },
     required: [],
