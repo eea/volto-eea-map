@@ -1,6 +1,5 @@
 import React from 'react';
 import { FormFieldWrapper, Field } from '@plone/volto/components';
-import { Input } from 'semantic-ui-react';
 
 const DataQueryWidget = (props) => {
   const { value, onChange, id } = props;

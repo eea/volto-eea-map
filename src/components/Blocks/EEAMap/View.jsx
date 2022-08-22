@@ -9,12 +9,10 @@ import { PrivacyProtection } from '@eeacms/volto-embed';
 import { getContent } from '@plone/volto/actions';
 
 const View = (props) => {
-  const { data, id, path, data_provenance, data_query } = props || {};
+  const { data, id, path } = props || {};
   const { map_data = {}, height = '' } = data;
 
-  // console.log('dataq', data_query);
   React.useEffect(() => {
-    //   get content from document
     if (path) {
       props.getContent(path, null, id);
     }

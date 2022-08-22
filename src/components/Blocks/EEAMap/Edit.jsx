@@ -14,7 +14,7 @@ import { addPrivacyProtectionToSchema } from '@eeacms/volto-embed';
 import './styles/map.css';
 
 const Edit = (props) => {
-  const { block, data, onChangeBlock, selected, id, path } = props;
+  const { block, data, onChangeBlock, selected, id } = props;
   const schema = React.useMemo(() => Schema(props), [props]);
   React.useEffect(() => {
     if (
