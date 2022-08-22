@@ -16,6 +16,7 @@ import './styles/map.css';
 const Edit = (props) => {
   const { block, data, onChangeBlock, selected, id } = props;
   const schema = React.useMemo(() => Schema(props), [props]);
+
   React.useEffect(() => {
     if (
       !data.data_query_params ||
