@@ -7,82 +7,99 @@ import { PrivacyProtection } from '@eeacms/volto-embed';
 import Webmap from '../EEAMap/components/Webmap';
 import ExtraViews from '../EEAMap/components/widgets/ExtraViews';
 import { getContent } from '@plone/volto/actions';
+import { getVisualization } from '../../../actions';
 
 const View = (props) => {
-  const { data, viz_content = {}, id } = props || {};
-  const { height = '', vis_url = '' } = data;
+  const { data, viz_content = {}, id, isEdit, map_visualization } = props || {};
+  const { height = '', vis_url = '', enable_queries } = data;
 
-  const { map_visualization_data = '', data_provenance = {} } =
-    viz_content || {};
+  const { data_provenance = {} } = viz_content || {};
 
-  const [mapData, setMapData] = React.useState(map_visualization_data);
+  const [mapData, setMapData] = React.useState(map_visualization);
 
   React.useEffect(() => {
-    if (vis_url && !map_visualization_data) {
+    if (vis_url) {
       props.getContent(vis_url, null, id);
+      props.getVisualization(vis_url);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [vis_url]);
+  }, [vis_url, enable_queries]);
 
   React.useEffect(() => {
-    if (
-      props.data_query &&
-      props.data_query.length > 0 &&
-      map_visualization_data
-    ) {
-      let altMapData = { ...map_visualization_data };
+    const query_params = isEdit
+      ? props.data.data_query_params
+      : props.data_query;
+    var altMapData = { ...map_visualization };
 
-      props.data_query.forEach((param, i) => {
+    if (
+      enable_queries &&
+      query_params &&
+      query_params.length > 0 &&
+      altMapData
+    ) {
+      query_params.forEach((param, i) => {
         if (
-          map_visualization_data.layers &&
-          map_visualization_data.layers.map_layers &&
-          map_visualization_data.layers.map_layers.length > 0
+          altMapData.layers &&
+          altMapData.layers.map_layers &&
+          altMapData.layers.map_layers.length > 0
         ) {
-          map_visualization_data.layers.map_layers.forEach((l, j) => {
-            if (
-              l.map_layer &&
-              l.map_layer.fields &&
-              l.map_layer.fields.length > 0 &&
-              l.map_layer.fields.filter(
-                (field, k) =>
-                  field.name === param.alias || field.name === param.i,
-              ).length > 0
-            ) {
-              let autoQuery = {
-                combinator: 'or',
-                rules: props.data_query.map((q, i) => {
-                  return {
-                    field: param.alias ? param.alias : param.i,
-                    operator: '=',
-                    value: param.v[0],
-                  };
-                }),
-              };
-              altMapData.layers.map_layers[j].map_layer.query = autoQuery;
-            }
+          altMapData.layers.map_layers.forEach((l, j) => {
+            const matchingFields =
+              l.map_layer && l.map_layer.fields && l.map_layer.fields.length > 0
+                ? l.map_layer.fields.filter(
+                    (field, k) =>
+                      field.name === param.alias || field.name === param.i,
+                  )
+                : [];
+
+            let rules = [];
+
+            matchingFields.forEach((m, i) => {
+              const newRules = param.v
+                ? param.v.map((paramVal, i) => {
+                    return {
+                      field: m.name,
+                      operator: '=',
+                      value: paramVal,
+                    };
+                  })
+                : [];
+              rules = newRules;
+            });
+            let autoQuery = {
+              combinator: 'or',
+              rules,
+            };
+            altMapData.layers.map_layers[j].map_layer.query = autoQuery;
           });
         }
       });
-      setMapData(altMapData);
     }
-  }, [props.data_query, map_visualization_data]);
-
+    setMapData(altMapData);
+  }, [
+    map_visualization,
+    props.data,
+    props.data_query,
+    viz_content,
+    isEdit,
+    enable_queries,
+  ]);
   return (
     <div>
       <PrivacyProtection data={data} {...props}>
-        {map_visualization_data && (
+        {mapData && (
           <div>
             <Webmap data={mapData} height={height} />
             <ExtraViews
               data={{
                 ...data,
                 data_provenance,
-                map_data: map_visualization_data,
+                map_data: map_visualization,
               }}
             />
           </div>
         )}
-        {!map_visualization_data && (
+        {!mapData && (
           <p>No map view to show. Set visualization in block configuration.</p>
         )}
       </PrivacyProtection>
@@ -94,10 +111,14 @@ export default compose(
   connect(
     (state, props) => ({
       data_query: state.content.data.data_query,
+      state,
+      map_visualization:
+        state.map_visualizations?.data[props.data.vis_url]?.data,
       viz_content: state.content.subrequests?.[props.id]?.data,
     }),
     {
       getContent,
+      getVisualization,
     },
   ),
 )(View);

@@ -13,7 +13,8 @@ export const Schema = (props) => {
           'show_download',
           'show_viewer',
           'show_sources',
-          'data_query_params',
+          'enable_queries',
+          ...(props.data.enable_queries ? ['data_query_params'] : []),
         ],
       },
     ],
@@ -38,16 +39,21 @@ export const Schema = (props) => {
         title: 'Show legend',
         type: 'boolean',
       },
-      show_download: {
-        title: 'Show download',
-        type: 'boolean',
-      },
       show_viewer: {
         title: 'Show web viewer',
+
+        type: 'boolean',
+      },
+      enable_queries: {
+        title: 'Enable queries',
+        description:
+          'Will import Criteria from content-type and try to query map layer fields.',
         type: 'boolean',
       },
       data_query_params: {
-        title: 'Data query parameters',
+        title: 'Query parameters',
+        description:
+          'Detected parameters from content-type Criteria. Layers fields will be automatically queried by criteria title. If Alias is set on a Criteria, it will try to match the field with Alias.',
         widget: 'data_query_widget',
       },
     },

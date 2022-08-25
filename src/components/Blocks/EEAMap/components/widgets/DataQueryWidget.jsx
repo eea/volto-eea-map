@@ -30,6 +30,7 @@ const DataQueryWidget = (props) => {
                 id={param.i}
                 title="Values"
                 type="string"
+                disabled={true}
                 description="Parameter value/s"
                 value={param.v.join(',')}
               />

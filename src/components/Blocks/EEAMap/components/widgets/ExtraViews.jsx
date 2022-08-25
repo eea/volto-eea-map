@@ -13,50 +13,34 @@ const ExtraViews = ({ data }) => {
     map_data = {},
     description,
     show_legend,
-    show_download,
     show_viewer,
     show_sources,
     data_provenance = {},
   } = data;
   return (
     <div className="extra-eea-map-content">
-      {map_data &&
-        map_data.layers?.map_layers[0] &&
-        (show_download || show_viewer) && (
-          <div
-            style={{ display: 'flex', justifyContent: 'end', margin: '10px 0' }}
-          >
-            {show_download && (
-              <a
-                target="_blank"
-                rel="noreferrer"
-                href={`${map_data.layers.map_layers[0].map_layer.map_service_url}?f=lyr&v=9.3`}
-              >
-                <Button size="tiny">
-                  <Button.Content>
-                    <Icon name={downloadSVG} title="Download" size="25px" />
-                  </Button.Content>
-                </Button>
-              </a>
-            )}
-            {show_viewer && (
-              <a
-                target="_blank"
-                rel="noreferrer"
-                href={
-                  `https://www.arcgis.com/home/webmap/viewer.html?url=` +
-                  `${map_data.layers.map_layers[0].map_layer.map_service_url}&source=sd`
-                }
-              >
-                <Button size="tiny">
-                  <Button.Content>
-                    <Icon name={worldSVG} title="View map" size="25px" />
-                  </Button.Content>
-                </Button>
-              </a>
-            )}
-          </div>
-        )}
+      {map_data && map_data.layers?.map_layers[0] && show_viewer && (
+        <div
+          style={{ display: 'flex', justifyContent: 'end', margin: '10px 0' }}
+        >
+          {show_viewer && (
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href={
+                `https://www.arcgis.com/home/webmap/viewer.html?url=` +
+                `${map_data.layers.map_layers[0].map_layer.map_service_url}&source=sd`
+              }
+            >
+              <Button size="tiny">
+                <Button.Content>
+                  <Icon name={worldSVG} title="View map" size="25px" />
+                </Button.Content>
+              </Button>
+            </a>
+          )}
+        </div>
+      )}
       {show_legend && map_data && <LegendWidget data={map_data} />}
       {show_sources && (
         <>

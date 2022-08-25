@@ -20,12 +20,9 @@ const Edit = (props) => {
     props.getContent(data.vis_url, null, id);
     //    eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data.vis_url]);
-
   React.useEffect(() => {
-    if (
-      !data.data_query_params ||
-      props.data_query !== data.data_query_params
-    ) {
+    const diffParams = props.data_query !== data.data_query_params;
+    if (diffParams || !data.data_query_params) {
       onChangeBlock(block, {
         ...data,
         data_query_params: props.data_query,
@@ -36,7 +33,7 @@ const Edit = (props) => {
 
   return (
     <div>
-      <View data={data} id={id} />
+      <View data={data} id={id} isEdit={true} />
       <SidebarPortal selected={selected}>
         <BlockDataForm
           block={block}

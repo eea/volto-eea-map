@@ -39,16 +39,14 @@ export const Schema = (props) => {
         title: 'Show legend',
         type: 'boolean',
       },
-      show_download: {
-        title: 'Show download',
-        type: 'boolean',
-      },
+
       show_viewer: {
         title: 'Show web viewer',
         type: 'boolean',
       },
       data_query_params: {
-        title: 'Data query parameters',
+        title: 'Query parameters',
+        description: 'ddafdfas',
         widget: 'data_query_widget',
       },
     },
