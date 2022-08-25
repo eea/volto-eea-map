@@ -1,7 +1,6 @@
 import React from 'react';
-import { FormFieldWrapper, Field, Icon } from '@plone/volto/components';
-import { Accordion, Button, Segment } from 'semantic-ui-react';
-import downSVG from '@plone/volto/icons/down.svg';
+import { FormFieldWrapper, Field } from '@plone/volto/components';
+import { Accordion, Segment } from 'semantic-ui-react';
 
 const DataQueryWidget = (props) => {
   const { value, onChange, id } = props;
@@ -22,15 +21,8 @@ const DataQueryWidget = (props) => {
               key={i}
               fluid
               styled
-              style={{ border: '1px solid lightgray' }}
+              style={{ border: '1px solid lightgray', marginBottom: '15px' }}
             >
-              {/* <Accordion.Title>
-                <div>
-                  <Icon name={downSVG} size="12px" />
-                  {param.i}
-                </div>
-              </Accordion.Title> */}
-
               <Accordion.Content active={true}>
                 <Segment>
                   <p className="data-param-title">

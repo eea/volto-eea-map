@@ -35,44 +35,39 @@ const View = (props) => {
       enable_queries &&
       query_params &&
       query_params.length > 0 &&
-      altMapData
+      altMapData.layers &&
+      altMapData.layers.map_layers &&
+      altMapData.layers.map_layers.length > 0
     ) {
-      query_params.forEach((param, i) => {
-        if (
-          altMapData.layers &&
-          altMapData.layers.map_layers &&
-          altMapData.layers.map_layers.length > 0
-        ) {
-          altMapData.layers.map_layers.forEach((l, j) => {
-            const matchingFields =
-              l.map_layer && l.map_layer.fields && l.map_layer.fields.length > 0
-                ? l.map_layer.fields.filter(
-                    (field, k) =>
-                      field.name === param.alias || field.name === param.i,
-                  )
-                : [];
+      let rules = [];
+      altMapData.layers.map_layers.forEach((l, j) => {
+        query_params.forEach((param, i) => {
+          const matchingFields =
+            l.map_layer && l.map_layer.fields && l.map_layer.fields.length > 0
+              ? l.map_layer.fields.filter(
+                  (field, k) =>
+                    field.name === param.alias || field.name === param.i,
+                )
+              : [];
 
-            let rules = [];
-
-            matchingFields.forEach((m, i) => {
-              const newRules = param.v
-                ? param.v.map((paramVal, i) => {
-                    return {
-                      field: m.name,
-                      operator: '=',
-                      value: paramVal,
-                    };
-                  })
-                : [];
-              rules = newRules;
-            });
-            let autoQuery = {
-              combinator: 'or',
-              rules,
-            };
-            altMapData.layers.map_layers[j].map_layer.query = autoQuery;
+          matchingFields.forEach((m, i) => {
+            const newRules = param.v
+              ? param.v.map((paramVal, i) => {
+                  return {
+                    field: m.name,
+                    operator: '=',
+                    value: paramVal,
+                  };
+                })
+              : [];
+            rules = rules.concat(newRules);
           });
-        }
+        });
+        let autoQuery = {
+          combinator: 'or',
+          rules,
+        };
+        altMapData.layers.map_layers[j].map_layer.query = autoQuery;
       });
     }
     setMapData(altMapData);
