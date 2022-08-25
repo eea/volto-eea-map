@@ -1,9 +1,4 @@
-import {
-  EEAMapEdit,
-  EEAMapView,
-  EmbedMapView,
-  EmbedMapEdit,
-} from '@eeacms/volto-eea-map/components';
+import { EmbedMapView, EmbedMapEdit } from '@eeacms/volto-eea-map/components';
 import world from '@plone/volto/icons/world.svg';
 import DataQueryWidget from './components/Blocks/EEAMap/components/widgets/DataQueryWidget';
 import LayerSelectWidget from './components/Blocks/EEAMap/components/widgets/LayerSelectWidget';
@@ -79,13 +74,13 @@ export default (config) => {
         id: 'default',
         title: 'EEA Map (default)',
         isDefault: true,
-        view: EEAMapView,
+        view: EmbedMapView,
       },
       {
         id: 'extra',
         title: 'Extra variation (expand if needed)',
         isDefault: true,
-        view: EEAMapView,
+        view: EmbedMapView,
       },
     ],
   };

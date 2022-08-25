@@ -22,13 +22,13 @@
 }
 
 .data-param-title {
-  font-size: 16px;
-  border-bottom: 1px solid lightgray;
   padding-bottom: 15px;
+  border-bottom: 1px solid lightgray;
+  font-size: 16px;
 }
 
 .data-param-values {
-  font-size: 14px;
-  border-bottom: 1px solid lightgray;
   padding-bottom: 15px;
+  border-bottom: 1px solid lightgray;
+  font-size: 14px;
 }
