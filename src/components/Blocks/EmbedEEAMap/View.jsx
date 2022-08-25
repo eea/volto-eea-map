@@ -79,6 +79,7 @@ const View = (props) => {
     isEdit,
     enable_queries,
   ]);
+
   return (
     <div>
       <PrivacyProtection data={data} {...props}>

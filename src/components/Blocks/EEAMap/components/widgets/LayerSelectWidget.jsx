@@ -4,6 +4,8 @@ import { Input, Select, Button, Grid } from 'semantic-ui-react';
 import { QueryBuilder } from 'react-querybuilder';
 import 'react-querybuilder/dist/query-builder.css';
 
+import RichTextWidget from 'volto-slate/widgets/RichTextWidget';
+
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
@@ -28,6 +30,7 @@ const LayerSelectWidget = (props) => {
     layer,
     fields = [],
     query = '',
+    description = '',
   } = value;
 
   const [mapData, setMapData] = React.useState(map_data);
@@ -35,6 +38,8 @@ const LayerSelectWidget = (props) => {
   const [serviceUrlError, setServiceUrlError] = React.useState('');
   const [serviceUrl, setServiceUrl] = React.useState(map_service_url);
   const [selectedLayer, setSelectedLayer] = React.useState(layer);
+  const [intDescription, setIntDescription] = React.useState(description);
+
   const [availableLayers, setAvailableLayers] = React.useState(
     available_layers,
   );
@@ -61,6 +66,7 @@ const LayerSelectWidget = (props) => {
         map_service_url: serviceUrl,
         available_layers: availableLayers,
         map_data: mapData,
+        description: intDescription,
       });
     } catch (e) {
       setCheckColor('youtube');
@@ -144,6 +150,15 @@ const LayerSelectWidget = (props) => {
       onChange(id, {
         ...value,
         query: builtQuery,
+      });
+    }
+  };
+
+  const handleChangeDescription = (val) => {
+    if (intDescription) {
+      onChange(id, {
+        ...value,
+        description: val,
       });
     }
   };
@@ -238,6 +253,25 @@ const LayerSelectWidget = (props) => {
                 placeholder="Select layer"
                 value={selectedLayer}
               />
+            </Grid.Row>
+          </>
+        )}
+        {availableLayers && availableLayers.length > 0 && (
+          <>
+            <h5 style={{ padding: '0', margin: '15px 0px 5px 0px' }}>
+              Description
+            </h5>
+            <Grid.Row>
+              <div className="map-layer-description-field">
+                <RichTextWidget
+                  title="description"
+                  onChange={(name, value) => {
+                    handleChangeDescription(value);
+                  }}
+                  value={value.description}
+                  placeholder="Set Description"
+                />
+              </div>
             </Grid.Row>
           </>
         )}

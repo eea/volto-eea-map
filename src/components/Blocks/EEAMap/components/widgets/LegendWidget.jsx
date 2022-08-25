@@ -2,6 +2,7 @@ import React from 'react';
 import { Grid } from 'semantic-ui-react';
 import { fetchArcgisData } from '../../utils';
 import { Icon } from '@plone/volto/components';
+import { serializeNodes } from 'volto-slate/editor/render';
 
 import rightKeySVG from '@plone/volto/icons/right-key.svg';
 import downKeySVG from '@plone/volto/icons/down-key.svg';
@@ -45,6 +46,7 @@ const LayerLegend = ({ data }) => {
         />
         {name}
       </h5>
+      {data.description && serializeNodes(data.description)}
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         {expand &&
           legendRows.length > 0 &&
