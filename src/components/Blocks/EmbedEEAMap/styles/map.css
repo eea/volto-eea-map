@@ -20,3 +20,15 @@
   display: flex;
   padding: 1rem 0;
 }
+
+.data-param-title {
+  font-size: 16px;
+  border-bottom: 1px solid lightgray;
+  padding-bottom: 15px;
+}
+
+.data-param-values {
+  font-size: 14px;
+  border-bottom: 1px solid lightgray;
+  padding-bottom: 15px;
+}

@@ -6,7 +6,6 @@ import LegendWidget from './LegendWidget';
 import { serializeNodes } from 'volto-slate/editor/render';
 
 import worldSVG from '@plone/volto/icons/world.svg';
-import downloadSVG from '@plone/volto/icons/download.svg';
 
 const ExtraViews = ({ data }) => {
   const {
