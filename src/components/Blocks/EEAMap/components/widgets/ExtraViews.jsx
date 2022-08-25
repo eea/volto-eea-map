@@ -33,7 +33,7 @@ const ExtraViews = ({ data }) => {
             >
               <Button size="tiny">
                 <Button.Content>
-                  <Icon name={worldSVG} title="View map" size="25px" />
+                  <Icon name={worldSVG} title="Show API link" size="25px" />
                 </Button.Content>
               </Button>
             </a>

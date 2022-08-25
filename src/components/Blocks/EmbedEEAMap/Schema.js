@@ -10,7 +10,6 @@ export const Schema = (props) => {
           'description',
           'height',
           'show_legend',
-          'show_download',
           'show_viewer',
           'show_sources',
           'enable_queries',
@@ -40,8 +39,7 @@ export const Schema = (props) => {
         type: 'boolean',
       },
       show_viewer: {
-        title: 'Show web viewer',
-
+        title: 'Show API link',
         type: 'boolean',
       },
       enable_queries: {

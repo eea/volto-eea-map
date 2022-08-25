@@ -79,7 +79,6 @@ const GeneralSchema = ({ data = {} }) => {
         type: 'boolean',
         description:
           'This will override latitude/longitude/zoom level and will lock zoom/moving the map.',
-        default: true,
       },
       zoom_position: {
         title: 'Zoom position',

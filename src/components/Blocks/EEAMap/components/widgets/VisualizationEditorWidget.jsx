@@ -2,7 +2,6 @@ import React from 'react';
 import { Modal, Button, Grid } from 'semantic-ui-react';
 import Webmap from '../Webmap';
 import { FormFieldWrapper, InlineForm } from '@plone/volto/components';
-import { VisibilitySensor } from '@eeacms/volto-datablocks/components';
 
 import PanelsSchema from './panelsSchema';
 
@@ -25,11 +24,32 @@ const VisualizationEditorWidget = (props) => {
     setOpen(false);
   };
 
-  const handleChangeField = (id, fieldVal) => {
-    setIntValue(fieldVal);
+  const handleChangeField = (val) => {
+    setIntValue(val);
   };
 
   let schema = PanelsSchema({ data: dataForm });
+
+  React.useEffect(() => {
+    if (!intValue.general) {
+      setIntValue({
+        ...intValue,
+        general: {
+          print_position: 'top-right',
+          zoom_position: 'top-right',
+          centerOnExtent: true,
+        },
+      });
+    }
+    if (!intValue.base) {
+      setIntValue({
+        ...intValue,
+        base: {
+          base_layer: 'gray-vector',
+        },
+      });
+    }
+  }, [intValue]);
 
   return (
     <FormFieldWrapper {...props}>
@@ -65,15 +85,15 @@ const VisualizationEditorWidget = (props) => {
                   block={block}
                   schema={schema}
                   onChangeField={(id, value) => {
-                    handleChangeField(id, value);
+                    handleChangeField(value);
                   }}
                   formData={dataForm}
                 />
               </Grid.Column>
               <Grid.Column mobile={12} tablet={12} computer={7}>
-                <VisibilitySensor>
+                <div className="webmap-container">
                   <Webmap data={intValue} editMode={true} />
-                </VisibilitySensor>
+                </div>
               </Grid.Column>
             </Grid>
           </Modal.Content>
@@ -91,7 +111,7 @@ const VisualizationEditorWidget = (props) => {
           </Modal.Actions>
         </Modal>
       )}
-      <Webmap data={intValue} editMode={true} />
+      <Webmap data={value} editMode={true} />
     </FormFieldWrapper>
   );
 };

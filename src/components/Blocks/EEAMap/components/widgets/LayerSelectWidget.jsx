@@ -38,7 +38,6 @@ const LayerSelectWidget = (props) => {
   const [serviceUrlError, setServiceUrlError] = React.useState('');
   const [serviceUrl, setServiceUrl] = React.useState(map_service_url);
   const [selectedLayer, setSelectedLayer] = React.useState(layer);
-  const [intDescription, setIntDescription] = React.useState(description);
 
   const [availableLayers, setAvailableLayers] = React.useState(
     available_layers,
@@ -66,7 +65,7 @@ const LayerSelectWidget = (props) => {
         map_service_url: serviceUrl,
         available_layers: availableLayers,
         map_data: mapData,
-        description: intDescription,
+        description,
       });
     } catch (e) {
       setCheckColor('youtube');
@@ -155,7 +154,7 @@ const LayerSelectWidget = (props) => {
   };
 
   const handleChangeDescription = (val) => {
-    if (intDescription) {
+    if (val) {
       onChange(id, {
         ...value,
         description: val,
