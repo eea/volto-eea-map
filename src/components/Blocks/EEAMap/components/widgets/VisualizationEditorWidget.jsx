@@ -33,17 +33,20 @@ const VisualizationEditorWidget = (props) => {
 
   return (
     <FormFieldWrapper {...props}>
-      <Button
-        floated="right"
-        size="tiny"
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          setOpen(true);
-        }}
-      >
-        Open Map Editor
-      </Button>
+      <div className="wrapper">
+        <Button
+          floated="right"
+          size="tiny"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            setOpen(true);
+          }}
+        >
+          Open Map Editor
+        </Button>
+      </div>
+
       {open && (
         <Modal
           id="map-editor-modal"
@@ -51,42 +54,44 @@ const VisualizationEditorWidget = (props) => {
           open={true}
         >
           <Modal.Content scrolling>
-            <Grid>
-              <Grid.Row>
-                <Grid.Column width={4}>
-                  <InlineForm
-                    block={block}
-                    title={schema.title}
-                    schema={schema}
-                    onChangeField={(id, value) => {
-                      handleChangeField(id, value);
-                    }}
-                    formData={dataForm}
-                  />
-                </Grid.Column>
-                <Grid.Column width={8}>
-                  <VisibilitySensor>
-                    <Webmap data={intValue} editMode={true} />
-                  </VisibilitySensor>
-                </Grid.Column>
-              </Grid.Row>
+            <Grid stackable reversed="mobile vertically tablet vertically">
+              <Grid.Column
+                mobile={12}
+                tablet={12}
+                computer={5}
+                className="map-editor-column"
+              >
+                <InlineForm
+                  block={block}
+                  schema={schema}
+                  onChangeField={(id, value) => {
+                    handleChangeField(id, value);
+                  }}
+                  formData={dataForm}
+                />
+              </Grid.Column>
+              <Grid.Column mobile={12} tablet={12} computer={7}>
+                <VisibilitySensor>
+                  <Webmap data={intValue} editMode={true} />
+                </VisibilitySensor>
+              </Grid.Column>
             </Grid>
           </Modal.Content>
           <Modal.Actions>
             <Grid>
               <Grid.Row>
-                <Grid.Column width={8}></Grid.Column>
-                <Grid.Column width={4}>
-                  <Button onClick={() => handleClose()}>Close</Button>
-                  <Button color="green" onClick={() => handleApplyChanges()}>
+                <div className="map-edit-actions-container">
+                  <Button onClick={handleClose}>Close</Button>
+                  <Button color="green" onClick={handleApplyChanges}>
                     Apply changes
                   </Button>
-                </Grid.Column>
+                </div>
               </Grid.Row>
             </Grid>
           </Modal.Actions>
         </Modal>
       )}
+      <Webmap data={intValue} editMode={true} />
     </FormFieldWrapper>
   );
 };

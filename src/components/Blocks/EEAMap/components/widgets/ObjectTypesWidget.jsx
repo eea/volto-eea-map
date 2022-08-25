@@ -20,7 +20,7 @@ export const ObjectTypesWidget = (props) => {
   const [activeTab, setActiveTab] = React.useState(
     defaultActiveTab > -1 ? defaultActiveTab : 0,
   );
-
+  console.log(device, 'dev');
   const createTab = ({ schema, id, icon }, index) => {
     return {
       menuItem: () => (

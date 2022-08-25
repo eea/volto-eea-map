@@ -151,10 +151,12 @@ const LayerSelectWidget = (props) => {
   const handleChangeServiceUrl = (value) => {
     setServiceUrlError('');
     setCheckColor('');
-    setServiceUrl(value);
     setAvailableLayers('');
     setBuiltQuery('');
     setSelectedLayer('');
+    setMapData('');
+
+    setServiceUrl(value);
   };
 
   const handleReset = () => {
@@ -164,8 +166,8 @@ const LayerSelectWidget = (props) => {
     setAvailableLayers(available_layers);
     setBuiltQuery('');
     setSelectedLayer(layer);
+    setMapData(map_data);
   };
-
   return (
     <div
       style={{
@@ -176,6 +178,7 @@ const LayerSelectWidget = (props) => {
         <h5 style={{ padding: '0', margin: '15px 0px 5px 0px' }}>
           Service URL
         </h5>
+
         <Grid.Row>
           <Input
             type="text"
@@ -215,6 +218,14 @@ const LayerSelectWidget = (props) => {
               />
             </Button>
           </Grid.Row>
+        )}
+        {mapData && mapData.mapName && (
+          <>
+            <h5 style={{ padding: '0', margin: '15px 0px 5px 0px' }}>
+              Map name:
+            </h5>
+            <p>{mapData.mapName}</p>
+          </>
         )}
         {availableLayers && availableLayers.length > 0 && (
           <>
