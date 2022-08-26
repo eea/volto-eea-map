@@ -67,7 +67,13 @@ const View = (props) => {
       });
     }
     setMapData(altMapData);
-  }, [map_visualization, props.data, props.data_query, isEdit, enable_queries]);
+  }, [
+    map_visualization,
+    props.data.data_query_params,
+    props.data_query,
+    isEdit,
+    enable_queries,
+  ]);
 
   return (
     <div>
