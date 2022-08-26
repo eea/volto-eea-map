@@ -32,7 +32,7 @@ const VisualizationEditorWidget = (props) => {
   let schema = PanelsSchema({ data: dataForm });
 
   React.useEffect(() => {
-    if (!intValue.general) {
+    if (!intValue?.general) {
       setIntValue({
         ...intValue,
         general: {
@@ -42,7 +42,7 @@ const VisualizationEditorWidget = (props) => {
         },
       });
     }
-    if (!intValue.base) {
+    if (!intValue?.base) {
       setIntValue({
         ...intValue,
         base: {
@@ -50,6 +50,7 @@ const VisualizationEditorWidget = (props) => {
         },
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [intValue]);
 
   return (

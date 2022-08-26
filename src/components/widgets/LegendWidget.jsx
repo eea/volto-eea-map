@@ -78,18 +78,16 @@ const LegendWidget = (props) => {
   return (
     <>
       <div className="legend-container">
-        <h4
-          role="presentation"
-          className="legend-title"
-          onClick={() => setExpand(!expand)}
-        >
-          <Icon
-            name={expand ? downKeySVG : rightKeySVG}
-            title={expand ? 'Collapse' : 'Expand'}
-            size="17px"
-          />
-          Legend:
-        </h4>
+        <button className="legend-action" onClick={() => setExpand(!expand)}>
+          <h4 role="presentation" className="legend-title">
+            <Icon
+              name={expand ? downKeySVG : rightKeySVG}
+              title={expand ? 'Collapse' : 'Expand'}
+              size="17px"
+            />
+            Legend:
+          </h4>
+        </button>
         <Grid columns={legendColumns}>
           {(!map_layers || map_layers.length === 0) && (
             <p>

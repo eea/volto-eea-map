@@ -127,7 +127,6 @@
   width: fit-content;
   align-items: center;
   margin: 0 !important;
-  cursor: pointer;
 }
 
 .data-param-title {
@@ -172,6 +171,13 @@
 
 .extra-view-external-button {
   color: inherit;
+}
+
+.legend-action {
+  padding: 10px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
 }
 
 @keyframes fadeDown {

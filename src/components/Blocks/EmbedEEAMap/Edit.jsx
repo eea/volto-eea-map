@@ -12,6 +12,8 @@ import { Schema } from './Schema';
 import { addPrivacyProtectionToSchema } from '@eeacms/volto-embed';
 import '../../../styles/map.css';
 
+import _ from 'lodash';
+
 const Edit = (props) => {
   const { block, data, onChangeBlock, selected, id } = props;
   const schema = React.useMemo(() => Schema(props), [props]);
@@ -21,15 +23,17 @@ const Edit = (props) => {
     //    eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data.vis_url]);
   React.useEffect(() => {
-    const diffParams = props.data_query !== data.data_query_params;
-    if (diffParams || !data.data_query_params) {
+    if (
+      !data.data_query_params ||
+      !_.isEqual(props.data_query, data.data_query_params)
+    ) {
       onChangeBlock(block, {
         ...data,
         data_query_params: props.data_query,
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.data_query, block, data]);
+  }, [props.data_query, block, data.data_query_params]);
 
   return (
     <div>
@@ -55,9 +59,8 @@ const Edit = (props) => {
 export default compose(
   connect(
     (state, props) => ({
+      block_data: state.content.data,
       data_query: state.content.data.data_query,
-      data_provenance:
-        state.content.subrequests?.[props.id]?.data?.data_provenance,
     }),
     {
       getContent,
