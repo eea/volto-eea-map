@@ -4,6 +4,8 @@ import { Input, Select, Button, Grid } from 'semantic-ui-react';
 import { QueryBuilder } from 'react-querybuilder';
 import 'react-querybuilder/dist/query-builder.css';
 
+import RichTextWidget from 'volto-slate/widgets/RichTextWidget';
+
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
@@ -14,7 +16,7 @@ import closeSVG from '@plone/volto/icons/clear.svg';
 import aheadSVG from '@plone/volto/icons/ahead.svg';
 import resetSVG from '@plone/volto/icons/reset.svg';
 
-import { fetchArcgisData } from '../../utils';
+import { fetchArcGISData } from '../../utils';
 
 const LayerSelectWidget = (props) => {
   const { onChange, id, data_query } = props;
@@ -28,6 +30,7 @@ const LayerSelectWidget = (props) => {
     layer,
     fields = [],
     query = '',
+    description = '',
   } = value;
 
   const [mapData, setMapData] = React.useState(map_data);
@@ -35,6 +38,7 @@ const LayerSelectWidget = (props) => {
   const [serviceUrlError, setServiceUrlError] = React.useState('');
   const [serviceUrl, setServiceUrl] = React.useState(map_service_url);
   const [selectedLayer, setSelectedLayer] = React.useState(layer);
+
   const [availableLayers, setAvailableLayers] = React.useState(
     available_layers,
   );
@@ -44,7 +48,7 @@ const LayerSelectWidget = (props) => {
   const handleServiceUrlCheck = async () => {
     // fetch url, save it, populate layers options
     try {
-      let mapData = await fetchArcgisData(serviceUrl);
+      let mapData = await fetchArcGISData(serviceUrl);
       setCheckColor('green');
       setMapData(mapData);
       setServiceUrlError('');
@@ -61,6 +65,7 @@ const LayerSelectWidget = (props) => {
         map_service_url: serviceUrl,
         available_layers: availableLayers,
         map_data: mapData,
+        description,
       });
     } catch (e) {
       setCheckColor('youtube');
@@ -119,7 +124,7 @@ const LayerSelectWidget = (props) => {
 
   const handleLayerFetch = async (service_url, id) => {
     try {
-      let fullLayer = await fetchArcgisData(`${service_url}/${id}`);
+      let fullLayer = await fetchArcGISData(`${service_url}/${id}`);
       return fullLayer;
     } catch (e) {}
   };
@@ -148,13 +153,24 @@ const LayerSelectWidget = (props) => {
     }
   };
 
+  const handleChangeDescription = (val) => {
+    if (val) {
+      onChange(id, {
+        ...value,
+        description: val,
+      });
+    }
+  };
+
   const handleChangeServiceUrl = (value) => {
     setServiceUrlError('');
     setCheckColor('');
-    setServiceUrl(value);
     setAvailableLayers('');
     setBuiltQuery('');
     setSelectedLayer('');
+    setMapData('');
+
+    setServiceUrl(value);
   };
 
   const handleReset = () => {
@@ -164,8 +180,8 @@ const LayerSelectWidget = (props) => {
     setAvailableLayers(available_layers);
     setBuiltQuery('');
     setSelectedLayer(layer);
+    setMapData(map_data);
   };
-
   return (
     <div
       style={{
@@ -173,52 +189,71 @@ const LayerSelectWidget = (props) => {
       }}
     >
       <Grid>
-        <h5 style={{ padding: '0', margin: '15px 0px 5px 0px' }}>
-          Service URL
-        </h5>
-        <Grid.Row>
-          <Input
-            type="text"
-            onChange={(e, { value }) => handleChangeServiceUrl(value)}
-            style={{ width: '100%' }}
-            error={serviceUrlError}
-            value={serviceUrl}
-          ></Input>
+        <div className="spaced-row">
+          <Grid.Row stretched>
+            <h5 style={{ padding: '0', margin: '15px 0px 5px 0px' }}>
+              Service URL
+            </h5>
+          </Grid.Row>
 
-          <span style={{ fontSize: '12px', color: 'darkred' }}>
-            {serviceUrlError.error}
-          </span>
-        </Grid.Row>
-        {serviceUrl && (
           <Grid.Row>
-            {serviceUrl !== map_service_url && (
+            <Input
+              type="text"
+              onChange={(e, { value }) => handleChangeServiceUrl(value)}
+              style={{ width: '100%' }}
+              error={serviceUrlError}
+              value={serviceUrl}
+            ></Input>
+
+            <span style={{ fontSize: '12px', color: 'darkred' }}>
+              {serviceUrlError.error}
+            </span>
+          </Grid.Row>
+          {serviceUrl && (
+            <Grid.Row style={{ display: 'flex' }}>
+              {serviceUrl !== map_service_url && (
+                <Button
+                  size="small"
+                  compact
+                  className="layer-reset-button"
+                  onClick={handleReset}
+                >
+                  <Icon name={resetSVG} title="Reset" size="20px" />
+                </Button>
+              )}
               <Button
                 size="small"
+                color={checkColor}
                 compact
-                className="layer-reset-button"
-                onClick={handleReset}
+                className="layer-check-button"
+                onClick={handleServiceUrlCheck}
               >
-                <Icon name={resetSVG} title="Reset" size="20px" />
+                <Icon
+                  name={serviceUrlError ? closeSVG : checkSVG}
+                  title="Submit"
+                  size="20px"
+                />
               </Button>
-            )}
-            <Button
-              size="small"
-              color={checkColor}
-              compact
-              className="layer-check-button"
-              onClick={handleServiceUrlCheck}
-            >
-              <Icon
-                name={serviceUrlError ? closeSVG : checkSVG}
-                title="Submit"
-                size="20px"
-              />
-            </Button>
-          </Grid.Row>
+            </Grid.Row>
+          )}
+        </div>
+        {mapData && mapData.mapName && (
+          <div className="spaced-row">
+            <Grid.Row>
+              <h5 style={{ padding: '0', margin: '15px 0px 5px 0px' }}>
+                Map name:
+              </h5>
+              <p>{mapData.mapName}</p>
+            </Grid.Row>
+          </div>
         )}
         {availableLayers && availableLayers.length > 0 && (
-          <>
-            <h5 style={{ padding: '0', margin: '15px 0px 5px 0px' }}>Layer</h5>
+          <div className="spaced-row">
+            <Grid.Row>
+              <h5 style={{ padding: '0', margin: '15px 0px 5px 0px' }}>
+                Layer
+              </h5>
+            </Grid.Row>
             <Grid.Row>
               <Select
                 onChange={(e, { value }) => handleSelectLayer(value)}
@@ -228,10 +263,31 @@ const LayerSelectWidget = (props) => {
                 value={selectedLayer}
               />
             </Grid.Row>
-          </>
+          </div>
+        )}
+        {availableLayers && availableLayers.length > 0 && (
+          <div className="spaced-row">
+            <Grid.Row stretched>
+              <h5 style={{ padding: '0', margin: '15px 0px 5px 0px' }}>
+                Description
+              </h5>
+            </Grid.Row>
+            <Grid.Row stretched>
+              <div className="map-layer-description-field">
+                <RichTextWidget
+                  title="description"
+                  onChange={(name, value) => {
+                    handleChangeDescription(value);
+                  }}
+                  value={value.description}
+                  placeholder="Set Description"
+                />
+              </div>
+            </Grid.Row>
+          </div>
         )}
         {availableLayers && fields && fields.length > 0 && (
-          <>
+          <div className="spaced-row">
             <h5 style={{ padding: '0', margin: '15px 0px 5px 0px' }}>
               Query Layer
             </h5>
@@ -246,7 +302,7 @@ const LayerSelectWidget = (props) => {
               />
             </Grid.Row>
             {builtQuery && (
-              <Grid.Row>
+              <Grid.Row style={{ display: 'flex' }}>
                 <Button
                   type="submit"
                   size="tiny"
@@ -275,7 +331,7 @@ const LayerSelectWidget = (props) => {
                 <strong>{field.alias}</strong> ({field.type})
               </p>
             ))}
-          </>
+          </div>
         )}
       </Grid>
     </div>

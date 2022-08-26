@@ -10,10 +10,10 @@ export const Schema = (props) => {
           'description',
           'height',
           'show_legend',
-          'show_download',
           'show_viewer',
           'show_sources',
-          'data_query_params',
+          'enable_queries',
+          ...(props.data.enable_queries ? ['data_query_params'] : []),
         ],
       },
     ],
@@ -32,22 +32,28 @@ export const Schema = (props) => {
       },
       show_sources: {
         title: 'Show sources',
+        description: 'Will show sources set in this page Data provenance',
         type: 'boolean',
       },
       show_legend: {
         title: 'Show legend',
         type: 'boolean',
       },
-      show_download: {
-        title: 'Show download',
+      show_viewer: {
+        title: 'Show API link',
+        description: 'Open the map on ArcGIS js service',
         type: 'boolean',
       },
-      show_viewer: {
-        title: 'Show web viewer',
+      enable_queries: {
+        title: 'Enable queries',
+        description:
+          'Will import Criteria from content-type and try to query map layer fields.',
         type: 'boolean',
       },
       data_query_params: {
-        title: 'Data query parameters',
+        title: 'Query parameters',
+        description:
+          'When using page level parameters to filter the map, please map those to the corresponding field name from the ArcGIS service',
         widget: 'data_query_widget',
       },
     },

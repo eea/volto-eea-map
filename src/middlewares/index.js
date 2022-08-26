@@ -1,4 +1,4 @@
-import { GET_MAP_VISUALIZATION } from '@eeacms/volto-eea-map/constants';
+import { GET_MAP_VISUALIZATION } from '../actionTypes';
 
 export const data_visualizations = (middlewares) => [
   (store) => (next) => (action) => {

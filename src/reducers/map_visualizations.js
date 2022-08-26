@@ -1,4 +1,4 @@
-import { GET_MAP_VISUALIZATION } from '@eeacms/volto-eea-map/constants';
+import { GET_MAP_VISUALIZATION } from '../actionTypes';
 
 const initialState = {
   data: {},

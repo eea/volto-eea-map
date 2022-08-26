@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React from 'react';
-import { withDeviceSize } from '@eeacms/volto-eea-map/hocs';
+import { withDeviceSize } from '../hocs';
 import { loadModules } from 'esri-loader';
 import { formatQuery } from 'react-querybuilder';
 
@@ -20,8 +20,8 @@ const Webmap = (props) => {
   const { editMode, height, id } = props;
 
   const data = React.useMemo(() => props.data || {}, [props.data]);
-  const device = React.useMemo(() => props.device || {}, [props.device]);
 
+  const device = React.useMemo(() => props.device || {}, [props.device]);
   const { base = {}, layers = {}, legend = {}, general = {} } = data;
 
   const { base_layer = '' } = base;
@@ -32,6 +32,7 @@ const Webmap = (props) => {
     layers.map_layers
       .filter(({ map_layer }) => map_layer)
       .map((l, i) => l.map_layer);
+
   const options = {
     css: true,
   };
@@ -86,34 +87,35 @@ const Webmap = (props) => {
       Zoom,
     } = modules;
     let layers =
-      map_layers &&
-      map_layers.length > 0 &&
-      map_layers
-        .filter(({ map_service_url, layer }) => map_service_url && layer)
-        .map(({ map_service_url, layer, query = '' }) => {
-          const url = `${map_service_url}/${layer}`;
-          let mapLayer;
-          switch (layer.type) {
-            case 'Raster Layer':
-              mapLayer = new MapImageLayer({
-                url: map_service_url,
-              });
-              break;
-            case 'Feature Layer':
-              mapLayer = new FeatureLayer({
-                url,
-                definitionExpression: query ? formatQuery(query, 'sql') : '',
-              });
-              break;
-            case 'Group Layer':
-              mapLayer = new GroupLayer({ url });
-              break;
-            default:
-              break;
-          }
-          return mapLayer;
-        });
-
+      map_layers && map_layers.length > 0
+        ? map_layers
+            .filter(({ map_service_url, layer }) => map_service_url && layer)
+            .map(({ map_service_url, layer, query = '' }) => {
+              const url = `${map_service_url}/${layer}`;
+              let mapLayer;
+              switch (layer.type) {
+                case 'Raster Layer':
+                  mapLayer = new MapImageLayer({
+                    url: map_service_url,
+                  });
+                  break;
+                case 'Feature Layer':
+                  mapLayer = new FeatureLayer({
+                    url,
+                    definitionExpression: query
+                      ? formatQuery(query, 'sql')
+                      : '',
+                  });
+                  break;
+                case 'Group Layer':
+                  mapLayer = new GroupLayer({ url });
+                  break;
+                default:
+                  break;
+              }
+              return mapLayer;
+            })
+        : [];
     const map = new Map({
       basemap: base_layer || 'hybrid',
       layers,
@@ -193,7 +195,7 @@ const Webmap = (props) => {
       });
     }
     return { view, map };
-  }, [modules, base_layer, map_layers, general, legend]);
+  }, [modules, data, data.layers, map_layers]);
 
   return (
     <div>

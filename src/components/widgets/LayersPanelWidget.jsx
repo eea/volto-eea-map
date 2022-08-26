@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from 'semantic-ui-react';
 import LayerSelectWidget from './LayerSelectWidget';
 
-const LayersPanel = ({ data, onChange, block }) => {
+const LayersPanelWidget = ({ data, onChange, block }) => {
   const map_layers = React.useMemo(() => data.map_layers || [], [
     data.map_layers,
   ]);
@@ -55,4 +55,4 @@ const LayersPanel = ({ data, onChange, block }) => {
   );
 };
 
-export default LayersPanel;
+export default LayersPanelWidget;

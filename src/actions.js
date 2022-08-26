@@ -1,4 +1,4 @@
-import { GET_MAP_VISUALIZATION } from './constants';
+import { GET_MAP_VISUALIZATION } from './actionTypes';
 
 export function getVisualization(path) {
   return {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Menu, Tab } from 'semantic-ui-react';
 import { ObjectWidget } from '@plone/volto/components';
-import { withDeviceSize } from '@eeacms/volto-eea-map/hocs';
+import { withDeviceSize } from '../../hocs';
 
 export const ObjectTypesWidget = (props) => {
   const {
@@ -20,7 +20,6 @@ export const ObjectTypesWidget = (props) => {
   const [activeTab, setActiveTab] = React.useState(
     defaultActiveTab > -1 ? defaultActiveTab : 0,
   );
-
   const createTab = ({ schema, id, icon }, index) => {
     return {
       menuItem: () => (
