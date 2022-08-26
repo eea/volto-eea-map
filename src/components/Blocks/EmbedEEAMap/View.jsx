@@ -67,13 +67,8 @@ const View = (props) => {
       });
     }
     setMapData(altMapData);
-  }, [
-    map_visualization,
-    props.data.data_query_params,
-    props.data_query,
-    isEdit,
-    enable_queries,
-  ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [map_visualization, props.data, props.data_query, isEdit, enable_queries]);
 
   return (
     <div>
@@ -102,7 +97,6 @@ export default compose(
   connect(
     (state, props) => ({
       data_query: state.content.data.data_query,
-      state,
       data_provenance:
         state.content.subrequests?.[props.id]?.data?.data_provenance,
       map_visualization:
