@@ -6,22 +6,19 @@ import { compose } from 'redux';
 import { PrivacyProtection } from '@eeacms/volto-embed';
 
 import { getContent } from '@plone/volto/actions';
-import { getVisualization } from '../../../actions';
 import Webmap from '../../Webmap';
 import ExtraViews from '../../ExtraViews';
 
 const View = (props) => {
-  const { data, viz_content = {}, id, isEdit, map_visualization } = props || {};
+  const { data, id, isEdit, map_visualization = {}, data_provenance = {} } =
+    props || {};
   const { height = '', vis_url = '', enable_queries } = data;
-
-  const { data_provenance = {} } = viz_content || {};
 
   const [mapData, setMapData] = React.useState(map_visualization);
 
   React.useEffect(() => {
     if (vis_url) {
       props.getContent(vis_url, null, id);
-      props.getVisualization(vis_url);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [vis_url, enable_queries]);
@@ -72,14 +69,7 @@ const View = (props) => {
       });
     }
     setMapData(altMapData);
-  }, [
-    map_visualization,
-    props.data,
-    props.data_query,
-    viz_content,
-    isEdit,
-    enable_queries,
-  ]);
+  }, [map_visualization, props.data, props.data_query, isEdit, enable_queries]);
 
   return (
     <div>
@@ -109,13 +99,13 @@ export default compose(
     (state, props) => ({
       data_query: state.content.data.data_query,
       state,
+      data_provenance:
+        state.content.subrequests?.[props.id]?.data?.data_provenance,
       map_visualization:
-        state.map_visualizations?.data[props.data.vis_url]?.data,
-      viz_content: state.content.subrequests?.[props.id]?.data,
+        state.content.subrequests?.[props.id]?.data?.map_visualization_data,
     }),
     {
       getContent,
-      getVisualization,
     },
   ),
 )(View);
