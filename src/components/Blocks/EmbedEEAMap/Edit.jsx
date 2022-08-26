@@ -33,7 +33,7 @@ const Edit = (props) => {
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.data_query, block, data]);
+  }, [props.data_query, block, data.data_query_params]);
 
   return (
     <div>
@@ -59,6 +59,7 @@ const Edit = (props) => {
 export default compose(
   connect(
     (state, props) => ({
+      block_data: state.content.data,
       data_query: state.content.data.data_query,
     }),
     {
