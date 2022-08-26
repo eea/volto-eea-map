@@ -189,61 +189,71 @@ const LayerSelectWidget = (props) => {
       }}
     >
       <Grid>
-        <h5 style={{ padding: '0', margin: '15px 0px 5px 0px' }}>
-          Service URL
-        </h5>
+        <div className="spaced-row">
+          <Grid.Row stretched>
+            <h5 style={{ padding: '0', margin: '15px 0px 5px 0px' }}>
+              Service URL
+            </h5>
+          </Grid.Row>
 
-        <Grid.Row>
-          <Input
-            type="text"
-            onChange={(e, { value }) => handleChangeServiceUrl(value)}
-            style={{ width: '100%' }}
-            error={serviceUrlError}
-            value={serviceUrl}
-          ></Input>
-
-          <span style={{ fontSize: '12px', color: 'darkred' }}>
-            {serviceUrlError.error}
-          </span>
-        </Grid.Row>
-        {serviceUrl && (
           <Grid.Row>
-            {serviceUrl !== map_service_url && (
+            <Input
+              type="text"
+              onChange={(e, { value }) => handleChangeServiceUrl(value)}
+              style={{ width: '100%' }}
+              error={serviceUrlError}
+              value={serviceUrl}
+            ></Input>
+
+            <span style={{ fontSize: '12px', color: 'darkred' }}>
+              {serviceUrlError.error}
+            </span>
+          </Grid.Row>
+          {serviceUrl && (
+            <Grid.Row style={{ display: 'flex' }}>
+              {serviceUrl !== map_service_url && (
+                <Button
+                  size="small"
+                  compact
+                  className="layer-reset-button"
+                  onClick={handleReset}
+                >
+                  <Icon name={resetSVG} title="Reset" size="20px" />
+                </Button>
+              )}
               <Button
                 size="small"
+                color={checkColor}
                 compact
-                className="layer-reset-button"
-                onClick={handleReset}
+                className="layer-check-button"
+                onClick={handleServiceUrlCheck}
               >
-                <Icon name={resetSVG} title="Reset" size="20px" />
+                <Icon
+                  name={serviceUrlError ? closeSVG : checkSVG}
+                  title="Submit"
+                  size="20px"
+                />
               </Button>
-            )}
-            <Button
-              size="small"
-              color={checkColor}
-              compact
-              className="layer-check-button"
-              onClick={handleServiceUrlCheck}
-            >
-              <Icon
-                name={serviceUrlError ? closeSVG : checkSVG}
-                title="Submit"
-                size="20px"
-              />
-            </Button>
-          </Grid.Row>
-        )}
+            </Grid.Row>
+          )}
+        </div>
         {mapData && mapData.mapName && (
-          <>
-            <h5 style={{ padding: '0', margin: '15px 0px 5px 0px' }}>
-              Map name:
-            </h5>
-            <p>{mapData.mapName}</p>
-          </>
+          <div className="spaced-row">
+            <Grid.Row>
+              <h5 style={{ padding: '0', margin: '15px 0px 5px 0px' }}>
+                Map name:
+              </h5>
+              <p>{mapData.mapName}</p>
+            </Grid.Row>
+          </div>
         )}
         {availableLayers && availableLayers.length > 0 && (
-          <>
-            <h5 style={{ padding: '0', margin: '15px 0px 5px 0px' }}>Layer</h5>
+          <div className="spaced-row">
+            <Grid.Row>
+              <h5 style={{ padding: '0', margin: '15px 0px 5px 0px' }}>
+                Layer
+              </h5>
+            </Grid.Row>
             <Grid.Row>
               <Select
                 onChange={(e, { value }) => handleSelectLayer(value)}
@@ -253,14 +263,16 @@ const LayerSelectWidget = (props) => {
                 value={selectedLayer}
               />
             </Grid.Row>
-          </>
+          </div>
         )}
         {availableLayers && availableLayers.length > 0 && (
-          <>
-            <h5 style={{ padding: '0', margin: '15px 0px 5px 0px' }}>
-              Description
-            </h5>
-            <Grid.Row>
+          <div className="spaced-row">
+            <Grid.Row stretched>
+              <h5 style={{ padding: '0', margin: '15px 0px 5px 0px' }}>
+                Description
+              </h5>
+            </Grid.Row>
+            <Grid.Row stretched>
               <div className="map-layer-description-field">
                 <RichTextWidget
                   title="description"
@@ -272,10 +284,10 @@ const LayerSelectWidget = (props) => {
                 />
               </div>
             </Grid.Row>
-          </>
+          </div>
         )}
         {availableLayers && fields && fields.length > 0 && (
-          <>
+          <div className="spaced-row">
             <h5 style={{ padding: '0', margin: '15px 0px 5px 0px' }}>
               Query Layer
             </h5>
@@ -290,7 +302,7 @@ const LayerSelectWidget = (props) => {
               />
             </Grid.Row>
             {builtQuery && (
-              <Grid.Row>
+              <Grid.Row style={{ display: 'flex' }}>
                 <Button
                   type="submit"
                   size="tiny"
@@ -319,7 +331,7 @@ const LayerSelectWidget = (props) => {
                 <strong>{field.alias}</strong> ({field.type})
               </p>
             ))}
-          </>
+          </div>
         )}
       </Grid>
     </div>

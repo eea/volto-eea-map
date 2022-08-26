@@ -119,6 +119,13 @@
   margin: 10px 0;
 }
 
+.spaced-row {
+  width: 100%;
+  /* border-bottom: 1px solid lightgray; */
+
+  padding-bottom: 10px;
+}
+
 @keyframes fadeDown {
   from {
     opacity: 0;
