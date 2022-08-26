@@ -10,7 +10,7 @@ import BlockDataForm from '@plone/volto/components/manage/Form/BlockDataForm';
 import View from './View';
 import { Schema } from './Schema';
 import { addPrivacyProtectionToSchema } from '@eeacms/volto-embed';
-import './styles/map.css';
+import '../../../styles/map.css';
 
 const Edit = (props) => {
   const { block, data, onChangeBlock, selected, id } = props;

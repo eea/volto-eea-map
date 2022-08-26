@@ -1,16 +1,13 @@
-import {
-  // EEAMapEdit,
-  // EEAMapView,
-  EmbedMapView,
-  EmbedMapEdit,
-} from '@eeacms/volto-eea-map/components';
+import EmbedMapView from './components/Blocks/EmbedEEAMap/View';
+import EmbedMapEdit from './components/Blocks/EmbedEEAMap/Edit';
+
 import world from '@plone/volto/icons/world.svg';
-import DataQueryWidget from './components/Blocks/EEAMap/components/widgets/DataQueryWidget';
-import LayerSelectWidget from './components/Blocks/EEAMap/components/widgets/LayerSelectWidget';
-import MapEditorWidget from './components/Blocks/EEAMap/components/widgets/MapEditorWidget';
-import ObjectTypesWidget from './components/Blocks/EEAMap/components/widgets/ObjectTypesWidget';
-import VisualizationEditorWidget from './components/Blocks/EEAMap/components/widgets/VisualizationEditorWidget';
-import VisualizationView from './components/Blocks/EEAMap/components/widgets/VisualizationView';
+import DataQueryWidget from './components/widgets/DataQueryWidget';
+import LayerSelectWidget from './components/widgets/LayerSelectWidget';
+import MapEditorWidget from './components/widgets/MapEditorWidget';
+import ObjectTypesWidget from './components/widgets/ObjectTypesWidget';
+import VisualizationEditorWidget from './components/visualization/VisualizationEditorWidget';
+import VisualizationView from './components/visualization/VisualizationView';
 
 import { data_visualizations } from './middlewares';
 import * as addonReducers from './reducers';

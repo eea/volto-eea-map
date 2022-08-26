@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from 'semantic-ui-react';
 import { Icon, UniversalLink } from '@plone/volto/components';
 
-import LegendWidget from './LegendWidget';
+import LegendWidget from './widgets/LegendWidget';
 import { serializeNodes } from 'volto-slate/editor/render';
 
 import worldSVG from '@plone/volto/icons/world.svg';

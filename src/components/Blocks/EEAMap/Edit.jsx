@@ -11,7 +11,7 @@ import View from './View';
 import { getContent } from '@plone/volto/actions';
 
 import { addPrivacyProtectionToSchema } from '@eeacms/volto-embed';
-import './styles/map.css';
+import '../../../styles/map.css';
 
 const Edit = (props) => {
   const { block, data, onChangeBlock, selected, id } = props;

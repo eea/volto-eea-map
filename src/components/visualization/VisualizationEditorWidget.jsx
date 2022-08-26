@@ -1,9 +1,10 @@
 import React from 'react';
 import { Modal, Button, Grid } from 'semantic-ui-react';
-import Webmap from '../Webmap';
+
 import { FormFieldWrapper, InlineForm } from '@plone/volto/components';
 
 import PanelsSchema from './panelsSchema';
+import Webmap from '../Webmap';
 
 const VisualizationEditorWidget = (props) => {
   const [open, setOpen] = React.useState(false);

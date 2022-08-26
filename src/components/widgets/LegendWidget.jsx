@@ -1,20 +1,20 @@
 import React from 'react';
 import { Grid } from 'semantic-ui-react';
-import { fetchArcgisData } from '../../utils';
+import { fetchArcGISData, setLegendColumns } from '../../utils';
 import { Icon } from '@plone/volto/components';
 import { serializeNodes } from 'volto-slate/editor/render';
 
 import rightKeySVG from '@plone/volto/icons/right-key.svg';
 import downKeySVG from '@plone/volto/icons/down-key.svg';
+import { withDeviceSize } from '../../hocs';
 
 const LayerLegend = ({ data }) => {
-  const [expand, setExpand] = React.useState(true);
   const [legendRows, setLegendRows] = React.useState([]);
 
   const { id, name } = data.layer || {};
 
   const fetchLegend = async (url, activeLayerID) => {
-    let legendData = await fetchArcgisData(url);
+    let legendData = await fetchArcGISData(url);
 
     const { layers = [] } = legendData;
     const selectedLayer = layers.filter((l, i) => l.layerId === activeLayerID);
@@ -28,28 +28,18 @@ const LayerLegend = ({ data }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, data.map_service_url]);
   return (
-    <div style={{ display: 'flex', flexDirection: 'column' }}>
+    <Grid.Column>
       <h5
-        role="presentation"
-        onClick={() => setExpand(!expand)}
         style={{
           marginTop: '15px',
           marginBottom: '5px',
-          cursor: 'pointer',
-          display: 'flex',
         }}
       >
-        <Icon
-          name={expand ? downKeySVG : rightKeySVG}
-          title={expand ? 'Collapse' : 'Expand'}
-          size="17px"
-        />
         {name}
       </h5>
       {data.description && serializeNodes(data.description)}
       <div style={{ display: 'flex', flexDirection: 'column' }}>
-        {expand &&
-          legendRows.length > 0 &&
+        {legendRows.length > 0 &&
           legendRows.map((item, i) => {
             return (
               <span key={i} style={{ display: 'flex', alignItems: 'center' }}>
@@ -64,39 +54,61 @@ const LayerLegend = ({ data }) => {
             );
           })}
       </div>
-    </div>
+    </Grid.Column>
   );
 };
 
 const LegendWidget = (props) => {
   const data = React.useMemo(() => props.data, [props.data]);
-  const { layers = {} } = data;
-  const { map_layers = [] } = layers;
+  const { device = '' } = props;
 
+  const [expand, setExpand] = React.useState(true);
+
+  const { layers = {} } = data;
+  const map_layers =
+    layers &&
+    layers.map_layers &&
+    layers.map_layers.length > 0 &&
+    layers.map_layers.length > 3
+      ? layers?.map_layers.slice(0, 3)
+      : layers?.map_layers;
+
+  const legendColumns =
+    map_layers && setLegendColumns(map_layers.length, device);
   return (
     <>
-      <div style={{ margin: '10px 0' }}>
-        <Grid>
-          <Grid.Row>
-            <Grid.Column>
-              <h4>Legend:</h4>
-              {map_layers.length === 0 && (
-                <p>
-                  No layer found for legend. Please add a map layer from editor.
-                </p>
-              )}
-
+      <div className="legend-container">
+        <h4
+          role="presentation"
+          className="legend-title"
+          onClick={() => setExpand(!expand)}
+        >
+          <Icon
+            name={expand ? downKeySVG : rightKeySVG}
+            title={expand ? 'Collapse' : 'Expand'}
+            size="17px"
+          />
+          Legend:
+        </h4>
+        <Grid columns={legendColumns}>
+          {(!map_layers || map_layers.length === 0) && (
+            <p>
+              No layer found for legend. Please add a map layer from editor.
+            </p>
+          )}
+          {expand && (
+            <Grid.Row divided>
               {map_layers &&
                 map_layers.length > 0 &&
                 map_layers.map((l, i) => (
                   <LayerLegend key={i} data={l.map_layer} />
                 ))}
-            </Grid.Column>
-          </Grid.Row>
+            </Grid.Row>
+          )}
         </Grid>
       </div>
     </>
   );
 };
 
-export default React.memo(LegendWidget);
+export default withDeviceSize(React.memo(LegendWidget));

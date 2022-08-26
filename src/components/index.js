@@ -1,7 +1,7 @@
-import EEAMapView from './Blocks/EEAMap/View';
-import EEAMapEdit from './Blocks/EEAMap/Edit';
+export EEAMapView from './Blocks/EEAMap/View';
+export EEAMapEdit from './Blocks/EEAMap/Edit';
+export Webmap from './Webmap';
+export ExtraViews from './ExtraViews';
 
-import EmbedMapView from './Blocks/EmbedEEAMap/View';
-import EmbedMapEdit from './Blocks/EmbedEEAMap/Edit';
-
-export { EEAMapEdit, EEAMapView, EmbedMapView, EmbedMapEdit };
+export EmbedMapView from './Blocks/EmbedEEAMap/View';
+export EmbedMapEdit from './Blocks/EmbedEEAMap/Edit';

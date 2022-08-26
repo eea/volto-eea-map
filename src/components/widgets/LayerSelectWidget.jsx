@@ -16,7 +16,7 @@ import closeSVG from '@plone/volto/icons/clear.svg';
 import aheadSVG from '@plone/volto/icons/ahead.svg';
 import resetSVG from '@plone/volto/icons/reset.svg';
 
-import { fetchArcgisData } from '../../utils';
+import { fetchArcGISData } from '../../utils';
 
 const LayerSelectWidget = (props) => {
   const { onChange, id, data_query } = props;
@@ -48,7 +48,7 @@ const LayerSelectWidget = (props) => {
   const handleServiceUrlCheck = async () => {
     // fetch url, save it, populate layers options
     try {
-      let mapData = await fetchArcgisData(serviceUrl);
+      let mapData = await fetchArcGISData(serviceUrl);
       setCheckColor('green');
       setMapData(mapData);
       setServiceUrlError('');
@@ -124,7 +124,7 @@ const LayerSelectWidget = (props) => {
 
   const handleLayerFetch = async (service_url, id) => {
     try {
-      let fullLayer = await fetchArcgisData(`${service_url}/${id}`);
+      let fullLayer = await fetchArcGISData(`${service_url}/${id}`);
       return fullLayer;
     } catch (e) {}
   };

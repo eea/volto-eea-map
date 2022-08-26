@@ -4,10 +4,11 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 
 import { PrivacyProtection } from '@eeacms/volto-embed';
-import Webmap from '../EEAMap/components/Webmap';
-import ExtraViews from '../EEAMap/components/widgets/ExtraViews';
+
 import { getContent } from '@plone/volto/actions';
 import { getVisualization } from '../../../actions';
+import Webmap from '../../Webmap';
+import ExtraViews from '../../ExtraViews';
 
 const View = (props) => {
   const { data, viz_content = {}, id, isEdit, map_visualization } = props || {};

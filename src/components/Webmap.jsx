@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React from 'react';
-import { withDeviceSize } from '@eeacms/volto-eea-map/hocs';
+import { withDeviceSize } from '../hocs';
 import { loadModules } from 'esri-loader';
 import { formatQuery } from 'react-querybuilder';
 

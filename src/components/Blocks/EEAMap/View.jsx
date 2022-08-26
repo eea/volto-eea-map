@@ -3,8 +3,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
-import Webmap from './components/Webmap';
-import ExtraViews from './components/widgets/ExtraViews';
+import Webmap from '../../Webmap';
+import ExtraViews from '../../ExtraViews';
+
 import { PrivacyProtection } from '@eeacms/volto-embed';
 import { getContent } from '@plone/volto/actions';
 
