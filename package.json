@@ -21,7 +21,7 @@
     "volto-slate"
   ],
   "dependencies": {
-    "@eeacms/volto-embed": "^2.0.1",
+    "@eeacms/volto-embed": "4.0.2",
     "@plone/scripts": "*",
     "esri-loader": "3.5.0",
     "react-querybuilder": "4.2.3",
