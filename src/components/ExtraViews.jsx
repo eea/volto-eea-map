@@ -1,11 +1,11 @@
 import React from 'react';
 import { Button } from 'semantic-ui-react';
-import { Icon, UniversalLink } from '@plone/volto/components';
+import { UniversalLink } from '@plone/volto/components';
 
 import LegendWidget from './widgets/LegendWidget';
 import { serializeNodes } from 'volto-slate/editor/render';
 
-import worldSVG from '@plone/volto/icons/world.svg';
+import codeSVG from '../static/code-line.svg';
 
 const ExtraViews = ({ data }) => {
   const {
@@ -33,7 +33,12 @@ const ExtraViews = ({ data }) => {
             >
               <Button size="tiny">
                 <Button.Content>
-                  <Icon name={worldSVG} title="Show API link" size="25px" />
+                  <img
+                    className="extra-view-external-button"
+                    src={codeSVG}
+                    alt=""
+                    title="Show API link"
+                  />
                 </Button.Content>
               </Button>
             </a>
@@ -48,13 +53,24 @@ const ExtraViews = ({ data }) => {
           data_provenance.data.length > 0 ? (
             <div>
               <h3>Sources:</h3>
-              {data_provenance.data.map((data, i) => (
-                <div key={i}>
-                  <p className="map_source_title">{data.title}</p>
-                  <p className="map_source_description">{data.organisation}</p>
-                  <UniversalLink href={data.link}>{data.link} </UniversalLink>
-                </div>
-              ))}
+              <ul>
+                {data_provenance.data.map((param, i) => (
+                  <li key={i}>
+                    <div className="map_source_param_container">
+                      <UniversalLink
+                        className="map_source_title"
+                        href={param.link}
+                      >
+                        {param.title}
+                      </UniversalLink>
+                      ,
+                      <span className="map_source_description">
+                        {param.organisation}
+                      </span>
+                    </div>
+                  </li>
+                ))}
+              </ul>
             </div>
           ) : (
             <p>Data provenance is not set for visualization used or page</p>
