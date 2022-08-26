@@ -50,6 +50,7 @@ const VisualizationEditorWidget = (props) => {
         },
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [intValue]);
 
   return (
