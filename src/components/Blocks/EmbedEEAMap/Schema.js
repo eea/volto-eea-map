@@ -32,6 +32,7 @@ export const Schema = (props) => {
       },
       show_sources: {
         title: 'Show sources',
+        description: 'Will show sources set in this page Data provenance',
         type: 'boolean',
       },
       show_legend: {
@@ -40,6 +41,7 @@ export const Schema = (props) => {
       },
       show_viewer: {
         title: 'Show API link',
+        description: 'Open the map on ArcGIS js service',
         type: 'boolean',
       },
       enable_queries: {
@@ -51,7 +53,7 @@ export const Schema = (props) => {
       data_query_params: {
         title: 'Query parameters',
         description:
-          'Detected parameters from content-type Criteria. Layers fields will be automatically queried by criteria title. If Alias is set on a Criteria, it will try to match the field with Alias.',
+          'When using page level parameters to filter the map, please map those to the corresponding field name from the ArcGIS service',
         widget: 'data_query_widget',
       },
     },

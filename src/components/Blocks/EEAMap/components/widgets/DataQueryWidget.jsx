@@ -26,17 +26,12 @@ const DataQueryWidget = (props) => {
               <Accordion.Content active={true}>
                 <Segment>
                   <p className="data-param-title">
-                    <strong> Parameter: </strong>
-                    {param.i}
-                  </p>
-                  <p className="data-param-values">
-                    <strong>Values:</strong> {param.v.join(',')}
+                    <strong>{param.i}:</strong> {param.v.join(', ')}
                   </p>
                   <Field
                     id={i}
-                    title="Alias"
+                    title="Map to"
                     type="string"
-                    description={`Will try to match Layer field name with Alias to apply query. If it's not set, it will try to match with ${param.i} (Parameter)`}
                     onChange={onChangeAlias}
                     value={param?.alias}
                   />
