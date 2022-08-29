@@ -10,7 +10,7 @@ import Webmap from '../../Webmap';
 import ExtraViews from '../../ExtraViews';
 
 const View = (props) => {
-  const { data, id, isEdit, map_visualization = {}, data_provenance = {} } =
+  const { data, id, isEdit, map_visualization = '', data_provenance = {} } =
     props || {};
   const { height = '', vis_url = '', enable_queries } = data;
 
@@ -24,13 +24,13 @@ const View = (props) => {
   }, [vis_url, enable_queries]);
 
   React.useEffect(() => {
+    var altMapData = { ...map_visualization };
     const query_params = isEdit
       ? props.data?.data_query_params
       : props?.data_query;
-    var altMapData = { ...map_visualization };
-
     if (
       enable_queries &&
+      map_visualization &&
       query_params &&
       query_params.length > 0 &&
       altMapData.layers &&
@@ -38,6 +38,7 @@ const View = (props) => {
       altMapData.layers.map_layers.length > 0
     ) {
       let rules = [];
+
       altMapData.layers.map_layers.forEach((l, j) => {
         query_params.forEach((param, i) => {
           const matchingFields =
