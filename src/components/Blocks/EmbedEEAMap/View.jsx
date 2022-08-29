@@ -24,7 +24,9 @@ const View = (props) => {
   }, [vis_url, enable_queries]);
 
   React.useEffect(() => {
-    const query_params = props?.data?.data_query_params;
+    const query_params = isEdit
+      ? props.data?.data_query_params
+      : props?.data_query;
     var altMapData = { ...map_visualization };
 
     if (

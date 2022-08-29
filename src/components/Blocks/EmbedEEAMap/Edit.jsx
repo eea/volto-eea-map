@@ -22,6 +22,7 @@ const Edit = (props) => {
     props.getContent(data.vis_url, null, id);
     //    eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data.vis_url]);
+
   React.useEffect(() => {
     if (
       !data.data_query_params ||
