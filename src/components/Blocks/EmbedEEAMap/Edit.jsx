@@ -34,7 +34,7 @@ const Edit = (props) => {
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.data_query, block, data.data_query_params]);
+  }, [props.data_query, block, data]);
 
   return (
     <div>
