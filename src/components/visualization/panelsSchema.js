@@ -68,6 +68,7 @@ const GeneralSchema = ({ data = {} }) => {
         fields: [
           'print_position',
           'zoom_position',
+          'scalebar',
           'centerOnExtent',
           ...(!centerOnExtent ? ['zoom_level', 'long', 'lat'] : []),
         ],
@@ -79,6 +80,12 @@ const GeneralSchema = ({ data = {} }) => {
         type: 'boolean',
         description:
           'This will override latitude/longitude/zoom level and will lock zoom/moving the map.',
+      },
+      scalebar: {
+        title: 'Scalebar',
+        choices: ['metric', 'non-metric', 'dual'].map((n) => {
+          return [n, n];
+        }),
       },
       zoom_position: {
         title: 'Zoom position',

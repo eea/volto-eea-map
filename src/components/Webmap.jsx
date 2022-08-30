@@ -14,6 +14,7 @@ const MODULES = [
   'esri/widgets/Expand',
   'esri/widgets/Print',
   'esri/widgets/Zoom',
+  'esri/widgets/ScaleBar',
 ];
 
 const Webmap = (props) => {
@@ -56,6 +57,7 @@ const Webmap = (props) => {
           Expand,
           Print,
           Zoom,
+          ScaleBar,
         ] = modules;
         setModules({
           Map,
@@ -67,6 +69,7 @@ const Webmap = (props) => {
           Expand,
           Print,
           Zoom,
+          ScaleBar,
         });
       });
     }
@@ -85,6 +88,7 @@ const Webmap = (props) => {
       Expand,
       Print,
       Zoom,
+      ScaleBar,
     } = modules;
     let layers =
       map_layers && map_layers.length > 0
@@ -131,6 +135,16 @@ const Webmap = (props) => {
         components: ['attribution'],
       },
     });
+    if (general && general.scalebar) {
+      const scaleBarWidget = new ScaleBar({
+        view: view,
+        unit: general.scalebar,
+      });
+
+      view.ui.add(scaleBarWidget, {
+        position: 'bottom-left',
+      });
+    }
 
     if (layers && layers[0] && general && general.centerOnExtent) {
       const firstLayer = layers[0];
