@@ -22,7 +22,7 @@ const ExtraViews = ({ data }) => {
         <div
           style={{ display: 'flex', justifyContent: 'end', margin: '10px 0' }}
         >
-          {show_viewer && (
+          {/* {show_viewer && (
             <a
               target="_blank"
               rel="noreferrer"
@@ -34,7 +34,7 @@ const ExtraViews = ({ data }) => {
               <Button size="tiny">
                 <Button.Content>
                   <img
-                    className="extra-view-external-button"
+                    className="extra-view-external-icon"
                     src={codeSVG}
                     alt=""
                     title="Show API link"
@@ -42,10 +42,12 @@ const ExtraViews = ({ data }) => {
                 </Button.Content>
               </Button>
             </a>
-          )}
+          )} */}
         </div>
       )}
-      {show_legend && map_data && <LegendWidget data={map_data} />}
+      {show_legend && map_data && (
+        <LegendWidget data={map_data} show_viewer={show_viewer} />
+      )}
       {show_sources && (
         <>
           {data_provenance &&
