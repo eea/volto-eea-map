@@ -169,12 +169,17 @@
   display: flex;
 }
 
-.extra-view-external-button {
+.extra-view-external-icon {
   color: inherit;
+  font-size: 10px;
+}
+
+.extra-view-external-button {
+  padding: 2px 15px !important;
 }
 
 .legend-action {
-  padding: 10px;
+  padding: 10px 0;
   border: none;
   background: transparent;
   cursor: pointer;

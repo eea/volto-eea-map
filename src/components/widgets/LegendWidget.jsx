@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid } from 'semantic-ui-react';
+import { Button, Grid } from 'semantic-ui-react';
 import { fetchArcGISData, setLegendColumns } from '../../utils';
 import { Icon } from '@plone/volto/components';
 import { serializeNodes } from 'volto-slate/editor/render';
@@ -8,10 +8,13 @@ import rightKeySVG from '@plone/volto/icons/right-key.svg';
 import downKeySVG from '@plone/volto/icons/down-key.svg';
 import { withDeviceSize } from '../../hocs';
 
-const LayerLegend = ({ data }) => {
+import codeSVG from '../../static/code-line.svg';
+
+const LayerLegend = ({ data, show_viewer }) => {
   const [legendRows, setLegendRows] = React.useState([]);
 
-  const { id, name } = data.layer || {};
+  const { map_service_url = '', layer = {} } = data;
+  const { id, name } = layer || {};
 
   const fetchLegend = async (url, activeLayerID) => {
     let legendData = await fetchArcGISData(url);
@@ -27,16 +30,40 @@ const LayerLegend = ({ data }) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, data.map_service_url]);
+
   return (
     <Grid.Column>
-      <h5
-        style={{
-          marginTop: '15px',
-          marginBottom: '5px',
-        }}
-      >
-        {name}
-      </h5>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <h5
+          style={{
+            marginTop: '15px',
+            marginBottom: '5px',
+          }}
+        >
+          {name}
+        </h5>
+        {show_viewer && map_service_url && (
+          <a
+            target="_blank"
+            rel="noreferrer"
+            title="Open ArcGIS Service location"
+            href={
+              `https://www.arcgis.com/home/webmap/viewer.html?url=` +
+              `${map_service_url}&source=sd`
+            }
+          >
+            <Button size="tiny" className="extra-view-external-button">
+              <Button.Content>
+                <img
+                  className="extra-view-external-icon"
+                  src={codeSVG}
+                  alt=""
+                />
+              </Button.Content>
+            </Button>
+          </a>
+        )}
+      </div>
       {data.description && serializeNodes(data.description)}
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         {legendRows.length > 0 &&
@@ -60,7 +87,7 @@ const LayerLegend = ({ data }) => {
 
 const LegendWidget = (props) => {
   const data = React.useMemo(() => props.data, [props.data]);
-  const { device = '' } = props;
+  const { device = '', show_viewer = false } = props;
 
   const [expand, setExpand] = React.useState(true);
 
@@ -79,14 +106,14 @@ const LegendWidget = (props) => {
     <>
       <div className="legend-container">
         <button className="legend-action" onClick={() => setExpand(!expand)}>
-          <h4 role="presentation" className="legend-title">
+          <h3 role="presentation" className="legend-title">
             <Icon
               name={expand ? downKeySVG : rightKeySVG}
               title={expand ? 'Collapse' : 'Expand'}
               size="17px"
             />
             Legend:
-          </h4>
+          </h3>
         </button>
         <Grid columns={legendColumns}>
           {(!map_layers || map_layers.length === 0) && (
@@ -99,7 +126,11 @@ const LegendWidget = (props) => {
               {map_layers &&
                 map_layers.length > 0 &&
                 map_layers.map((l, i) => (
-                  <LayerLegend key={i} data={l.map_layer} />
+                  <LayerLegend
+                    key={i}
+                    data={l.map_layer}
+                    show_viewer={show_viewer}
+                  />
                 ))}
             </Grid.Row>
           )}
