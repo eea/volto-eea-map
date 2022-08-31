@@ -34,10 +34,19 @@ const LayerLegend = ({ data, show_viewer }) => {
   return (
     <Grid.Column>
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        {show_viewer && (
+        <h5
+          style={{
+            marginTop: '15px',
+            marginBottom: '5px',
+          }}
+        >
+          {name}
+        </h5>
+        {show_viewer && map_service_url && (
           <a
             target="_blank"
             rel="noreferrer"
+            title="Open ArcGIS Service location"
             href={
               `https://www.arcgis.com/home/webmap/viewer.html?url=` +
               `${map_service_url}&source=sd`
@@ -49,20 +58,11 @@ const LayerLegend = ({ data, show_viewer }) => {
                   className="extra-view-external-icon"
                   src={codeSVG}
                   alt=""
-                  title="Show API link"
                 />
               </Button.Content>
             </Button>
           </a>
         )}
-        <h5
-          style={{
-            marginTop: '15px',
-            marginBottom: '5px',
-          }}
-        >
-          {name}
-        </h5>
       </div>
       {data.description && serializeNodes(data.description)}
       <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -106,14 +106,14 @@ const LegendWidget = (props) => {
     <>
       <div className="legend-container">
         <button className="legend-action" onClick={() => setExpand(!expand)}>
-          <h4 role="presentation" className="legend-title">
+          <h3 role="presentation" className="legend-title">
             <Icon
               name={expand ? downKeySVG : rightKeySVG}
               title={expand ? 'Collapse' : 'Expand'}
               size="17px"
             />
             Legend:
-          </h4>
+          </h3>
         </button>
         <Grid columns={legendColumns}>
           {(!map_layers || map_layers.length === 0) && (

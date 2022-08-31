@@ -1,11 +1,8 @@
 import React from 'react';
-import { Button } from 'semantic-ui-react';
 import { UniversalLink } from '@plone/volto/components';
 
 import LegendWidget from './widgets/LegendWidget';
 import { serializeNodes } from 'volto-slate/editor/render';
-
-import codeSVG from '../static/code-line.svg';
 
 const ExtraViews = ({ data }) => {
   const {
@@ -18,33 +15,6 @@ const ExtraViews = ({ data }) => {
   } = data;
   return (
     <div className="extra-eea-map-content">
-      {map_data && map_data.layers?.map_layers[0] && show_viewer && (
-        <div
-          style={{ display: 'flex', justifyContent: 'end', margin: '10px 0' }}
-        >
-          {/* {show_viewer && (
-            <a
-              target="_blank"
-              rel="noreferrer"
-              href={
-                `https://www.arcgis.com/home/webmap/viewer.html?url=` +
-                `${map_data.layers.map_layers[0].map_layer.map_service_url}&source=sd`
-              }
-            >
-              <Button size="tiny">
-                <Button.Content>
-                  <img
-                    className="extra-view-external-icon"
-                    src={codeSVG}
-                    alt=""
-                    title="Show API link"
-                  />
-                </Button.Content>
-              </Button>
-            </a>
-          )} */}
-        </div>
-      )}
       {show_legend && map_data && (
         <LegendWidget data={map_data} show_viewer={show_viewer} />
       )}
