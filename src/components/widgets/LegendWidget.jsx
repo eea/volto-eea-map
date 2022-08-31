@@ -33,7 +33,13 @@ const LayerLegend = ({ data, show_viewer }) => {
 
   return (
     <Grid.Column>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+      >
         <h5
           style={{
             marginTop: '15px',
