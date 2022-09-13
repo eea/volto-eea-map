@@ -1,103 +1,87 @@
 # volto-addon-template
 
-[![Releases](https://img.shields.io/github/v/release/eea/volto-addon-template)](https://github.com/eea/volto-addon-template/releases)
+[![Releases](https://img.shields.io/github/v/release/eea/volto-eea-map)](https://github.com/eea/volto-eea-map/releases)
 
-[![Pipeline](https://ci.eionet.europa.eu/buildStatus/icon?job=volto-addons%2Fvolto-addon-template%2Fmaster&subject=master)](https://ci.eionet.europa.eu/view/Github/job/volto-addons/job/volto-addon-template/job/master/display/redirect)
-[![Lines of Code](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-addon-template-master&metric=ncloc)](https://sonarqube.eea.europa.eu/dashboard?id=volto-addon-template-master)
-[![Coverage](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-addon-template-master&metric=coverage)](https://sonarqube.eea.europa.eu/dashboard?id=volto-addon-template-master)
-[![Bugs](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-addon-template-master&metric=bugs)](https://sonarqube.eea.europa.eu/dashboard?id=volto-addon-template-master)
-[![Duplicated Lines (%)](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-addon-template-master&metric=duplicated_lines_density)](https://sonarqube.eea.europa.eu/dashboard?id=volto-addon-template-master)
+[![Pipeline](https://ci.eionet.europa.eu/buildStatus/icon?job=volto-addons%2Fvolto-eea-map%2Fmaster&subject=master)](https://ci.eionet.europa.eu/view/Github/job/volto-addons/job/volto-eea-map/job/master/display/redirect)
+[![Lines of Code](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-eea-map-master&metric=ncloc)](https://sonarqube.eea.europa.eu/dashboard?id=volto-eea-map-master)
+[![Coverage](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-eea-map-master&metric=coverage)](https://sonarqube.eea.europa.eu/dashboard?id=volto-eea-map-master)
+[![Bugs](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-eea-map-master&metric=bugs)](https://sonarqube.eea.europa.eu/dashboard?id=volto-eea-map-master)
+[![Duplicated Lines (%)](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-eea-map-master&metric=duplicated_lines_density)](https://sonarqube.eea.europa.eu/dashboard?id=volto-eea-map-master)
 
-[![Pipeline](https://ci.eionet.europa.eu/buildStatus/icon?job=volto-addons%2Fvolto-addon-template%2Fdevelop&subject=develop)](https://ci.eionet.europa.eu/view/Github/job/volto-addons/job/volto-addon-template/job/develop/display/redirect)
-[![Lines of Code](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-addon-template-develop&metric=ncloc)](https://sonarqube.eea.europa.eu/dashboard?id=volto-addon-template-develop)
-[![Coverage](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-addon-template-develop&metric=coverage)](https://sonarqube.eea.europa.eu/dashboard?id=volto-addon-template-develop)
-[![Bugs](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-addon-template-develop&metric=bugs)](https://sonarqube.eea.europa.eu/dashboard?id=volto-addon-template-develop)
-[![Duplicated Lines (%)](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-addon-template-develop&metric=duplicated_lines_density)](https://sonarqube.eea.europa.eu/dashboard?id=volto-addon-template-develop)
+[![Pipeline](https://ci.eionet.europa.eu/buildStatus/icon?job=volto-addons%2Fvolto-eea-map%2Fdevelop&subject=develop)](https://ci.eionet.europa.eu/view/Github/job/volto-addons/job/volto-eea-map/job/develop/display/redirect)
+[![Lines of Code](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-eea-map-develop&metric=ncloc)](https://sonarqube.eea.europa.eu/dashboard?id=volto-eea-map-develop)
+[![Coverage](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-eea-map-develop&metric=coverage)](https://sonarqube.eea.europa.eu/dashboard?id=volto-eea-map-develop)
+[![Bugs](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-eea-map-develop&metric=bugs)](https://sonarqube.eea.europa.eu/dashboard?id=volto-eea-map-develop)
+[![Duplicated Lines (%)](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-eea-map-develop&metric=duplicated_lines_density)](https://sonarqube.eea.europa.eu/dashboard?id=volto-eea-map-develop)
 
 
 [Volto](https://github.com/plone/volto) add-on
 
-## Features
+# volto-eea-map
 
-Demo GIF
+Before starting make sure your development environment is properly set. See [Volto Developer Documentation](https://docs.voltocms.com/getting-started/install/)
 
-## Getting started
+1.  Make sure you have installed `yo`, `@plone/generator-volto` and `mrs-developer`
 
-### Try volto-addon-template with Docker
+        npm install -g yo @plone/generator-volto mrs-developer
 
-1. Get the latest Docker images
+1.  Create new volto app
 
-   ```
-   docker pull plone
-   docker pull plone/volto
-   ```
+        yo @plone/volto my-volto-project --addon @eeacms/volto-eea-map --skip-install
+        cd my-volto-project
 
-1. Start Plone backend
-   ```
-   docker run -d --name plone -p 8080:8080 -e SITE=Plone -e PROFILES="profile-plone.restapi:blocks" plone
-   ```
+1.  Add the following to `mrs.developer.json`:
 
-1. Start Volto frontend
+        {
+            "volto-eea-map": {
+                "url": "https://github.com/eea/volto-eea-map.git",
+                "package": "@eeacms/volto-eea-map",
+                "branch": "develop",
+                "path": "src"
+            }
+        }
 
-   ```
-   docker run -it --rm -p 3000:3000 --link plone -e ADDONS="@eeacms/volto-addon-template" plone/volto
-   ```
+1.  Install
 
-1. Go to http://localhost:3000
+        yarn develop
+        yarn
 
-### Add volto-addon-template to your Volto project
+1.  Start backend
 
-1. Make sure you have a [Plone backend](https://plone.org/download) up-and-running at http://localhost:8080/Plone
+        docker pull plone
+        docker run -d --name plone -p 8080:8080 -e SITE=Plone -e PROFILES="profile-plone.restapi:blocks" plone
 
-1. Start Volto frontend
+    ...wait for backend to setup and start - `Ready to handle requests`:
 
-* If you already have a volto project, just update `package.json`:
+        docker logs -f plone
 
-   ```JSON
-   "addons": [
-       "@eeacms/volto-addon-template"
-   ],
+    ...you can also check http://localhost:8080/Plone
 
-   "dependencies": {
-       "@eeacms/volto-addon-template": "^1.0.0"
-   }
-   ```
+1.  Start frontend
 
-* If not, create one:
+        yarn start
 
-   ```
-   npm install -g yo @plone/generator-volto
-   yo @plone/volto my-volto-project --addon @eeacms/volto-addon-template
-   cd my-volto-project
-   ```
+1.  Go to http://localhost:3000
 
-1. Install new add-ons and restart Volto:
+1.  Happy hacking!
 
-   ```
-   yarn
-   yarn start
-   ```
+        cd src/addons/volto-eea-map/
 
-1. Go to http://localhost:3000
+# Configuration
 
-1. Happy editing!
+This addon contains the EEA Embed Map Block & EEA Map Block. It's configured to work with the map visualization content type and give more access to ArcGIS maps. See available maps here https://discomap.eea.europa.eu/ 
 
-## Release
+# Enable data queries auto-import 
 
-See [RELEASE.md](https://github.com/eea/volto-addon-template/blob/master/RELEASE.md).
+To enable automatic import of queries from the content-type, "Parameters for data connections" should be checked as behavior on the content-type that uses the map. 
 
-## How to contribute
+    controlpanel/dexterity-types/{content-type-id}
+# Enable Sources
 
-See [DEVELOP.md](https://github.com/eea/volto-addon-template/blob/master/DEVELOP.md).
+Sources (Data provenance) should be set on the visualization. To enable this, "EEA Core Metadata" should be  checked as behavior on the  visualization content-type. 
 
-## Copyright and license
+    controlpanel/dexterity-types/map_visualization
+    
+After this, sources can be added from the visualization edit interface. "Data Provenance" tab => "Add source"
 
-The Initial Owner of the Original Code is European Environment Agency (EEA).
-All Rights Reserved.
-
-See [LICENSE.md](https://github.com/eea/volto-addon-template/blob/master/LICENSE.md) for details.
-
-## Funding
-
-[European Environment Agency (EU)](http://eea.europa.eu)
 
