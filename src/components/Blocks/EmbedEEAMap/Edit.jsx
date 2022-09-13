@@ -34,8 +34,7 @@ const Edit = (props) => {
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.data_query, block, data]);
-
+  }, [props.block, props.data_query, data.data_query_params]);
   return (
     <div>
       <View data={data} id={id} isEdit={true} />
