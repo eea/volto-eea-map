@@ -196,3 +196,10 @@
     transform: translate3d(0, 0, 0);
   }
 }
+
+@media print {
+  .layer-legend-item-color {
+    height: 0.2cm;
+    max-width: 0.2cm;
+  }
+}
