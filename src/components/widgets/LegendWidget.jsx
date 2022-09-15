@@ -78,6 +78,7 @@ const LayerLegend = ({ data, show_viewer }) => {
               <span key={i} style={{ display: 'flex', alignItems: 'center' }}>
                 <img
                   alt="alt"
+                  className="layer-legend-item-color"
                   src={`data:image/png;base64,${item.imageData}`}
                 />
                 <span style={{ fontSize: '13px', marginLeft: '5px' }}>

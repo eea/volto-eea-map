@@ -101,6 +101,8 @@ const Webmap = (props) => {
                 case 'Raster Layer':
                   mapLayer = new MapImageLayer({
                     url: map_service_url,
+                    minScale: layer.minScale ? layer.minScale : '',
+                    maxScale: layer.maxScale ? layer.maxScale : '',
                   });
                   break;
                 case 'Feature Layer':
@@ -109,6 +111,8 @@ const Webmap = (props) => {
                     definitionExpression: query
                       ? formatQuery(query, 'sql')
                       : '',
+                    minScale: layer.minScale ? layer.minScale : '',
+                    maxScale: layer.maxScale ? layer.maxScale : '',
                   });
                   break;
                 case 'Group Layer':
@@ -124,7 +128,7 @@ const Webmap = (props) => {
       basemap: base_layer || 'hybrid',
       layers,
     });
-
+    console.log(layers, 'the layers');
     const view = new MapView({
       container: mapRef.current,
       map,
