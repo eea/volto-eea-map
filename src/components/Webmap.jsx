@@ -89,7 +89,6 @@ const Webmap = (props) => {
       Print,
       Zoom,
       ScaleBar,
-      Renderer,
     } = modules;
     let layers =
       map_layers && map_layers.length > 0
