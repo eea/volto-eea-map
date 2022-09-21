@@ -23,7 +23,7 @@
   "dependencies": {
     "@eeacms/volto-embed": "4.0.2",
     "@plone/scripts": "*",
-    "esri-loader": "3.5.0",
+    "esri-loader": "3.6.0",
     "lodash": "4.17.21",
     "react-querybuilder": "4.2.3",
     "volto-slate": "*"

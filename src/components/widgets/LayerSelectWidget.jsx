@@ -135,6 +135,7 @@ const LayerSelectWidget = (props) => {
     onChange(id, {
       ...value,
       layer,
+      fullLayer,
       fields: fullLayer.fields,
       map_service_url: serviceUrl,
       available_layers: availableLayers,
