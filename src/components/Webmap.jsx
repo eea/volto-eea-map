@@ -75,7 +75,7 @@ const Webmap = (props) => {
     }
   }, [setModules, options]);
 
-  // eslint-disable-next-line no-unused-vars
+  //eslint-disable-next-line no-unused-vars
   const esri = React.useMemo(() => {
     if (Object.keys(modules).length === 0) return {};
     const {
@@ -94,25 +94,26 @@ const Webmap = (props) => {
       map_layers && map_layers.length > 0
         ? map_layers
             .filter(({ map_service_url, layer }) => map_service_url && layer)
-            .map(({ map_service_url, layer, query = '' }) => {
-              const url = `${map_service_url}/${layer}`;
+            .map(({ map_service_url, layer, fullLayer, query = '' }, index) => {
+              const url = `${map_service_url}/${layer?.id}`;
               let mapLayer;
               switch (layer.type) {
                 case 'Raster Layer':
                   mapLayer = new MapImageLayer({
                     url: map_service_url,
-                    minScale: layer.minScale ? layer.minScale : '',
-                    maxScale: layer.maxScale ? layer.maxScale : '',
+                    minScale: layer?.minScale,
+                    maxScale: layer?.maxScale,
                   });
                   break;
                 case 'Feature Layer':
                   mapLayer = new FeatureLayer({
+                    layerId: layer.id,
                     url,
                     definitionExpression: query
                       ? formatQuery(query, 'sql')
                       : '',
-                    minScale: layer.minScale ? layer.minScale : '',
-                    maxScale: layer.maxScale ? layer.maxScale : '',
+                    minScale: layer?.minScale,
+                    maxScale: layer?.maxScale,
                   });
                   break;
                 case 'Group Layer':
@@ -128,7 +129,6 @@ const Webmap = (props) => {
       basemap: base_layer || 'hybrid',
       layers,
     });
-    console.log(layers, 'the layers');
     const view = new MapView({
       container: mapRef.current,
       map,
@@ -208,8 +208,10 @@ const Webmap = (props) => {
     }
 
     if (layers && layers.length > 0) {
-      view.whenLayerView(layers[0]).then((layerView) => {
-        layerView.watch('updating', (val) => {});
+      layers.forEach((layer) => {
+        view.whenLayerView(layer).then((layerView) => {
+          layerView.watch('updating', (val) => {});
+        });
       });
     }
     return { view, map };
