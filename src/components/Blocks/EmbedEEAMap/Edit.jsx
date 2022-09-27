@@ -9,7 +9,6 @@ import { getContent } from '@plone/volto/actions';
 import BlockDataForm from '@plone/volto/components/manage/Form/BlockDataForm';
 import View from './View';
 import { Schema } from './Schema';
-import { addPrivacyProtectionToSchema } from '@eeacms/volto-embed';
 import '../../../styles/map.css';
 
 import _ from 'lodash';
@@ -42,7 +41,7 @@ const Edit = (props) => {
         <BlockDataForm
           block={block}
           title={schema.title}
-          schema={addPrivacyProtectionToSchema(schema)}
+          schema={schema}
           onChangeField={(id, value) => {
             onChangeBlock(block, {
               ...data,
