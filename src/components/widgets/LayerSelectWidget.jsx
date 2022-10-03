@@ -56,7 +56,11 @@ const LayerSelectWidget = (props) => {
       if (mapData.layers && mapData.layers.length > 0) {
         setAvailableLayers(
           mapData.layers.map((layer, i) => {
-            return { key: layer.id, value: layer, text: layer.name };
+            return {
+              key: layer.id,
+              value: layer,
+              text: `${layer.name} (${layer.type})`,
+            };
           }),
         );
       }
