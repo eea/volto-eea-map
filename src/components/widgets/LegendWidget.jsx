@@ -104,8 +104,8 @@ const LegendWidget = (props) => {
     layers.map_layers &&
     layers.map_layers.length > 0 &&
     layers.map_layers.length > 3
-      ? layers?.map_layers.slice(0, 3)
-      : layers?.map_layers;
+      ? layers?.map_layers.slice(0, 3).filter((l) => !l.map_layer.hide)
+      : layers?.map_layers.filter((l) => !l.map_layer.hide);
 
   const legendColumns =
     map_layers && setLegendColumns(map_layers.length, device);
