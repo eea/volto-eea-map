@@ -39,6 +39,7 @@ const VisualizationEditorWidget = (props) => {
           print_position: 'top-right',
           zoom_position: 'top-right',
           centerOnExtent: true,
+          scalebar: 'metric',
         },
       });
     }
