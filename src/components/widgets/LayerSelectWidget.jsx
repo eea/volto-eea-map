@@ -1,13 +1,6 @@
 import React from 'react';
 import { Icon } from '@plone/volto/components';
-import {
-  Input,
-  Select,
-  Button,
-  Grid,
-  Checkbox,
-  Segment,
-} from 'semantic-ui-react';
+import { Input, Select, Button, Grid, Checkbox } from 'semantic-ui-react';
 import { QueryBuilder } from 'react-querybuilder';
 import 'react-querybuilder/dist/query-builder.css';
 
@@ -52,8 +45,6 @@ const LayerSelectWidget = (props) => {
   );
 
   const [builtQuery, setBuiltQuery] = React.useState(query);
-
-  console.log(value, 'full val');
 
   const handleServiceUrlCheck = async () => {
     // fetch url, save it, populate layers options
