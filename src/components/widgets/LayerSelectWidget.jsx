@@ -54,15 +54,18 @@ const LayerSelectWidget = (props) => {
       setMapData(mapData);
       setServiceUrlError('');
       if (mapData.layers && mapData.layers.length > 0) {
-        setAvailableLayers(
-          mapData.layers.map((layer, i) => {
+        const mappedLayers = mapData.layers
+          .filter(
+            (layer) => layer && layer.type && layer.type !== 'Group Layer',
+          )
+          .map((layer, i) => {
             return {
               key: layer.id,
               value: layer,
               text: `${layer.name} (${layer.type})`,
             };
-          }),
-        );
+          });
+        setAvailableLayers(mappedLayers);
       }
       onChange(id, {
         ...value,
