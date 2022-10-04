@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon } from '@plone/volto/components';
-import { Input, Select, Button, Grid } from 'semantic-ui-react';
+import { Input, Select, Button, Grid, Checkbox } from 'semantic-ui-react';
 import { QueryBuilder } from 'react-querybuilder';
 import 'react-querybuilder/dist/query-builder.css';
 
@@ -31,6 +31,7 @@ const LayerSelectWidget = (props) => {
     fields = [],
     query = '',
     description = '',
+    hide = false,
   } = value;
 
   const [mapData, setMapData] = React.useState(map_data);
@@ -53,11 +54,18 @@ const LayerSelectWidget = (props) => {
       setMapData(mapData);
       setServiceUrlError('');
       if (mapData.layers && mapData.layers.length > 0) {
-        setAvailableLayers(
-          mapData.layers.map((layer, i) => {
-            return { key: layer.id, value: layer, text: layer.name };
-          }),
-        );
+        const mappedLayers = mapData.layers
+          .filter(
+            (layer) => layer && layer.type && layer.type !== 'Group Layer',
+          )
+          .map((layer, i) => {
+            return {
+              key: layer.id,
+              value: layer,
+              text: `${layer.name} (${layer.type})`,
+            };
+          });
+        setAvailableLayers(mappedLayers);
       }
       onChange(id, {
         ...value,
@@ -66,6 +74,7 @@ const LayerSelectWidget = (props) => {
         available_layers: availableLayers,
         map_data: mapData,
         description,
+        hide,
       });
     } catch (e) {
       setCheckColor('youtube');
@@ -183,6 +192,14 @@ const LayerSelectWidget = (props) => {
     setSelectedLayer(layer);
     setMapData(map_data);
   };
+
+  const handleHideInLegend = (v) => {
+    onChange(id, {
+      ...value,
+      hide: v,
+    });
+  };
+
   return (
     <div
       style={{
@@ -266,7 +283,7 @@ const LayerSelectWidget = (props) => {
             </Grid.Row>
           </div>
         )}
-        {availableLayers && availableLayers.length > 0 && (
+        {availableLayers && availableLayers.length > 0 && selectedLayer && (
           <div className="spaced-row">
             <Grid.Row stretched>
               <h5 style={{ padding: '0', margin: '15px 0px 5px 0px' }}>
@@ -284,6 +301,14 @@ const LayerSelectWidget = (props) => {
                   placeholder="Set Description"
                 />
               </div>
+            </Grid.Row>
+            <Grid.Row stretched>
+              <h5>Hide in legend:</h5>{' '}
+              <Checkbox
+                label="Layer will be hidden in legend"
+                checked={hide}
+                onChange={(e, { checked }) => handleHideInLegend(checked)}
+              />
             </Grid.Row>
           </div>
         )}

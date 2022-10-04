@@ -17,6 +17,50 @@ const MODULES = [
   'esri/widgets/ScaleBar',
 ];
 
+//TODO: set group layers sublayers, for direct group import. Maybe also
+// const setGroupLayers = async (ids, data, modules) => {
+//   const { map_service_url, sublayerDatalayer, fullLayer, query = '' } =
+//     data || {};
+//   const { FeatureLayer, MapImageLayer, GroupLayer } = modules;
+
+//   const glLayers = await Promise.all(
+//     ids.map(async (id) => {
+//       const sublayerUrl = `${map_service_url}/${id}`;
+//       let sublayerData = await fetchArcGISData(sublayerUrl);
+//       let sublayer;
+//       switch (sublayerData.type) {
+//         case 'Raster Layer':
+//           sublayer = new MapImageLayer({
+//             url: map_service_url,
+//             minScale: sublayerData?.minScale,
+//             maxScale: sublayerData?.maxScale,
+//             sublayers: [
+//               {
+//                 id: sublayerData.id,
+//                 visible: true,
+//                 definitionExpression: query ? formatQuery(query, 'sql') : '',
+//               },
+//             ],
+//           });
+//           break;
+//         case 'Feature Layer':
+//           sublayer = new FeatureLayer({
+//             layerId: sublayerData.id,
+//             url: `${map_service_url}/${sublayerData.id}`,
+//             definitionExpression: query ? formatQuery(query, 'sql') : '',
+//             minScale: sublayerData?.minScale,
+//             maxScale: sublayerData?.maxScale,
+//           });
+//           break;
+//         default:
+//           break;
+//       }
+//       return sublayer;
+//     }),
+//   );
+//   return glLayers;
+// };
+
 const Webmap = (props) => {
   const { editMode, height, id } = props;
 
@@ -101,8 +145,16 @@ const Webmap = (props) => {
                 case 'Raster Layer':
                   mapLayer = new MapImageLayer({
                     url: map_service_url,
-                    minScale: layer?.minScale,
-                    maxScale: layer?.maxScale,
+                    sublayers: [
+                      {
+                        id: layer.id,
+                        minScale: layer?.minScale,
+                        maxScale: layer?.maxScale,
+                        definitionExpression: query
+                          ? formatQuery(query, 'sql')
+                          : '',
+                      },
+                    ],
                   });
                   break;
                 case 'Feature Layer':
@@ -116,8 +168,15 @@ const Webmap = (props) => {
                     maxScale: layer?.maxScale,
                   });
                   break;
-                case 'Group Layer':
-                  mapLayer = new GroupLayer({ url });
+                  //// case 'Group Layer':
+                  //   mapLayer = new GroupLayer({ title: layer.title });
+                  //   // mapLayer.addMany(
+                  //   //   setGroupLayers(
+                  //   //     layer.sublayersIds,
+                  //   //     { map_service_url, layer, fullLayer, query },
+                  //   //     modules,
+                  //   //   ),
+                  //   // );
                   break;
                 default:
                   break;
@@ -152,13 +211,20 @@ const Webmap = (props) => {
 
     if (layers && layers[0] && general && general.centerOnExtent) {
       const firstLayer = layers[0];
-      firstLayer
-        .when(() => {
-          return firstLayer.queryExtent();
-        })
-        .then((response) => {
-          view.goTo(response.extent);
+      if (firstLayer.type === 'feature') {
+        firstLayer
+          .when(() => {
+            return firstLayer.queryExtent();
+          })
+          .then((response) => {
+            view.goTo(response.extent);
+          });
+      }
+      if (firstLayer.type === 'map-image') {
+        firstLayer.when(() => {
+          view.goTo(firstLayer.fullExtent);
         });
+      }
     }
 
     const zoomPosition =

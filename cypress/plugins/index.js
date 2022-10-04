@@ -1,5 +1,3 @@
-const { defineConfig } = require('cypress');
-
 /// <reference types="cypress" />
 // ***********************************************************
 // This example plugins/index.js can be used to load plugins
@@ -27,10 +25,4 @@ const { defineConfig } = require('cypress');
 //   coverage-end */
 // };
 
-module.exports = defineConfig({
-  component: {
-    devServer: {
-      framework: 'react', // or vue
-    },
-  },
-});
+module.exports = (on, config) => {};
