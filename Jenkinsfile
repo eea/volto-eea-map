@@ -5,7 +5,7 @@ pipeline {
         GIT_NAME = "volto-eea-map"
         NAMESPACE = "@eeacms"
         SONARQUBE_TAGS = "volto.eea.europa.eu,forest.eea.europa.eu"
-        DEPENDENCIES = ""
+        DEPENDENCIES = "@eeacms/volto-embed"
         VOLTO = "16.0.0-alpha.14"
     }
 
