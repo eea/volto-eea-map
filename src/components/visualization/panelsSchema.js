@@ -1,5 +1,7 @@
 import { base_layers } from '../../constants';
 
+const customBaselayers = [['positron-composite', 'positron-composite']];
+
 const BaseLayerSchema = {
   title: 'Base Layer',
   fieldsets: [
@@ -12,7 +14,7 @@ const BaseLayerSchema = {
   properties: {
     base_layer: {
       title: 'Base Layer',
-      choices: base_layers,
+      choices: [...customBaselayers, ...base_layers],
     },
   },
   required: [],
