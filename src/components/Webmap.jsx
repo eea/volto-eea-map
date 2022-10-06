@@ -182,7 +182,6 @@ const Webmap = (props) => {
               return mapLayer;
             })
         : [];
-    console.log(base_layer, 'base');
 
     const mapBaseLayer = new WebTileLayer({
       urlTemplate:
