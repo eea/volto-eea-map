@@ -104,10 +104,12 @@ const GeneralSchema = ({ data = {} }) => {
       long: {
         title: 'Longitude',
         type: 'number',
+        description: `Will set the map center long coordinate. See: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html#center`,
       },
       lat: {
         title: 'Latitude',
         type: 'number',
+        description: `Will set the map center lat coordinate. See: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html#center`,
       },
 
       print_position: {

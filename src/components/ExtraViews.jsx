@@ -52,6 +52,7 @@ const ExtraViews = ({ data }) => {
     show_sources,
     data_provenance = {},
   } = data;
+
   return (
     <div className="extra-eea-map-content">
       {show_legend && map_data && (

@@ -90,6 +90,8 @@ export const Schema = (props) => {
       },
       height: {
         title: 'Height',
+        description:
+          'Map block height in px. Default is 500px. Change only if necessary',
         type: 'number',
       },
       description: {

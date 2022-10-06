@@ -18,6 +18,29 @@ const Edit = (props) => {
   const schema = React.useMemo(() => Schema(props), [props]);
 
   React.useEffect(() => {
+    if (!Object.hasOwn(data, 'show_legend')) {
+      onChangeBlock(block, {
+        ...data,
+        show_legend: true,
+      });
+    }
+    if (!Object.hasOwn(data, 'show_sources')) {
+      onChangeBlock(block, {
+        ...data,
+        show_sources: true,
+      });
+    }
+    if (!Object.hasOwn(data, 'dataprotection')) {
+      onChangeBlock(block, {
+        ...data,
+        dataprotection: { enabled: true },
+      });
+    }
+
+    //    eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
+
+  React.useEffect(() => {
     props.getContent(data.vis_url, null, id);
     //    eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data.vis_url]);
