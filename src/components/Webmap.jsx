@@ -183,6 +183,9 @@ const Webmap = (props) => {
             })
         : [];
 
+    if (data?.base?.use_custom_base) {
+    }
+
     const mapBaseLayer = new WebTileLayer({
       urlTemplate:
         'https://gisco-services.ec.europa.eu/maps/tiles/OSMPositronComposite/EPSG3857/{level}/{col}/{row}.png',
@@ -207,8 +210,25 @@ const Webmap = (props) => {
       return basemap;
     };
 
+    const setCustomBasemap = (urlTemplate) => {
+      const mapBaseLayer = new WebTileLayer({
+        urlTemplate,
+      });
+
+      // Create a Basemap with the WebTileLayer.
+      const customBase = new Basemap({
+        baseLayers: [mapBaseLayer],
+        title: 'Custom Base Layer',
+        id: 'custom-base',
+      });
+      return customBase;
+    };
+
     const map = new Map({
-      basemap: setBasemap(base_layer),
+      basemap:
+        data?.base?.use_custom_base && data?.base?.custom_base_layer
+          ? setCustomBasemap(data?.base?.custom_base_layer)
+          : setBasemap(base_layer),
       layers,
     });
     const view = new MapView({
