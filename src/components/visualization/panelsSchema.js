@@ -2,22 +2,39 @@ import { base_layers } from '../../constants';
 
 const customBaselayers = [['positron-composite', 'positron-composite']];
 
-const BaseLayerSchema = {
-  title: 'Base Layer',
-  fieldsets: [
-    {
-      id: 'base',
-      title: 'Base Layer',
-      fields: ['base_layer'],
+const BaseLayerSchema = ({ data = {} }) => {
+  const useCustomBase = data?.map_data?.base?.use_custom_base;
+  return {
+    title: 'Base Layer',
+    fieldsets: [
+      {
+        id: 'base',
+        title: 'Base Layer',
+        fields: [
+          'use_custom_base',
+          ...(useCustomBase ? ['custom_base_layer'] : ['base_layer']),
+        ],
+      },
+    ],
+    properties: {
+      use_custom_base: {
+        title: 'Use custom Base Layer',
+        description:
+          'Switch between default base layers and defining your custom service base layer',
+        type: 'boolean',
+      },
+      base_layer: {
+        title: 'Base Layer',
+        choices: [...customBaselayers, ...base_layers],
+      },
+      custom_base_layer: {
+        title: 'Base Layer',
+        description:
+          'Add an URL Template to import your own base layer from an external service',
+      },
     },
-  ],
-  properties: {
-    base_layer: {
-      title: 'Base Layer',
-      choices: [...customBaselayers, ...base_layers],
-    },
-  },
-  required: [],
+    required: [],
+  };
 };
 
 const LayerSchema = {
@@ -127,6 +144,7 @@ const GeneralSchema = ({ data = {} }) => {
 
 export default ({ data = {} }) => {
   const generalSchema = GeneralSchema({ data });
+  const baseLayerSchema = BaseLayerSchema({ data });
 
   return {
     title: 'Map Editor',
@@ -148,7 +166,7 @@ export default ({ data = {} }) => {
           },
           {
             id: 'base',
-            schema: BaseLayerSchema,
+            schema: baseLayerSchema,
           },
           {
             id: 'layers',
