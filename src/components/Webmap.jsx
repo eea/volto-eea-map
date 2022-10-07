@@ -183,9 +183,6 @@ const Webmap = (props) => {
             })
         : [];
 
-    if (data?.base?.use_custom_base) {
-    }
-
     const mapBaseLayer = new WebTileLayer({
       urlTemplate:
         'https://gisco-services.ec.europa.eu/maps/tiles/OSMPositronComposite/EPSG3857/{level}/{col}/{row}.png',
