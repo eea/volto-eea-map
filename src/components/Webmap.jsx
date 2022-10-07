@@ -10,6 +10,8 @@ const MODULES = [
   'esri/layers/FeatureLayer',
   'esri/layers/MapImageLayer',
   'esri/layers/GroupLayer',
+  'esri/layers/WebTileLayer',
+  'esri/Basemap',
   'esri/widgets/Legend',
   'esri/widgets/Expand',
   'esri/widgets/Print',
@@ -17,7 +19,7 @@ const MODULES = [
   'esri/widgets/ScaleBar',
 ];
 
-//TODO: set group layers sublayers, for direct group import. Maybe also
+//TODO: set group layers sublayers, for direct group import.
 // const setGroupLayers = async (ids, data, modules) => {
 //   const { map_service_url, sublayerDatalayer, fullLayer, query = '' } =
 //     data || {};
@@ -97,6 +99,8 @@ const Webmap = (props) => {
           FeatureLayer,
           MapImageLayer,
           GroupLayer,
+          WebTileLayer,
+          Basemap,
           Legend,
           Expand,
           Print,
@@ -109,6 +113,8 @@ const Webmap = (props) => {
           FeatureLayer,
           MapImageLayer,
           GroupLayer,
+          WebTileLayer,
+          Basemap,
           Legend,
           Expand,
           Print,
@@ -128,6 +134,8 @@ const Webmap = (props) => {
       FeatureLayer,
       MapImageLayer,
       GroupLayer,
+      WebTileLayer,
+      Basemap,
       Legend,
       Expand,
       Print,
@@ -168,24 +176,39 @@ const Webmap = (props) => {
                     maxScale: layer?.maxScale,
                   });
                   break;
-                  //// case 'Group Layer':
-                  //   mapLayer = new GroupLayer({ title: layer.title });
-                  //   // mapLayer.addMany(
-                  //   //   setGroupLayers(
-                  //   //     layer.sublayersIds,
-                  //   //     { map_service_url, layer, fullLayer, query },
-                  //   //     modules,
-                  //   //   ),
-                  //   // );
-                  break;
                 default:
                   break;
               }
               return mapLayer;
             })
         : [];
+
+    const mapBaseLayer = new WebTileLayer({
+      urlTemplate:
+        'https://gisco-services.ec.europa.eu/maps/tiles/OSMPositronComposite/EPSG3857/{level}/{col}/{row}.png',
+    });
+
+    // Create a Basemap with the WebTileLayer.
+    const positronCompositeBasemap = new Basemap({
+      baseLayers: [mapBaseLayer],
+      title: 'Positron Composite',
+      id: 'positron-composite',
+      thumbnailUrl:
+        'https://gisco-services.ec.europa.eu/maps/tiles/OSMPositronComposite/EPSG3857/0/0/0.png',
+    });
+
+    const setBasemap = (basemap) => {
+      if (basemap === 'positron-composite') {
+        return positronCompositeBasemap;
+      }
+      if (!basemap) {
+        return 'hybrid';
+      }
+      return basemap;
+    };
+
     const map = new Map({
-      basemap: base_layer || 'hybrid',
+      basemap: setBasemap(base_layer),
       layers,
     });
     const view = new MapView({

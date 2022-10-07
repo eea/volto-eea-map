@@ -1,5 +1,7 @@
 import { base_layers } from '../../constants';
 
+const customBaselayers = [['positron-composite', 'positron-composite']];
+
 const BaseLayerSchema = {
   title: 'Base Layer',
   fieldsets: [
@@ -12,7 +14,7 @@ const BaseLayerSchema = {
   properties: {
     base_layer: {
       title: 'Base Layer',
-      choices: base_layers,
+      choices: [...customBaselayers, ...base_layers],
     },
   },
   required: [],
@@ -102,10 +104,12 @@ const GeneralSchema = ({ data = {} }) => {
       long: {
         title: 'Longitude',
         type: 'number',
+        description: `Will set the map center long coordinate. See: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html#center`,
       },
       lat: {
         title: 'Latitude',
         type: 'number',
+        description: `Will set the map center lat coordinate. See: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html#center`,
       },
 
       print_position: {

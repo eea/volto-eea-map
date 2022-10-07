@@ -75,7 +75,7 @@ const View = (props) => {
 
   return (
     <div>
-      <PrivacyProtection data={data} {...props}>
+      <PrivacyProtection data={data} height={height} {...props}>
         {mapData && (
           <div>
             <Webmap data={mapData} height={height} />
