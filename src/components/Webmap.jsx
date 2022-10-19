@@ -146,41 +146,48 @@ const Webmap = (props) => {
       map_layers && map_layers.length > 0
         ? map_layers
             .filter(({ map_service_url, layer }) => map_service_url && layer)
-            .map(({ map_service_url, layer, fullLayer, query = '' }, index) => {
-              const url = `${map_service_url}/${layer?.id}`;
-              let mapLayer;
-              switch (layer.type) {
-                case 'Raster Layer':
-                  mapLayer = new MapImageLayer({
-                    url: map_service_url,
-                    sublayers: [
-                      {
-                        id: layer.id,
-                        minScale: layer?.minScale,
-                        maxScale: layer?.maxScale,
-                        definitionExpression: query
-                          ? formatQuery(query, 'sql')
-                          : '',
-                      },
-                    ],
-                  });
-                  break;
-                case 'Feature Layer':
-                  mapLayer = new FeatureLayer({
-                    layerId: layer.id,
-                    url,
-                    definitionExpression: query
-                      ? formatQuery(query, 'sql')
-                      : '',
-                    minScale: layer?.minScale,
-                    maxScale: layer?.maxScale,
-                  });
-                  break;
-                default:
-                  break;
-              }
-              return mapLayer;
-            })
+            .map(
+              (
+                { map_service_url, layer, fullLayer, query = '', opacity = 1 },
+                index,
+              ) => {
+                const url = `${map_service_url}/${layer?.id}`;
+                let mapLayer;
+                switch (layer.type) {
+                  case 'Raster Layer':
+                    mapLayer = new MapImageLayer({
+                      url: map_service_url,
+                      sublayers: [
+                        {
+                          id: layer.id,
+                          minScale: layer?.minScale,
+                          maxScale: layer?.maxScale,
+                          opacity: opacity ? parseFloat(opacity) : 1,
+                          definitionExpression: query
+                            ? formatQuery(query, 'sql')
+                            : '',
+                        },
+                      ],
+                    });
+                    break;
+                  case 'Feature Layer':
+                    mapLayer = new FeatureLayer({
+                      layerId: layer.id,
+                      url,
+                      definitionExpression: query
+                        ? formatQuery(query, 'sql')
+                        : '',
+                      minScale: layer?.minScale,
+                      maxScale: layer?.maxScale,
+                      opacity: opacity ? parseFloat(opacity) : 1,
+                    });
+                    break;
+                  default:
+                    break;
+                }
+                return mapLayer;
+              },
+            )
         : [];
 
     const mapBaseLayer = new WebTileLayer({

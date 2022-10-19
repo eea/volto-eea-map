@@ -172,6 +172,13 @@ const LayerSelectWidget = (props) => {
     }
   };
 
+  const handleOpacityChange = (val) => {
+    onChange(id, {
+      ...value,
+      opacity: val,
+    });
+  };
+
   const handleChangeServiceUrl = (value) => {
     setServiceUrlError('');
     setCheckColor('');
@@ -285,6 +292,27 @@ const LayerSelectWidget = (props) => {
         )}
         {availableLayers && availableLayers.length > 0 && selectedLayer && (
           <div className="spaced-row">
+            <Grid.Row stretched>
+              <h5>Opacity:</h5>
+              <input
+                className="map-number-input"
+                type="number"
+                min={0}
+                max={1}
+                step={0.1}
+                value={value?.opacity ? value?.opacity : 1}
+                onChange={(e) => handleOpacityChange(e.target.value)}
+              />
+              <input
+                className="map-range-input"
+                type="range"
+                min={0}
+                max={1}
+                step={0.1}
+                value={value?.opacity ? value?.opacity : 1}
+                onChange={(e) => handleOpacityChange(e.target.value)}
+              />
+            </Grid.Row>
             <Grid.Row stretched>
               <h5 style={{ padding: '0', margin: '15px 0px 5px 0px' }}>
                 Description
