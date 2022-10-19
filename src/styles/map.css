@@ -185,6 +185,16 @@
   cursor: pointer;
 }
 
+.map-number-input {
+  padding: 5px !important;
+}
+
+.map-range-input {
+  width: 100%;
+  margin: 7px 0;
+  color: green;
+}
+
 @keyframes fadeDown {
   from {
     opacity: 0;
