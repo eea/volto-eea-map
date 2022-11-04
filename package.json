@@ -17,16 +17,14 @@
     "url": "git@github.com:eea/volto-eea-map.git"
   },
   "addons": [
-    "@eeacms/volto-embed",
-    "volto-slate"
+    "@eeacms/volto-embed"
   ],
   "dependencies": {
-    "@eeacms/volto-embed": "4.0.2",
+    "@eeacms/volto-embed": "5.0.0",
     "@plone/scripts": "*",
     "esri-loader": "3.6.0",
     "lodash": "4.17.21",
-    "react-querybuilder": "4.2.3",
-    "volto-slate": "*"
+    "react-querybuilder": "4.2.3"
   },
   "devDependencies": {
     "@cypress/code-coverage": "^3.9.5",

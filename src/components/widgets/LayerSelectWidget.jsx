@@ -4,7 +4,7 @@ import { Input, Select, Button, Grid, Checkbox } from 'semantic-ui-react';
 import { QueryBuilder } from 'react-querybuilder';
 import 'react-querybuilder/dist/query-builder.css';
 
-import RichTextWidget from 'volto-slate/widgets/RichTextWidget';
+import RichTextWidget from '@plone/volto-slate/widgets/RichTextWidget';
 
 import { connect } from 'react-redux';
 import { compose } from 'redux';
