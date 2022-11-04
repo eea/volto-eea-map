@@ -2,7 +2,7 @@ import React from 'react';
 import { UniversalLink, Icon } from '@plone/volto/components';
 
 import LegendWidget from './widgets/LegendWidget';
-import { serializeNodes } from 'volto-slate/editor/render';
+import { serializeNodes } from '@plone/volto-slate/editor/render';
 
 import rightKeySVG from '@plone/volto/icons/right-key.svg';
 import downKeySVG from '@plone/volto/icons/down-key.svg';
