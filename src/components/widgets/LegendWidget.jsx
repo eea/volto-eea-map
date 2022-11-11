@@ -99,20 +99,19 @@ const LegendWidget = (props) => {
   const [expand, setExpand] = React.useState(true);
 
   const { layers = {} } = data;
-  const map_layers =
-    layers &&
-    layers.map_layers &&
-    layers.map_layers.length > 0 &&
-    layers.map_layers.length > 3
-      ? layers?.map_layers.slice(0, 3)
-      : layers?.map_layers;
 
-  const visible_layers = map_layers
-    ? map_layers.filter((l) => !l?.map_layer?.hide)
-    : '';
+  const visible_layers =
+    layers && layers.map_layers && layers.map_layers.length
+      ? layers.map_layers.filter((l) => !l?.map_layer?.hide)
+      : '';
+
+  const map_layers =
+    visible_layers && visible_layers.length > 0 && visible_layers.length > 3
+      ? visible_layers.slice(0, 3)
+      : visible_layers;
 
   const legendColumns =
-    visible_layers && setLegendColumns(visible_layers.length, device);
+    map_layers && setLegendColumns(map_layers.length, device);
   return (
     <>
       <div className="legend-container">
@@ -127,16 +126,16 @@ const LegendWidget = (props) => {
           </h3>
         </button>
         <Grid columns={legendColumns}>
-          {(!visible_layers || visible_layers.length === 0) && (
+          {(!map_layers || map_layers.length === 0) && (
             <p>
               No layer found for legend. Please add a map layer from editor.
             </p>
           )}
           {expand && (
             <Grid.Row divided>
-              {visible_layers &&
-                visible_layers.length > 0 &&
-                visible_layers.map((l, i) => (
+              {map_layers &&
+                map_layers.length > 0 &&
+                map_layers.map((l, i) => (
                   <LayerLegend
                     key={i}
                     data={l.map_layer}
