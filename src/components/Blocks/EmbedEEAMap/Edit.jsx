@@ -4,6 +4,8 @@ import { SidebarPortal } from '@plone/volto/components';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
+import { BlockStyleWrapperEdit } from '@eeacms/volto-block-style/BlockStyleWrapper';
+import cx from 'classnames';
 import { getContent } from '@plone/volto/actions';
 
 import BlockDataForm from '@plone/volto/components/manage/Form/BlockDataForm';
@@ -58,7 +60,20 @@ const Edit = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.block, props.data_query, data.data_query_params]);
   return (
-    <div>
+    <BlockStyleWrapperEdit
+      {...props}
+      role="presentation"
+      data={{
+        ...(props.data || {}),
+        styles: {
+          ...(props.data?.styles || {}),
+          customClass: cx(
+            props.data?.styles?.customClass || '',
+            'custom-map-class',
+          ),
+        },
+      }}
+    >
       <View data={data} id={id} isEdit={true} />
       <SidebarPortal selected={selected}>
         <BlockDataForm
@@ -74,7 +89,7 @@ const Edit = (props) => {
           formData={data}
         />
       </SidebarPortal>
-    </div>
+    </BlockStyleWrapperEdit>
   );
 };
 
