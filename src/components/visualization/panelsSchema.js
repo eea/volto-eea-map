@@ -1,6 +1,9 @@
 import { base_layers } from '../../constants';
 
-const customBaselayers = [['positron-composite', 'positron-composite']];
+const customBaselayers = [
+  ['positron-composite', 'positron-composite'],
+  ['blossom-composite', 'blossom-composite'],
+];
 
 const BaseLayerSchema = ({ data = {} }) => {
   const useCustomBase = data?.map_data?.base?.use_custom_base;
