@@ -197,6 +197,7 @@ const Webmap = (props) => {
     };
 
     // Create a Basemap with the WebTileLayer.
+
     const positronCompositeBasemap = new Basemap({
       baseLayers: [generateMapBaselayer('Positron')],
       title: 'Positron Composite',
