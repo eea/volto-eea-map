@@ -228,7 +228,6 @@ const Webmap = (props) => {
     };
 
     const setCustomBasemap = (urlTemplate) => {
-      console.log('here', urlTemplate);
       const mapBaseLayer = new WebTileLayer({
         urlTemplate,
       });
