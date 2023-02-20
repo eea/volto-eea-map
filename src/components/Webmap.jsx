@@ -190,23 +190,36 @@ const Webmap = (props) => {
             )
         : [];
 
-    const mapBaseLayer = new WebTileLayer({
-      urlTemplate:
-        'https://gisco-services.ec.europa.eu/maps/tiles/OSMPositronComposite/EPSG3857/{level}/{col}/{row}.png',
-    });
+    const generateMapBaselayer = (compositeType) => {
+      return new WebTileLayer({
+        urlTemplate: `https://gisco-services.ec.europa.eu/maps/tiles/OSM${compositeType}Composite/EPSG3857/{level}/{col}/{row}.png`,
+      });
+    };
 
     // Create a Basemap with the WebTileLayer.
+
     const positronCompositeBasemap = new Basemap({
-      baseLayers: [mapBaseLayer],
+      baseLayers: [generateMapBaselayer('Positron')],
       title: 'Positron Composite',
       id: 'positron-composite',
       thumbnailUrl:
         'https://gisco-services.ec.europa.eu/maps/tiles/OSMPositronComposite/EPSG3857/0/0/0.png',
     });
 
+    const blossomCompositeBasemap = new Basemap({
+      baseLayers: [generateMapBaselayer('Blossom')],
+      title: 'Blossom Composite',
+      id: 'blossom-composite',
+      thumbnailUrl:
+        'https://gisco-services.ec.europa.eu/maps/tiles/OSMBlossomComposite/EPSG3857/0/0/0.png',
+    });
+
     const setBasemap = (basemap) => {
       if (basemap === 'positron-composite') {
         return positronCompositeBasemap;
+      }
+      if (basemap === 'blossom-composite') {
+        return blossomCompositeBasemap;
       }
       if (!basemap) {
         return 'hybrid';
