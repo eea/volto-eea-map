@@ -18,7 +18,8 @@
   },
   "addons": [
     "@eeacms/volto-embed",
-    "@eeacms/volto-block-style"
+    "@eeacms/volto-block-style",
+    "@eeacms/volto-object-widget"
   ],
   "dependencies": {
     "@eeacms/volto-block-style": "4.1.0",
@@ -26,7 +27,8 @@
     "@plone/scripts": "*",
     "esri-loader": "3.6.0",
     "lodash": "4.17.21",
-    "react-querybuilder": "4.2.3"
+    "react-querybuilder": "4.2.3",
+    "@eeacms/volto-object-widget": "*"
   },
   "devDependencies": {
     "@cypress/code-coverage": "^3.9.5",
