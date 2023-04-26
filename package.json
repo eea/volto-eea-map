@@ -24,11 +24,12 @@
   "dependencies": {
     "@eeacms/volto-block-style": "4.1.0",
     "@eeacms/volto-embed": "5.0.0",
+    "@eeacms/volto-object-widget": "*",
     "@plone/scripts": "*",
     "esri-loader": "3.6.0",
     "lodash": "4.17.21",
-    "react-querybuilder": "4.2.3",
-    "@eeacms/volto-object-widget": "*"
+    "razzle-plugin-scss": "4.2.18",
+    "react-querybuilder": "4.2.3"
   },
   "devDependencies": {
     "@cypress/code-coverage": "^3.9.5",
