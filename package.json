@@ -23,7 +23,7 @@
   ],
   "dependencies": {
     "@eeacms/volto-block-style": "4.1.0",
-    "@eeacms/volto-embed": "5.0.0",
+    "@eeacms/volto-embed": "*",
     "@eeacms/volto-object-widget": "*",
     "@plone/scripts": "*",
     "esri-loader": "3.6.0",
