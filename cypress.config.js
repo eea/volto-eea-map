@@ -6,31 +6,22 @@ module.exports = defineConfig({
   chromeWebSecurity: false,
   reporter: 'junit',
   video: true,
-
   retries: {
     runMode: 8,
     openMode: 0,
   },
-
   reporterOptions: {
     mochaFile: 'cypress/reports/cypress-[hash].xml',
     jenkinsMode: true,
     toConsole: true,
   },
-
   e2e: {
-    // We've imported your old cypress plugins here.
-    // You may want to clean this up later by importing these.
-    // setupNodeEvents(on, config) {
-    //   return require('./cypress/plugins/index.js')(on, config);
-    // },
-    baseUrl: 'http://localhost:3000',
-  },
-
-  component: {
-    devServer: {
-      framework: 'react',
-      bundler: 'webpack',
+    setupNodeEvents(on, config) {
+      // e2e testing node events setup code
+      require('@cypress/code-coverage/task')(on, config);
+      require('cypress-fail-fast/plugin')(on, config);
+      return config;
     },
+    baseUrl: 'http://localhost:3000',
   },
 });
