@@ -78,6 +78,44 @@ const MapLayersSchema = {
   required: [],
 };
 
+const StylesLayersSchema = ({ data = {} }) => {
+  return {
+    title: 'Styles Layers',
+    fieldsets: [
+      {
+        id: 'default',
+        title: 'Map Data',
+        fields: [
+          'override_styles',
+          ...(data?.map_data?.styles?.override_styles
+            ? ['symbol_color', 'outline_color', 'outline_width']
+            : []),
+        ],
+      },
+    ],
+    properties: {
+      override_styles: {
+        title: 'Override layers style',
+        description: 'Will override imported layers styling',
+        type: 'boolean',
+      },
+      symbol_color: {
+        title: 'Fill color',
+        widget: 'simple_color_picker_widget',
+      },
+      outline_color: {
+        title: 'Outline color',
+        widget: 'simple_color_picker_widget',
+      },
+      outline_width: {
+        title: 'Outline width',
+        type: 'number',
+      },
+    },
+    required: [],
+  };
+};
+
 const GeneralSchema = ({ data = {} }) => {
   const centerOnExtent = data?.map_data?.general?.centerOnExtent;
 
@@ -148,7 +186,7 @@ const GeneralSchema = ({ data = {} }) => {
 export default ({ data = {} }) => {
   const generalSchema = GeneralSchema({ data });
   const baseLayerSchema = BaseLayerSchema({ data });
-
+  const stylesLayerSchema = StylesLayersSchema({ data });
   return {
     title: 'Map Editor',
     fieldsets: [
@@ -174,6 +212,10 @@ export default ({ data = {} }) => {
           {
             id: 'layers',
             schema: MapLayersSchema,
+          },
+          {
+            id: 'styles',
+            schema: stylesLayerSchema,
           },
         ],
       },

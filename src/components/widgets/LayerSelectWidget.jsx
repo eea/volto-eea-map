@@ -190,6 +190,20 @@ const LayerSelectWidget = (props) => {
     setServiceUrl(value);
   };
 
+  const handleMinScaleChange = (minScaleOverride) => {
+    onChange(id, {
+      ...value,
+      minScaleOverride,
+    });
+  };
+
+  const handleMaxScaleChange = (maxScaleOverride) => {
+    onChange(id, {
+      ...value,
+      maxScaleOverride,
+    });
+  };
+
   const handleReset = () => {
     setServiceUrlError('');
     setServiceUrl(map_service_url);
@@ -311,6 +325,40 @@ const LayerSelectWidget = (props) => {
                 step={0.1}
                 value={value?.opacity ? value?.opacity : 1}
                 onChange={(e) => handleOpacityChange(e.target.value)}
+              />
+            </Grid.Row>
+            <Grid.Row stretched>
+              <h5 style={{ padding: '0', margin: '15px 0px 5px 0px' }}>
+                Min scale:
+              </h5>
+              <input
+                className="map-number-input"
+                type="number"
+                min={0}
+                step={1}
+                value={
+                  value?.minScaleOverride
+                    ? value?.minScaleOverride
+                    : value?.layer?.minScale
+                }
+                onChange={(e) => handleMinScaleChange(e.target.value)}
+              />
+            </Grid.Row>
+            <Grid.Row stretched>
+              <h5 style={{ padding: '0', margin: '15px 0px 5px 0px' }}>
+                Max scale:
+              </h5>
+              <input
+                className="map-number-input"
+                type="number"
+                min={0}
+                step={1}
+                value={
+                  value?.maxScaleOverride
+                    ? value?.maxScaleOverride
+                    : value?.layer?.maxScale
+                }
+                onChange={(e) => handleMaxScaleChange(e.target.value)}
               />
             </Grid.Row>
             <Grid.Row stretched>

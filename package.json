@@ -29,15 +29,16 @@
     "esri-loader": "3.6.0",
     "lodash": "4.17.21",
     "razzle-plugin-scss": "4.2.18",
+    "react-color": "~2.19.3",
     "react-querybuilder": "4.2.3"
   },
   "devDependencies": {
     "@cypress/code-coverage": "^3.10.0",
+    "@plone/scripts": "*",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "cypress": "10.3.1",
-    "md5": "^2.3.0",
-    "@plone/scripts": "*",
-    "cypress-fail-fast": "^5.0.1"
+    "cypress-fail-fast": "^5.0.1",
+    "md5": "^2.3.0"
   },
   "resolutions": {
     "react-countup/countup.js": "2.5.0"
