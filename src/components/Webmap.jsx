@@ -19,57 +19,19 @@ const MODULES = [
   'esri/widgets/ScaleBar',
 ];
 
-//TODO: set group layers sublayers, for direct group import.
-// const setGroupLayers = async (ids, data, modules) => {
-//   const { map_service_url, sublayerDatalayer, fullLayer, query = '' } =
-//     data || {};
-//   const { FeatureLayer, MapImageLayer, GroupLayer } = modules;
-
-//   const glLayers = await Promise.all(
-//     ids.map(async (id) => {
-//       const sublayerUrl = `${map_service_url}/${id}`;
-//       let sublayerData = await fetchArcGISData(sublayerUrl);
-//       let sublayer;
-//       switch (sublayerData.type) {
-//         case 'Raster Layer':
-//           sublayer = new MapImageLayer({
-//             url: map_service_url,
-//             minScale: sublayerData?.minScale,
-//             maxScale: sublayerData?.maxScale,
-//             sublayers: [
-//               {
-//                 id: sublayerData.id,
-//                 visible: true,
-//                 definitionExpression: query ? formatQuery(query, 'sql') : '',
-//               },
-//             ],
-//           });
-//           break;
-//         case 'Feature Layer':
-//           sublayer = new FeatureLayer({
-//             layerId: sublayerData.id,
-//             url: `${map_service_url}/${sublayerData.id}`,
-//             definitionExpression: query ? formatQuery(query, 'sql') : '',
-//             minScale: sublayerData?.minScale,
-//             maxScale: sublayerData?.maxScale,
-//           });
-//           break;
-//         default:
-//           break;
-//       }
-//       return sublayer;
-//     }),
-//   );
-//   return glLayers;
-// };
-
 const Webmap = (props) => {
   const { editMode, height, id } = props;
 
   const data = React.useMemo(() => props.data || {}, [props.data]);
 
   const device = React.useMemo(() => props.device || {}, [props.device]);
-  const { base = {}, layers = {}, legend = {}, general = {} } = data;
+  const {
+    base = {},
+    layers = {},
+    legend = {},
+    general = {},
+    styles = {},
+  } = data;
 
   const { base_layer = '' } = base;
 
@@ -125,6 +87,19 @@ const Webmap = (props) => {
     }
   }, [setModules, options]);
 
+  var customFeatureLayerRenderer = {
+    type: 'simple', // autocasts as new SimpleRenderer()
+    symbol: {
+      type: 'simple-fill', // autocasts as new SimpleFillSymbol()
+      color: styles?.symbol_color ? styles?.symbol_color : 'black',
+      style: 'solid',
+      outline: {
+        // autocasts as new SimpleLineSymbol()
+        color: styles?.outline_color ? styles?.outline_color : 'white',
+        width: styles?.outline_width ? styles?.outline_width : 1,
+      },
+    },
+  };
   //eslint-disable-next-line no-unused-vars
   const esri = React.useMemo(() => {
     if (Object.keys(modules).length === 0) return {};
@@ -148,7 +123,15 @@ const Webmap = (props) => {
             .filter(({ map_service_url, layer }) => map_service_url && layer)
             .map(
               (
-                { map_service_url, layer, fullLayer, query = '', opacity = 1 },
+                {
+                  map_service_url,
+                  layer,
+                  fullLayer,
+                  query = '',
+                  opacity = 1,
+                  maxScaleOverride = '',
+                  minScaleOverride = '',
+                },
                 index,
               ) => {
                 const url = `${map_service_url}/${layer?.id}`;
@@ -160,8 +143,12 @@ const Webmap = (props) => {
                       sublayers: [
                         {
                           id: layer.id,
-                          minScale: layer?.minScale,
-                          maxScale: layer?.maxScale,
+                          minScale: minScaleOverride
+                            ? minScaleOverride
+                            : layer?.minScale,
+                          maxScale: maxScaleOverride
+                            ? maxScaleOverride
+                            : layer?.maxScale,
                           opacity: opacity ? parseFloat(opacity) : 1,
                           definitionExpression: query
                             ? formatQuery(query, 'sql')
@@ -177,9 +164,16 @@ const Webmap = (props) => {
                       definitionExpression: query
                         ? formatQuery(query, 'sql')
                         : '',
-                      minScale: layer?.minScale,
-                      maxScale: layer?.maxScale,
+                      minScale: minScaleOverride
+                        ? minScaleOverride
+                        : layer?.minScale,
+                      maxScale: maxScaleOverride
+                        ? maxScaleOverride
+                        : layer?.maxScale,
                       opacity: opacity ? parseFloat(opacity) : 1,
+                      ...(styles?.override_styles && {
+                        renderer: customFeatureLayerRenderer,
+                      }),
                     });
                     break;
                   default:

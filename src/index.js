@@ -7,6 +7,7 @@ import LayerSelectWidget from './components/widgets/LayerSelectWidget';
 import MapEditorWidget from './components/widgets/MapEditorWidget';
 import VisualizationEditorWidget from './components/visualization/VisualizationEditorWidget';
 import VisualizationView from './components/visualization/VisualizationView';
+import SimpleColorPickerWidget from './components/widgets/SimpleColorPickerWidget';
 
 import { data_visualizations } from './middlewares';
 import * as addonReducers from './reducers';
@@ -47,18 +48,13 @@ export default (config) => {
         isDefault: true,
         view: EmbedMapView,
       },
-      {
-        id: 'extra',
-        title: 'Extra variation (expand if needed)',
-        isDefault: true,
-        view: EmbedMapView,
-      },
     ],
   };
 
   config.widgets.widget.map_edit_widget = MapEditorWidget;
   config.widgets.widget.map_layers_widget = LayerSelectWidget;
   config.widgets.widget.data_query_widget = DataQueryWidget;
+  config.widgets.widget.simple_color_picker_widget = SimpleColorPickerWidget;
 
   //map editor for the visualization(content-type)
   config.widgets.id.map_visualization_data = VisualizationEditorWidget;
