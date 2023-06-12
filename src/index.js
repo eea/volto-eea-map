@@ -5,9 +5,9 @@ import world from '@plone/volto/icons/world.svg';
 import DataQueryWidget from './components/widgets/DataQueryWidget';
 import LayerSelectWidget from './components/widgets/LayerSelectWidget';
 import MapEditorWidget from './components/widgets/MapEditorWidget';
-import ObjectTypesWidget from './components/widgets/ObjectTypesWidget';
 import VisualizationEditorWidget from './components/visualization/VisualizationEditorWidget';
 import VisualizationView from './components/visualization/VisualizationView';
+import SimpleColorPickerWidget from './components/widgets/SimpleColorPickerWidget';
 
 import { data_visualizations } from './middlewares';
 import * as addonReducers from './reducers';
@@ -29,36 +29,6 @@ export default (config) => {
     'copernicus.discomap.eea.europa.eu',
   ];
 
-  // EEA MAP BLOCK
-
-  // config.blocks.blocksConfig.eea_map_block = {
-  //   id: 'eea_map_block', //  The name (id) of the block
-  //   title: 'EEA Map', //  The display name of the block
-  //   icon: world, //  The icon used in the block chooser
-  //   group: 'common', //The group (blocks can be grouped, displayed in the chooser)
-  //   view: EEAMapView, //The view mode component
-  //   edit: EEAMapEdit, // The edit mode component
-  //   sidebarTab: 1, // The sidebar tab you want to be selected when selecting the block
-  //   security: {
-  //     addPermission: [], //  Future proof (not implemented yet) add user permission role(s)
-  //     view: [], //Future proof (not implemented yet) view user role(s)
-  //   },
-  //   variations: [
-  //     {
-  //       id: 'default',
-  //       title: 'EEA Map (default)',
-  //       isDefault: true,
-  //       view: EEAMapView,
-  //     },
-  //     {
-  //       id: 'extra',
-  //       title: 'Extra variation (expand if needed)',
-  //       isDefault: true,
-  //       view: EEAMapView,
-  //     },
-  //   ],
-  // };
-
   config.blocks.blocksConfig.embed_eea_map_block = {
     id: 'embed_eea_map_block', // The name (id) of the block
     title: 'Embed EEA Map', // The display name of the block
@@ -78,19 +48,13 @@ export default (config) => {
         isDefault: true,
         view: EmbedMapView,
       },
-      {
-        id: 'extra',
-        title: 'Extra variation (expand if needed)',
-        isDefault: true,
-        view: EmbedMapView,
-      },
     ],
   };
 
   config.widgets.widget.map_edit_widget = MapEditorWidget;
   config.widgets.widget.map_layers_widget = LayerSelectWidget;
-  config.widgets.widget.object_types_widget = ObjectTypesWidget;
   config.widgets.widget.data_query_widget = DataQueryWidget;
+  config.widgets.widget.simple_color_picker_widget = SimpleColorPickerWidget;
 
   //map editor for the visualization(content-type)
   config.widgets.id.map_visualization_data = VisualizationEditorWidget;
