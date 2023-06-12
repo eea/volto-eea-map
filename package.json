@@ -18,11 +18,9 @@
   },
   "addons": [
     "@eeacms/volto-embed",
-    "@eeacms/volto-block-style",
     "@eeacms/volto-object-widget"
   ],
   "dependencies": {
-    "@eeacms/volto-block-style": "4.1.0",
     "@eeacms/volto-embed": "*",
     "@eeacms/volto-object-widget": "*",
     "@plone/scripts": "*",

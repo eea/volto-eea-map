@@ -48,12 +48,6 @@ export default (config) => {
         isDefault: true,
         view: EmbedMapView,
       },
-      {
-        id: 'extra',
-        title: 'Extra variation (expand if needed)',
-        isDefault: true,
-        view: EmbedMapView,
-      },
     ],
   };
 

@@ -9,7 +9,6 @@ import { getContent } from '@plone/volto/actions';
 import Webmap from '../../Webmap';
 import ExtraViews from '../../ExtraViews';
 
-import { StyleWrapperView } from '@eeacms/volto-block-style/StyleWrapper';
 import cx from 'classnames';
 
 const View = (props) => {
@@ -77,35 +76,23 @@ const View = (props) => {
   }, [map_visualization, props.data, props.data_query, isEdit, enable_queries]);
 
   return (
-    <StyleWrapperView
-      {...props}
-      data={data}
-      styleData={{
-        ...data.styles,
-        customClass: cx(
-          data.styles?.customClass || '',
-          'columns-tabs-container',
-        ),
-      }}
-    >
-      <PrivacyProtection data={data} height={height} {...props}>
-        {mapData && (
-          <div>
-            <Webmap data={mapData} height={height} />
-            <ExtraViews
-              data={{
-                ...data,
-                data_provenance,
-                map_data: map_visualization,
-              }}
-            />
-          </div>
-        )}
-        {!mapData && (
-          <p>No map view to show. Set visualization in block configuration.</p>
-        )}
-      </PrivacyProtection>
-    </StyleWrapperView>
+    <PrivacyProtection data={data} height={height} {...props}>
+      {mapData && (
+        <div>
+          <Webmap data={mapData} height={height} />
+          <ExtraViews
+            data={{
+              ...data,
+              data_provenance,
+              map_data: map_visualization,
+            }}
+          />
+        </div>
+      )}
+      {!mapData && (
+        <p>No map view to show. Set visualization in block configuration.</p>
+      )}
+    </PrivacyProtection>
   );
 };
 
