@@ -43,7 +43,6 @@ export default (props) => {
               return (
                 <SketchPicker
                   width="180px"
-                  disableAlpha
                   colors={available_colors}
                   color={value || '#000'}
                   onChangeComplete={(value) => {
