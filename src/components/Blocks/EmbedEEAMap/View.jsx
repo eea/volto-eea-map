@@ -9,8 +9,6 @@ import { getContent } from '@plone/volto/actions';
 import Webmap from '../../Webmap';
 import ExtraViews from '../../ExtraViews';
 
-import cx from 'classnames';
-
 const View = (props) => {
   const { data, id, isEdit, map_visualization = '', data_provenance = {} } =
     props || {};
