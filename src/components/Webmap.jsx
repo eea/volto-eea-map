@@ -20,11 +20,9 @@ const MODULES = [
 ];
 
 const Webmap = (props) => {
-  const { editMode, height, id } = props;
+  const { editMode, height, id, device = {} } = props;
 
   const data = React.useMemo(() => props.data || {}, [props.data]);
-
-  const device = React.useMemo(() => props.device || {}, [props.device]);
   const {
     base = {},
     layers = {},
