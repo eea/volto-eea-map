@@ -20,11 +20,9 @@ const MODULES = [
 ];
 
 const Webmap = (props) => {
-  const { editMode, height, id } = props;
+  const { editMode, height, id, device = {} } = props;
 
   const data = React.useMemo(() => props.data || {}, [props.data]);
-
-  const device = React.useMemo(() => props.device || {}, [props.device]);
   const {
     base = {},
     layers = {},
@@ -91,11 +89,26 @@ const Webmap = (props) => {
     type: 'simple', // autocasts as new SimpleRenderer()
     symbol: {
       type: 'simple-fill', // autocasts as new SimpleFillSymbol()
-      color: styles?.symbol_color ? styles?.symbol_color : 'black',
+      color: styles?.symbol_color
+        ? styles?.symbol_color?.rgb
+        : {
+            r: 0,
+            g: 0,
+            b: 0,
+            a: 1,
+          },
+      //color: 'rgba(255,255,255,0.4)',
       style: 'solid',
       outline: {
         // autocasts as new SimpleLineSymbol()
-        color: styles?.outline_color ? styles?.outline_color : 'white',
+        color: styles?.outline_color
+          ? styles?.outline_color?.rgb
+          : {
+              r: 0,
+              g: 0,
+              b: 0,
+              a: 1,
+            },
         width: styles?.outline_width ? styles?.outline_width : 1,
       },
     },

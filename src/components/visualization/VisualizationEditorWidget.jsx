@@ -114,7 +114,7 @@ const VisualizationEditorWidget = (props) => {
           </Modal.Actions>
         </Modal>
       )}
-      <Webmap data={value} editMode={true} />
+      {!open && <Webmap data={value} editMode={true} />}
     </FormFieldWrapper>
   );
 };
