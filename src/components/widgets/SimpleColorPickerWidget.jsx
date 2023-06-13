@@ -14,7 +14,7 @@ export default (props) => {
   const [color, setColor] = React.useState(value);
 
   const handleChangeColor = (valColor) => {
-    setColor(valColor.hex);
+    setColor(valColor);
   };
 
   const handleConfirmColor = () => {
@@ -36,8 +36,8 @@ export default (props) => {
       <div style={{ position: 'relative' }}>
         <Button.Group fluid>
           <Button
-            color={value}
-            style={{ backgroundColor: value }}
+            color={value?.hex ? value?.hex : 'black'}
+            style={{ backgroundColor: value?.hex ? value?.hex : 'black' }}
             onClick={() => setShowPicker(true)}
             size="small"
             fluid
@@ -71,10 +71,17 @@ export default (props) => {
                     <SketchPicker
                       width="180px"
                       colors={available_colors}
-                      color={color || '#000'}
+                      color={
+                        color?.rgb
+                          ? color.rgb
+                          : {
+                              r: 0,
+                              g: 0,
+                              b: 0,
+                              a: 1,
+                            }
+                      }
                       onChangeComplete={(value) => {
-                        // setShowPicker(false);
-                        //onChange(id, value.hex);
                         handleChangeColor(value);
                       }}
                     ></SketchPicker>
