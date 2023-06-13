@@ -1,36 +1,37 @@
-import React from 'react';
-import { SidebarPortal } from '@plone/volto/components';
+import React from "react";
+import { SidebarPortal } from "@plone/volto/components";
 
-import { connect } from 'react-redux';
-import { compose } from 'redux';
+import { connect } from "react-redux";
+import { compose } from "redux";
 
-import { getContent } from '@plone/volto/actions';
+import { getContent } from "@plone/volto/actions";
 
-import BlockDataForm from '@plone/volto/components/manage/Form/BlockDataForm';
-import View from './View';
-import { Schema } from './Schema';
-import '../../../styles/map.css';
+import BlockDataForm from "@plone/volto/components/manage/Form/BlockDataForm";
+import View from "./View";
+import { Schema } from "./Schema";
+import "../../../styles/map.css";
 
-import _ from 'lodash';
+import _ from "lodash";
 
 const Edit = (props) => {
   const { block, data, onChangeBlock, selected, id } = props;
   const schema = React.useMemo(() => Schema(props), [props]);
 
+  //init
   React.useEffect(() => {
-    if (!Object.hasOwn(data, 'show_legend')) {
+    if (!Object.hasOwn(data, "show_legend")) {
       onChangeBlock(block, {
         ...data,
         show_legend: true,
       });
     }
-    if (!Object.hasOwn(data, 'show_sources')) {
+    if (!Object.hasOwn(data, "show_sources")) {
       onChangeBlock(block, {
         ...data,
         show_sources: true,
       });
     }
-    if (!Object.hasOwn(data, 'dataprotection')) {
+    if (!Object.hasOwn(data, "dataprotection")) {
       onChangeBlock(block, {
         ...data,
         dataprotection: { enabled: true },
@@ -86,6 +87,6 @@ export default compose(
     }),
     {
       getContent,
-    },
-  ),
+    }
+  )
 )(Edit);
