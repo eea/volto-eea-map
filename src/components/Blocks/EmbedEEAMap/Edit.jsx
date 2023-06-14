@@ -7,15 +7,28 @@ import { compose } from 'redux';
 import { getContent } from '@plone/volto/actions';
 
 import BlockDataForm from '@plone/volto/components/manage/Form/BlockDataForm';
-import View from './View';
-import { Schema } from './Schema';
-import '../../../styles/map.css';
+import Webmap from '@eeacms/volto-eea-map/components/Webmap';
+import ExtraViews from '@eeacms/volto-eea-map/components/ExtraViews';
+import '@eeacms/volto-eea-map/styles/map.css';
 
-import _ from 'lodash';
+import { Schema } from './Schema';
+import {
+  applyQueriesToMapLayers,
+  updateBlockQueryFromPageQuery,
+} from '@eeacms/volto-eea-map/utils';
 
 const Edit = (props) => {
-  const { block, data, onChangeBlock, selected, id } = props;
-  const schema = React.useMemo(() => Schema(props), [props]);
+  const {
+    block,
+    data,
+    onChangeBlock,
+    selected,
+    id,
+    data_provenance = {},
+  } = props;
+  const { height = '' } = data;
+  const schema = Schema(props);
+  const [mapData, setMapData] = React.useState('');
 
   React.useEffect(() => {
     if (!Object.hasOwn(data, 'show_legend')) {
@@ -36,30 +49,68 @@ const Edit = (props) => {
         dataprotection: { enabled: true },
       });
     }
-
-    //    eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data]);
-
-  React.useEffect(() => {
-    props.getContent(data.vis_url, null, id);
-    //    eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data.vis_url]);
+    //      eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data.show_legend, data.show_sources, data.dataprotection]);
 
   React.useEffect(() => {
-    if (
-      !data.data_query_params ||
-      !_.isEqual(props.data_query, data.data_query_params)
-    ) {
-      onChangeBlock(block, {
-        ...data,
-        data_query_params: props.data_query,
-      });
+    props.getContent(props.data.vis_url, null, id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.data.vis_url]);
+
+  React.useEffect(() => {
+    if (props.data_query) {
+      //if block data_query_params do not exist, init them
+      if (!props?.data?.data_query_params) {
+        onChangeBlock(block, {
+          ...props.data,
+          data_query_params: [...props.data_query],
+        });
+      }
+
+      //if block data_query_params exist, deep check them then change them in block data
+      if (props?.data_query && data?.data_query_params) {
+        const newDataQuery = updateBlockQueryFromPageQuery(
+          props?.data_query,
+          data?.data_query_params,
+        );
+
+        onChangeBlock(block, {
+          ...data,
+          data_query_params: [...newDataQuery],
+        });
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.block, props.data_query, data.data_query_params]);
+  }, [props.data_query]);
+
+  React.useEffect(() => {
+    const updatedMapData = applyQueriesToMapLayers(
+      props.map_visualization,
+      props.data.data_query_params,
+      props.data.enable_queries,
+    );
+    setMapData(updatedMapData);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.map_visualization, props.data]);
+
   return (
     <>
-      <View data={data} id={id} isEdit={true} />
+      {mapData && (
+        <div>
+          <Webmap data={mapData} height={height} isEdit={true} />
+          <ExtraViews
+            data={{
+              ...data,
+              data_provenance,
+              map_data: props.map_visualization,
+            }}
+          />
+        </div>
+      )}
+      {!mapData && (
+        <p>No map view to show. Set visualization in block configuration.</p>
+      )}
       <SidebarPortal selected={selected}>
         <BlockDataForm
           block={block}
@@ -81,8 +132,11 @@ const Edit = (props) => {
 export default compose(
   connect(
     (state, props) => ({
-      block_data: state.content.data,
       data_query: state.content.data.data_query,
+      data_provenance:
+        state.content.subrequests?.[props.id]?.data?.data_provenance,
+      map_visualization:
+        state.content.subrequests?.[props.id]?.data?.map_visualization_data,
     }),
     {
       getContent,

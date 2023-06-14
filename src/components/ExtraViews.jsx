@@ -1,11 +1,11 @@
 import React from 'react';
 import { UniversalLink, Icon } from '@plone/volto/components';
 
-import LegendWidget from './widgets/LegendWidget';
 import { serializeNodes } from '@plone/volto-slate/editor/render';
 
 import rightKeySVG from '@plone/volto/icons/right-key.svg';
 import downKeySVG from '@plone/volto/icons/down-key.svg';
+import LegendView from '@eeacms/volto-eea-map/components/LegendView';
 
 const SourcesWidget = ({ data }) => {
   const [expand, setExpand] = React.useState(true);
@@ -56,7 +56,7 @@ const ExtraViews = ({ data }) => {
   return (
     <div className="extra-eea-map-content">
       {show_legend && map_data && (
-        <LegendWidget data={map_data} show_viewer={show_viewer} />
+        <LegendView data={map_data} show_viewer={show_viewer} />
       )}
       {show_sources && (
         <>

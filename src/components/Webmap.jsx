@@ -22,16 +22,23 @@ const MODULES = [
 const Webmap = (props) => {
   const { editMode, height, id } = props;
 
+  const device = React.useMemo(() => props.device || {}, [props.device]);
+
   const data = React.useMemo(() => props.data || {}, [props.data]);
 
-  const device = React.useMemo(() => props.device || {}, [props.device]);
-  const {
-    base = {},
-    layers = {},
-    legend = {},
-    general = {},
-    styles = {},
-  } = data;
+  const layers = React.useMemo(() => props?.data?.layers || {}, [
+    props.data.layers,
+  ]);
+  const base = React.useMemo(() => props?.data?.base || {}, [props.data.base]);
+  const legend = React.useMemo(() => props?.data?.legend || {}, [
+    props.data.legend,
+  ]);
+  const general = React.useMemo(() => props?.data?.general || {}, [
+    props.data.general,
+  ]);
+  const styles = React.useMemo(() => props?.data?.styles || {}, [
+    props.data.styles,
+  ]);
 
   const { base_layer = '' } = base;
 
@@ -91,11 +98,26 @@ const Webmap = (props) => {
     type: 'simple', // autocasts as new SimpleRenderer()
     symbol: {
       type: 'simple-fill', // autocasts as new SimpleFillSymbol()
-      color: styles?.symbol_color ? styles?.symbol_color : 'black',
+      color: styles?.symbol_color
+        ? styles?.symbol_color?.rgb
+        : {
+            r: 0,
+            g: 0,
+            b: 0,
+            a: 1,
+          },
+      //color: 'rgba(255,255,255,0.4)',
       style: 'solid',
       outline: {
         // autocasts as new SimpleLineSymbol()
-        color: styles?.outline_color ? styles?.outline_color : 'white',
+        color: styles?.outline_color
+          ? styles?.outline_color?.rgb
+          : {
+              r: 0,
+              g: 0,
+              b: 0,
+              a: 1,
+            },
         width: styles?.outline_width ? styles?.outline_width : 1,
       },
     },

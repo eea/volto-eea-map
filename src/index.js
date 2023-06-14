@@ -2,11 +2,13 @@ import EmbedMapView from './components/Blocks/EmbedEEAMap/View';
 import EmbedMapEdit from './components/Blocks/EmbedEEAMap/Edit';
 
 import world from '@plone/volto/icons/world.svg';
+
 import DataQueryWidget from './components/widgets/DataQueryWidget';
 import LayerSelectWidget from './components/widgets/LayerSelectWidget';
-import MapEditorWidget from './components/widgets/MapEditorWidget';
+
 import VisualizationEditorWidget from './components/visualization/VisualizationEditorWidget';
 import VisualizationView from './components/visualization/VisualizationView';
+
 import SimpleColorPickerWidget from './components/widgets/SimpleColorPickerWidget';
 
 import { data_visualizations } from './middlewares';
@@ -51,7 +53,6 @@ export default (config) => {
     ],
   };
 
-  config.widgets.widget.map_edit_widget = MapEditorWidget;
   config.widgets.widget.map_layers_widget = LayerSelectWidget;
   config.widgets.widget.data_query_widget = DataQueryWidget;
   config.widgets.widget.simple_color_picker_widget = SimpleColorPickerWidget;

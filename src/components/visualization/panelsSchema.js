@@ -78,6 +78,8 @@ const MapLayersSchema = {
   required: [],
 };
 
+//style changes work only for Feature layers atm
+// TODO: apply style for individual layers
 const StylesLayersSchema = ({ data = {} }) => {
   return {
     title: 'Styles Layers',
