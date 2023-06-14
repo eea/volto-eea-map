@@ -7,11 +7,12 @@ import { compose } from 'redux';
 import { getContent } from '@plone/volto/actions';
 
 import BlockDataForm from '@plone/volto/components/manage/Form/BlockDataForm';
-import Webmap from '../../Webmap';
-import ExtraViews from '../../ExtraViews';
-import '../../../styles/map.css';
+import Webmap from '@eeacms/volto-eea-map/components/Webmap';
+import ExtraViews from '@eeacms/volto-eea-map/components/ExtraViews';
+import '@eeacms/volto-eea-map/styles/map.css';
 
 import { Schema } from './Schema';
+import { applyQueriesToMapLayers } from '@eeacms/volto-eea-map/utils';
 
 const Edit = (props) => {
   const {
@@ -104,62 +105,12 @@ const Edit = (props) => {
   //Effect to check props.data.data_query_params in block data
   //and remakes layer by filtering matching layer fields with block data
   React.useEffect(() => {
-    //break reference to the original map_visualization object
-    //so i safely manipulate data
-    var altMapData = props?.map_visualization
-      ? JSON.parse(JSON.stringify(props.map_visualization))
-      : '';
-    var block_data_query_params = props?.data?.data_query_params
-      ? [...props.data.data_query_params]
-      : [];
-
-    var rules = [];
-    if (
-      props?.data?.enable_queries &&
-      block_data_query_params &&
-      block_data_query_params.length > 0 &&
-      altMapData.layers &&
-      altMapData.layers.map_layers &&
-      altMapData.layers.map_layers.length > 0
-    ) {
-      altMapData.layers.map_layers.forEach((l, j) => {
-        block_data_query_params.forEach((param, i) => {
-          const matchingFields =
-            l.map_layer && l.map_layer.fields && l.map_layer.fields.length > 0
-              ? l.map_layer.fields.filter(
-                  (field, k) =>
-                    field.name === param.alias || field.name === param.i,
-                )
-              : [];
-          matchingFields.forEach((m, i) => {
-            const newRules = param.v
-              ? param.v.map((paramVal, i) => {
-                  return {
-                    field: m.name,
-                    operator: '=',
-                    value: paramVal,
-                  };
-                })
-              : [];
-            const concatRules = rules.concat(newRules);
-            const filteredRules = concatRules.filter(
-              (v, i, a) =>
-                a.findLastIndex(
-                  (v2) => v2.field === v.field && v2.value === v.value,
-                ) === i,
-            );
-            rules = filteredRules;
-          });
-        });
-        let autoQuery = {
-          combinator: 'or',
-          rules,
-        };
-        altMapData.layers.map_layers[j].map_layer.query = autoQuery;
-      });
-    }
-
-    setMapData(altMapData);
+    const updatedMapData = applyQueriesToMapLayers(
+      props.map_visualization,
+      props.data.data_query_params,
+      props.data.enable_queries,
+    );
+    setMapData(updatedMapData);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.map_visualization, props.data]);
