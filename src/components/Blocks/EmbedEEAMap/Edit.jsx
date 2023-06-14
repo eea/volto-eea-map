@@ -49,7 +49,6 @@ const Edit = (props) => {
         dataprotection: { enabled: true },
       });
     }
-
     //      eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data.show_legend, data.show_sources, data.dataprotection]);
 
