@@ -1,14 +1,14 @@
 import React from 'react';
 import { Button, Grid } from 'semantic-ui-react';
-import { fetchArcGISData, setLegendColumns } from '../../utils';
+import { fetchArcGISData, setLegendColumns } from '../utils';
 import { Icon } from '@plone/volto/components';
 import { serializeNodes } from '@plone/volto-slate/editor/render';
 
 import rightKeySVG from '@plone/volto/icons/right-key.svg';
 import downKeySVG from '@plone/volto/icons/down-key.svg';
-import { withDeviceSize } from '../../hocs';
+import { withDeviceSize } from '@eeacms/volto-eea-map/hocs';
 
-import codeSVG from '../../static/code-line.svg';
+import codeSVG from '@eeacms/volto-eea-map/static/code-line.svg';
 
 const LayerLegend = ({ data, show_viewer }) => {
   const [legendRows, setLegendRows] = React.useState([]);
@@ -92,7 +92,7 @@ const LayerLegend = ({ data, show_viewer }) => {
   );
 };
 
-const LegendWidget = (props) => {
+const LegendView = (props) => {
   const data = React.useMemo(() => props.data, [props.data]);
   const { device = '', show_viewer = false } = props;
 
@@ -150,4 +150,4 @@ const LegendWidget = (props) => {
   );
 };
 
-export default withDeviceSize(React.memo(LegendWidget));
+export default withDeviceSize(React.memo(LegendView));

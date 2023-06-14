@@ -98,7 +98,7 @@ const Edit = (props) => {
     <>
       {mapData && (
         <div>
-          <Webmap data={mapData} height={height} />
+          <Webmap data={mapData} height={height} isEdit={true} />
           <ExtraViews
             data={{
               ...data,
@@ -132,7 +132,6 @@ const Edit = (props) => {
 export default compose(
   connect(
     (state, props) => ({
-      data_in_state: state.content.subrequests?.[props.id]?.data,
       data_query: state.content.data.data_query,
       data_provenance:
         state.content.subrequests?.[props.id]?.data?.data_provenance,
