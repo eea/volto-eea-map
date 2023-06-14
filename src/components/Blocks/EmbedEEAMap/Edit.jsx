@@ -12,7 +12,10 @@ import ExtraViews from '@eeacms/volto-eea-map/components/ExtraViews';
 import '@eeacms/volto-eea-map/styles/map.css';
 
 import { Schema } from './Schema';
-import { applyQueriesToMapLayers } from '@eeacms/volto-eea-map/utils';
+import {
+  applyQueriesToMapLayers,
+  updateBlockQueryFromPageQuery,
+} from '@eeacms/volto-eea-map/utils';
 
 const Edit = (props) => {
   const {
@@ -55,13 +58,10 @@ const Edit = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.data.vis_url]);
 
-  //Handling data_query_params in block data from page data_query
-  //updates them automatically from page data_query
-  // TODO: improve and move in a helper function
   React.useEffect(() => {
     if (props.data_query) {
       //if block data_query_params do not exist, init them
-      if (!props.data?.data_query_params) {
+      if (!props?.data?.data_query_params) {
         onChangeBlock(block, {
           ...props.data,
           data_query_params: [...props.data_query],
@@ -70,29 +70,11 @@ const Edit = (props) => {
 
       //if block data_query_params exist, deep check them then change them in block data
       if (props?.data_query && data?.data_query_params) {
-        const newDataQuery = [...props.data_query].map((parameter, index) => {
-          //check if the parameter exists in data and has value
-          // then get its alias value and update it
-          //check if data_query param value is changed
-          //and change it in block data
-          if (
-            data?.data_query_params &&
-            data?.data_query_params[index] &&
-            parameter.i &&
-            data?.data_query_params[index].i &&
-            parameter.i === data?.data_query_params[index].i
-          ) {
-            return {
-              ...parameter,
-              alias: data?.data_query_params[index]?.alias
-                ? data?.data_query_params[index]?.alias
-                : '',
-              v: parameter?.v ? parameter?.v : '',
-            };
-          }
+        const newDataQuery = updateBlockQueryFromPageQuery(
+          props?.data_query,
+          data?.data_query_params,
+        );
 
-          return parameter;
-        });
         onChangeBlock(block, {
           ...data,
           data_query_params: [...newDataQuery],
@@ -102,8 +84,6 @@ const Edit = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.data_query]);
 
-  //Effect to check props.data.data_query_params in block data
-  //and remakes layer by filtering matching layer fields with block data
   React.useEffect(() => {
     const updatedMapData = applyQueriesToMapLayers(
       props.map_visualization,

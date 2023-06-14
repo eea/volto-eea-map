@@ -89,4 +89,38 @@ const applyQueriesToMapLayers = (
   return altMapData;
 };
 
-export { setLegendColumns, fetchArcGISData, applyQueriesToMapLayers };
+const updateBlockQueryFromPageQuery = (data_query, data_query_params) => {
+  var pageDataQuery = JSON.parse(JSON.stringify(data_query));
+  var blockDataQuery = data_query_params
+    ? JSON.parse(JSON.stringify(data_query_params))
+    : '';
+  var newDataQuery = pageDataQuery.map((parameter, index) => {
+    //check if the parameter exists in data and has value
+    // then get its alias value and update it
+    //check if data_query param value is changed
+    //and change it in block data
+    if (
+      blockDataQuery &&
+      blockDataQuery[index] &&
+      parameter.i &&
+      blockDataQuery[index].i &&
+      parameter.i === blockDataQuery[index].i
+    ) {
+      return {
+        ...parameter,
+        alias: blockDataQuery[index]?.alias ? blockDataQuery[index]?.alias : '',
+        v: parameter?.v ? parameter?.v : '',
+      };
+    }
+
+    return parameter;
+  });
+  return newDataQuery;
+};
+
+export {
+  setLegendColumns,
+  fetchArcGISData,
+  applyQueriesToMapLayers,
+  updateBlockQueryFromPageQuery,
+};
