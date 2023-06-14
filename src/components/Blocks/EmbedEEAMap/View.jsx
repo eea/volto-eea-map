@@ -16,16 +16,12 @@ const View = (props) => {
   const [mapData, setMapData] = React.useState('');
 
   React.useEffect(() => {
-    if (props.map_visualization && props.map_visualization !== mapData) {
-      setMapData(props.map_visualization);
-    }
+    setMapData(props.map_visualization);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.map_visualization]);
 
   React.useEffect(() => {
-    if (props.data.vis_url) {
-      props.getContent(props.data.vis_url, null, id);
-    }
+    props.getContent(props.data.vis_url, null, id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.data.vis_url]);
 

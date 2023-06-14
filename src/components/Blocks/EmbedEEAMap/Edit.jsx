@@ -49,17 +49,8 @@ const Edit = (props) => {
     //      eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data.show_legend, data.show_sources, data.dataprotection]);
 
-  // React.useEffect(() => {
-  //   if (props.map_visualization) {
-  //     setMapData(props.map_visualization);
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [props.map_visualization]);
-
   React.useEffect(() => {
-    if (props.data.vis_url) {
-      props.getContent(props.data.vis_url, null, id);
-    }
+    props.getContent(props.data.vis_url, null, id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.data.vis_url]);
 
@@ -152,6 +143,7 @@ const Edit = (props) => {
     setMapData(altMapData);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.map_visualization, props.data]);
+
   return (
     <>
       {mapData && (
