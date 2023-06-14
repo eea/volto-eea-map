@@ -54,6 +54,9 @@ const Edit = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.data.vis_url]);
 
+  //Handling data_query_params in block data from page data_query
+  //updates them automatically from page data_query
+  // TODO: improve and move in a helper function
   React.useEffect(() => {
     if (props.data_query) {
       //if block data_query_params do not exist, init them
@@ -69,42 +72,58 @@ const Edit = (props) => {
         const newDataQuery = [...props.data_query].map((parameter, index) => {
           //check if the parameter exists in data and has value
           // then get its alias value and update it
+          //check if data_query param value is changed
+          //and change it in block data
           if (
             data?.data_query_params &&
             data?.data_query_params[index] &&
-            // data?.data_query_param[index] === parameter &&
-            data?.data_query_params[index]?.alias
+            parameter.i &&
+            data?.data_query_params[index].i &&
+            parameter.i === data?.data_query_params[index].i
           ) {
             return {
               ...parameter,
-              alias: data?.data_query_params[index]?.alias,
+              alias: data?.data_query_params[index]?.alias
+                ? data?.data_query_params[index]?.alias
+                : '',
+              v: parameter?.v ? parameter?.v : '',
             };
           }
+
           return parameter;
         });
         onChangeBlock(block, {
           ...data,
-          data_query_params: newDataQuery,
+          data_query_params: [...newDataQuery],
         });
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.data_query]);
 
+  //Effect to check props.data.data_query_params in block data
+  //and remakes layer by filtering matching layer fields with block data
   React.useEffect(() => {
-    var altMapData = { ...props.map_visualization };
+    //break reference to the original map_visualization object
+    //so i safely manipulate data
+    var altMapData = props?.map_visualization
+      ? JSON.parse(JSON.stringify(props.map_visualization))
+      : '';
+    var block_data_query_params = props?.data?.data_query_params
+      ? [...props.data.data_query_params]
+      : [];
 
+    var rules = [];
     if (
       props?.data?.enable_queries &&
-      props.data?.data_query_params &&
-      props.data?.data_query_params.length > 0 &&
+      block_data_query_params &&
+      block_data_query_params.length > 0 &&
       altMapData.layers &&
       altMapData.layers.map_layers &&
       altMapData.layers.map_layers.length > 0
     ) {
-      let rules = [];
       altMapData.layers.map_layers.forEach((l, j) => {
-        props.data.data_query_params.forEach((param, i) => {
+        block_data_query_params.forEach((param, i) => {
           const matchingFields =
             l.map_layer && l.map_layer.fields && l.map_layer.fields.length > 0
               ? l.map_layer.fields.filter(
@@ -141,6 +160,7 @@ const Edit = (props) => {
     }
 
     setMapData(altMapData);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.map_visualization, props.data]);
 
@@ -182,7 +202,7 @@ const Edit = (props) => {
 export default compose(
   connect(
     (state, props) => ({
-      content: state.content,
+      data_in_state: state.content.subrequests?.[props.id]?.data,
       data_query: state.content.data.data_query,
       data_provenance:
         state.content.subrequests?.[props.id]?.data?.data_provenance,
