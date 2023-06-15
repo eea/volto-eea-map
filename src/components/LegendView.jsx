@@ -116,14 +116,14 @@ const LegendView = (props) => {
     <>
       <div className="legend-container">
         <button className="legend-action" onClick={() => setExpand(!expand)}>
-          <h3 role="presentation" className="legend-title">
-            <Icon
-              name={expand ? downKeySVG : rightKeySVG}
-              title={expand ? 'Collapse' : 'Expand'}
-              size="17px"
-            />
-            Legend:
-          </h3>
+          {/* <h3 role="presentation" className="legend-title"> */}
+          <Icon
+            name={expand ? downKeySVG : rightKeySVG}
+            title={expand ? 'Collapse' : 'Expand'}
+            size="17px"
+          />
+          Legend:
+          {/* </h3> */}
         </button>
         <Grid columns={legendColumns}>
           {(!map_layers || map_layers.length === 0) && (

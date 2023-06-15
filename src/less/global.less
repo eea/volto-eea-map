@@ -1,3 +1,21 @@
+@import (multiple, reference, optional) '../../theme.config';
+
+/* Enables customization of addons */
+.loadAddonOverrides() {
+  @import (optional)
+    '@{siteFolder}/../addons/@{addon}/@{addontype}s/@{addonelement}.overrides';
+}
+
+/* Helper to load variables */
+.loadAddonVariables() {
+  @import (optional) '@{addonelement}.variables';
+  @import (optional)
+    '@{siteFolder}/../addons/@{addon}/@{addontype}s/@{addonelement}.variables';
+}
+
+@import './variables.less';
+
+// TODO: pull out colors and dimensions into variables
 .map-edit-container {
   display: flex;
 }
@@ -162,6 +180,8 @@
 }
 
 .legend-container {
+  display: flex;
+  flex-direction: column;
   margin: 15px 0;
 }
 
@@ -179,10 +199,20 @@
 }
 
 .legend-action {
-  padding: 10px 0;
+  z-index: 22;
+  display: inline-flex;
+  align-items: center;
+  padding-bottom: 3px;
   border: none;
   background: transparent;
+  background-color: transparent;
+  color: #3d5265;
   cursor: pointer;
+  font-weight: bold;
+
+  &:hover {
+    color: @secondaryColor;
+  }
 }
 
 .map-number-input {
@@ -193,6 +223,46 @@
   width: 100%;
   margin: 7px 0;
   color: green;
+}
+
+/* sources */
+
+.eea-map-sources-list {
+  margin: 0;
+  list-style: decimal inside;
+  padding-inline-start: 0;
+}
+
+#eea-map-sources-popup .ui.popup {
+  min-width: 600px;
+  background-color: #f9f9f9;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
+.eea-map-sources-button {
+  display: inline-flex;
+  align-items: center;
+  padding-top: 10px;
+  padding-bottom: 3px;
+  border: none;
+  background-color: transparent;
+  color: @textColor;
+  cursor: pointer;
+  font-weight: bold;
+
+  .icon {
+    margin-left: 0.5rem;
+  }
+
+  &:hover {
+    color: @secondaryColor;
+  }
+
+  &.expanded {
+    padding-bottom: 0;
+    border-bottom: 3px solid @secondaryColor;
+    color: @secondaryColor;
+  }
 }
 
 @keyframes fadeDown {
@@ -211,5 +281,10 @@
   .layer-legend-item-color {
     max-width: 0.2cm;
     height: 0.2cm;
+  }
+
+  .eea-map-sources-container,
+  #eea-map-sources-popup {
+    display: none;
   }
 }
