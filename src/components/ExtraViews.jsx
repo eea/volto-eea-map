@@ -1,47 +1,7 @@
 import React from 'react';
-import { UniversalLink, Icon } from '@plone/volto/components';
-
 import { serializeNodes } from '@plone/volto-slate/editor/render';
-
-import rightKeySVG from '@plone/volto/icons/right-key.svg';
-import downKeySVG from '@plone/volto/icons/down-key.svg';
 import LegendView from '@eeacms/volto-eea-map/components/LegendView';
-
-const SourcesWidget = ({ data }) => {
-  const [expand, setExpand] = React.useState(true);
-
-  return (
-    <div>
-      <button className="legend-action" onClick={() => setExpand(!expand)}>
-        <h3>
-          <Icon
-            name={expand ? downKeySVG : rightKeySVG}
-            title={expand ? 'Collapse' : 'Expand'}
-            size="17px"
-          />
-          Sources:
-        </h3>
-      </button>
-      {expand && (
-        <ul>
-          {data.map((param, i) => (
-            <li key={i}>
-              <div className="map_source_param_container">
-                <UniversalLink className="map_source_title" href={param.link}>
-                  {param.title}
-                </UniversalLink>
-                ,
-                <span className="map_source_description">
-                  {param.organisation}
-                </span>
-              </div>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
-};
+import Sources from './Sources';
 
 const ExtraViews = ({ data }) => {
   const {
@@ -58,17 +18,7 @@ const ExtraViews = ({ data }) => {
       {show_legend && map_data && (
         <LegendView data={map_data} show_viewer={show_viewer} />
       )}
-      {show_sources && (
-        <>
-          {data_provenance &&
-          data_provenance.data &&
-          data_provenance.data.length > 0 ? (
-            <SourcesWidget data={data_provenance.data} />
-          ) : (
-            <p>Data provenance is not set for visualization used or page</p>
-          )}
-        </>
-      )}
+      {show_sources && <Sources sources={data_provenance?.data} />}
       {description && serializeNodes(description)}
     </div>
   );

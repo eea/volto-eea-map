@@ -9,7 +9,6 @@ import { getContent } from '@plone/volto/actions';
 import BlockDataForm from '@plone/volto/components/manage/Form/BlockDataForm';
 import Webmap from '@eeacms/volto-eea-map/components/Webmap';
 import ExtraViews from '@eeacms/volto-eea-map/components/ExtraViews';
-import '@eeacms/volto-eea-map/styles/map.css';
 
 import { Schema } from './Schema';
 import {

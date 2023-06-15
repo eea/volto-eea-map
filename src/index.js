@@ -14,6 +14,8 @@ import SimpleColorPickerWidget from './components/widgets/SimpleColorPickerWidge
 import { data_visualizations } from './middlewares';
 import * as addonReducers from './reducers';
 
+import './less/global.less';
+
 export default (config) => {
   config.settings.allowed_cors_destinations = [
     ...(config.settings.allowed_cors_destinations || []),
