@@ -4,8 +4,6 @@ import { SidebarPortal } from '@plone/volto/components';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
-import { getContent } from '@plone/volto/actions';
-
 import BlockDataForm from '@plone/volto/components/manage/Form/BlockDataForm';
 import Webmap from '@eeacms/volto-eea-map/components/Webmap';
 import ExtraViews from '@eeacms/volto-eea-map/components/ExtraViews';
@@ -16,15 +14,10 @@ import {
   updateBlockQueryFromPageQuery,
 } from '@eeacms/volto-eea-map/utils';
 
+import { getVisualization } from '@eeacms/volto-eea-map/actions';
+
 const Edit = (props) => {
-  const {
-    block,
-    data,
-    onChangeBlock,
-    selected,
-    id,
-    data_provenance = {},
-  } = props;
+  const { block, data, onChangeBlock, selected, data_provenance = {} } = props;
   const { height = '' } = data;
   const schema = Schema(props);
   const [mapData, setMapData] = React.useState('');
@@ -52,7 +45,7 @@ const Edit = (props) => {
   }, [data.show_legend, data.show_sources, data.dataprotection]);
 
   React.useEffect(() => {
-    props.getContent(props.data.vis_url, null, id);
+    props.getVisualization(props.data.vis_url);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.data.vis_url]);
 
@@ -132,13 +125,15 @@ export default compose(
   connect(
     (state, props) => ({
       data_query: state.content.data.data_query,
-      data_provenance:
-        state.content.subrequests?.[props.id]?.data?.data_provenance,
-      map_visualization:
-        state.content.subrequests?.[props.id]?.data?.map_visualization_data,
+      map_visualization: props.data.vis_url
+        ? state.map_visualizations?.data[props.data.vis_url]?.data
+        : '',
+      data_provenance: props.data.vis_url
+        ? state.map_visualizations?.data[props.data.vis_url]?.data_provenance
+        : '',
     }),
     {
-      getContent,
+      getVisualization,
     },
   ),
 )(Edit);
