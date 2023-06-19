@@ -30,7 +30,11 @@ const View = (props) => {
 
     setMapData(updatedMapData);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.map_visualization, props.data]);
+  }, [
+    props.map_visualization,
+    props.data.data_query_params,
+    props.data.enable_queries,
+  ]);
 
   return (
     <PrivacyProtection data={data} height={height} {...props}>
