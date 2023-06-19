@@ -5,19 +5,19 @@ import { compose } from 'redux';
 
 import { PrivacyProtection } from '@eeacms/volto-embed';
 
-import { getContent } from '@plone/volto/actions';
 import Webmap from '@eeacms/volto-eea-map/components/Webmap';
 import ExtraViews from '@eeacms/volto-eea-map/components/ExtraViews';
 import { applyQueriesToMapLayers } from '@eeacms/volto-eea-map/utils';
+import { getVisualization } from '@eeacms/volto-eea-map/actions';
 
 const View = (props) => {
-  const { data, id, data_provenance = {} } = props || {};
+  const { data, data_provenance = {} } = props || {};
   const { height = '' } = data;
 
   const [mapData, setMapData] = React.useState('');
 
   React.useEffect(() => {
-    props.getContent(props.data.vis_url, null, id);
+    props.getVisualization(props.data.vis_url);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.data.vis_url]);
 
@@ -30,7 +30,11 @@ const View = (props) => {
 
     setMapData(updatedMapData);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.map_visualization, props.data]);
+  }, [
+    props.map_visualization,
+    props.data.data_query_params,
+    props.data.enable_queries,
+  ]);
 
   return (
     <PrivacyProtection data={data} height={height} {...props}>
@@ -56,13 +60,15 @@ const View = (props) => {
 export default compose(
   connect(
     (state, props) => ({
-      data_provenance:
-        state.content.subrequests?.[props.id]?.data?.data_provenance,
-      map_visualization:
-        state.content.subrequests?.[props.id]?.data?.map_visualization_data,
+      map_visualization: props.data.vis_url
+        ? state.map_visualizations?.data[props.data.vis_url]?.data
+        : '',
+      data_provenance: props.data.vis_url
+        ? state.map_visualizations?.data[props.data.vis_url]?.data_provenance
+        : '',
     }),
     {
-      getContent,
+      getVisualization,
     },
   ),
 )(View);

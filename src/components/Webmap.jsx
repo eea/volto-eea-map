@@ -30,9 +30,7 @@ const Webmap = (props) => {
     props.data.layers,
   ]);
   const base = React.useMemo(() => props?.data?.base || {}, [props.data.base]);
-  const legend = React.useMemo(() => props?.data?.legend || {}, [
-    props.data.legend,
-  ]);
+
   const general = React.useMemo(() => props?.data?.general || {}, [
     props.data.general,
   ]);
@@ -49,10 +47,6 @@ const Webmap = (props) => {
       .filter(({ map_layer }) => map_layer)
       .map((l, i) => l.map_layer);
 
-  const options = {
-    css: true,
-  };
-
   const mapRef = React.useRef();
   const [modules, setModules] = React.useState({});
 
@@ -61,7 +55,9 @@ const Webmap = (props) => {
   React.useEffect(() => {
     if (!modules_loaded.current) {
       modules_loaded.current = true;
-      loadModules(MODULES, options).then((modules) => {
+      loadModules(MODULES, {
+        css: true,
+      }).then((modules) => {
         const [
           Map,
           MapView,
@@ -92,7 +88,7 @@ const Webmap = (props) => {
         });
       });
     }
-  }, [setModules, options]);
+  }, [setModules]);
 
   var customFeatureLayerRenderer = {
     type: 'simple', // autocasts as new SimpleRenderer()
@@ -312,27 +308,6 @@ const Webmap = (props) => {
       });
       view.ui.add(zoomWidget, zoomPosition);
     }
-
-    if (legend?.legend?.show_legend) {
-      const legendPosition =
-        legend && legend.legend && legend.legend.position
-          ? legend.legend.position
-          : 'top-right';
-
-      const legendWidget = new Expand({
-        content: new Legend({
-          view: view,
-          style: 'classic',
-        }),
-        view: view,
-        expanded: false,
-        expandIconClass: 'esri-icon-legend',
-        expandTooltip: 'Legend',
-        classNames: 'some-cool-expand',
-      });
-      view.ui.add(legendWidget, legendPosition);
-    }
-
     const printPosition =
       general && general.print_position ? general.print_position : '';
 
