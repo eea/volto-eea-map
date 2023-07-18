@@ -17,31 +17,39 @@ import {
 import { getVisualization } from '@eeacms/volto-eea-map/actions';
 
 const Edit = (props) => {
-  const { block, data, onChangeBlock, selected, data_provenance = {} } = props;
-  const { height = '' } = data;
+  const {
+    block,
+    data: initialData,
+    onChangeBlock,
+    selected,
+    data_provenance = {},
+  } = props;
+  const { height = '' } = initialData;
   const schema = Schema(props);
   const [mapData, setMapData] = React.useState('');
 
+  const [data, setData] = React.useState(initialData);
+
   React.useEffect(() => {
     if (!Object.hasOwn(data, 'show_legend')) {
-      onChangeBlock(block, {
-        ...data,
+      setData((prevData) => ({
+        ...prevData,
         show_legend: true,
-      });
+      }));
     }
     if (!Object.hasOwn(data, 'show_sources')) {
-      onChangeBlock(block, {
-        ...data,
+      setData((prevData) => ({
+        ...prevData,
         show_sources: true,
-      });
+      }));
     }
     if (!Object.hasOwn(data, 'dataprotection')) {
-      onChangeBlock(block, {
-        ...data,
+      setData((prevData) => ({
+        ...prevData,
         dataprotection: { enabled: true },
-      });
+      }));
     }
-    //      eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data.show_legend, data.show_sources, data.dataprotection]);
 
   React.useEffect(() => {
@@ -53,10 +61,10 @@ const Edit = (props) => {
     if (props.data_query) {
       //if block data_query_params do not exist, init them
       if (!props?.data?.data_query_params) {
-        onChangeBlock(block, {
-          ...props.data,
+        setData((prevData) => ({
+          ...prevData,
           data_query_params: [...props.data_query],
-        });
+        }));
       }
 
       //if block data_query_params exist, deep check them then change them in block data
@@ -66,10 +74,10 @@ const Edit = (props) => {
           data?.data_query_params,
         );
 
-        onChangeBlock(block, {
-          ...data,
+        setData((prevData) => ({
+          ...prevData,
           data_query_params: [...newDataQuery],
-        });
+        }));
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
