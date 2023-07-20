@@ -1,5 +1,7 @@
 import React from 'react';
 import Webmap from '../Webmap';
+import { hasBlocksData } from '@plone/volto/helpers';
+import RenderBlocks from '@plone/volto/components/theme/View/RenderBlocks';
 
 const VisualizationView = (props) => {
   const { content = {} } = props;
@@ -7,8 +9,12 @@ const VisualizationView = (props) => {
   const { map_visualization_data = {} } = content;
 
   return (
-    <div>
-      <Webmap data={map_visualization_data} />
+    <div id="page-document" className="view-viewarcgismap">
+      {hasBlocksData(content) ? (
+        <RenderBlocks {...props} />
+      ) : (
+        <Webmap data={map_visualization_data} />
+      )}
     </div>
   );
 };
