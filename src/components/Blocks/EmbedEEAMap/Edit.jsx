@@ -58,6 +58,14 @@ const Edit = (props) => {
   }, [props.data.vis_url]);
 
   React.useEffect(() => {
+    setData((prevData) => ({
+      ...prevData,
+      ...props.data,
+    }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.data]);
+
+  React.useEffect(() => {
     if (props.data_query) {
       //if block data_query_params do not exist, init them
       if (!props?.data?.data_query_params) {
