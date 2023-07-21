@@ -7,6 +7,7 @@ import DataQueryWidget from './components/widgets/DataQueryWidget';
 import LayerSelectWidget from './components/widgets/LayerSelectWidget';
 
 import VisualizationEditorWidget from './components/visualization/VisualizationEditorWidget';
+import VisualizationViewWidget from './components/visualization/VisualizationViewWidget';
 import VisualizationView from './components/visualization/VisualizationView';
 
 import SimpleColorPickerWidget from './components/widgets/SimpleColorPickerWidget';
@@ -61,6 +62,7 @@ export default (config) => {
 
   //map editor for the visualization(content-type)
   config.widgets.id.map_visualization_data = VisualizationEditorWidget;
+  config.widgets.views.id.map_visualization_data = VisualizationViewWidget;
   //map viewer for the visualization(content-type)
   config.views.contentTypesViews.map_visualization = VisualizationView;
 
