@@ -104,6 +104,7 @@ const Edit = (props) => {
     props.map_visualization,
     props.data.data_query_params,
     props.data.enable_queries,
+    JSON.stringify(props.data.data_query_params),
   ]);
 
   return (
