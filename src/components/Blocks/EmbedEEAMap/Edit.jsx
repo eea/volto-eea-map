@@ -91,6 +91,8 @@ const Edit = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.data_query]);
 
+  const data_query_params = JSON.stringify(props.data.data_query_params);
+
   React.useEffect(() => {
     const updatedMapData = applyQueriesToMapLayers(
       props.map_visualization,
@@ -104,7 +106,7 @@ const Edit = (props) => {
     props.map_visualization,
     props.data.data_query_params,
     props.data.enable_queries,
-    JSON.stringify(props.data.data_query_params),
+    data_query_params,
   ]);
 
   return (
