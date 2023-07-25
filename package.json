@@ -1,6 +1,6 @@
 {
   "name": "@eeacms/volto-eea-map",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "description": "@eeacms/volto-eea-map: Volto add-on",
   "main": "src/index.js",
   "author": "European Environment Agency: IDM2 A-Team",
@@ -37,9 +37,6 @@
     "cypress": "10.3.1",
     "cypress-fail-fast": "^5.0.1",
     "md5": "^2.3.0"
-  },
-  "resolutions": {
-    "react-countup/countup.js": "2.5.0"
   },
   "scripts": {
     "release": "release-it",
