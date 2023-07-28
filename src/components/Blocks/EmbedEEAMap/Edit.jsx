@@ -73,10 +73,6 @@ const Edit = (props) => {
           ...prevData,
           data_query_params: [...props.data_query],
         }));
-        onChangeBlock(block, {
-          ...data,
-          data_query_params: [...props.data_query],
-        });
       }
 
       //if block data_query_params exist, deep check them then change them in block data
@@ -90,6 +86,29 @@ const Edit = (props) => {
           ...prevData,
           data_query_params: [...newDataQuery],
         }));
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.data_query]);
+
+  React.useEffect(() => {
+    if (
+      props.data_query &&
+      JSON.stringify(props.data.data_query_params) !==
+        JSON.stringify(data.data_query_params)
+    ) {
+      if (!props?.data?.data_query_params) {
+        onChangeBlock(block, {
+          ...data,
+          data_query_params: [...props.data_query],
+        });
+      }
+
+      if (data?.data_query_params) {
+        const newDataQuery = updateBlockQueryFromPageQuery(
+          props?.data_query,
+          data?.data_query_params,
+        );
         onChangeBlock(block, {
           ...data,
           data_query_params: [...newDataQuery],
@@ -97,7 +116,7 @@ const Edit = (props) => {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.data_query]);
+  }, [props.map_visualization]);
 
   const data_query_params = JSON.stringify(props.data.data_query_params);
 
