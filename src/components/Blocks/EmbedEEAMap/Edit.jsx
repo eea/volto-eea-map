@@ -16,6 +16,8 @@ import {
 
 import { getVisualization } from '@eeacms/volto-eea-map/actions';
 
+import { isEqual } from 'lodash';
+
 const Edit = (props) => {
   const {
     block,
@@ -30,25 +32,19 @@ const Edit = (props) => {
 
   const [data, setData] = React.useState(initialData);
 
+  const isSameData = isEqual(props.data, data);
+
   React.useEffect(() => {
     if (!Object.hasOwn(data, 'show_legend')) {
-      setData((prevData) => ({
-        ...prevData,
-        show_legend: true,
-      }));
+      setData({ ...data, show_legend: true });
     }
     if (!Object.hasOwn(data, 'show_sources')) {
-      setData((prevData) => ({
-        ...prevData,
-        show_sources: true,
-      }));
+      setData({ ...data, show_sources: true });
     }
     if (!Object.hasOwn(data, 'dataprotection')) {
-      setData((prevData) => ({
-        ...prevData,
-        dataprotection: { enabled: true },
-      }));
+      setData({ ...data, dataprotection: { enabled: true } });
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data.show_legend, data.show_sources, data.dataprotection]);
 
@@ -58,10 +54,7 @@ const Edit = (props) => {
   }, [props.data.vis_url]);
 
   React.useEffect(() => {
-    setData((prevData) => ({
-      ...prevData,
-      ...props.data,
-    }));
+    setData({ ...props.data });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.data]);
 
@@ -69,56 +62,33 @@ const Edit = (props) => {
     if (props.data_query) {
       //if block data_query_params do not exist, init them
       if (!props?.data?.data_query_params) {
-        setData((prevData) => ({
-          ...prevData,
-          data_query_params: [...props.data_query],
-        }));
+        setData({ ...props.data, data_query_params: [...props.data_query] });
+
+        if (!isSameData) {
+          onChangeBlock(block, {
+            ...props.data,
+            data_query_params: [...props.data_query],
+          });
+        }
       }
 
       //if block data_query_params exist, deep check them then change them in block data
-      if (props?.data_query && data?.data_query_params) {
+      if (props?.data_query && props.data?.data_query_params) {
         const newDataQuery = updateBlockQueryFromPageQuery(
           props?.data_query,
-          data?.data_query_params,
+          props.data?.data_query_params,
         );
 
-        setData((prevData) => ({
-          ...prevData,
-          data_query_params: [...newDataQuery],
-        }));
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.data_query]);
+        setData({ ...props.data, data_query_params: newDataQuery });
 
-  React.useEffect(() => {
-    if (
-      props.data_query &&
-      JSON.stringify(props.data.data_query_params) !==
-        JSON.stringify(data.data_query_params)
-    ) {
-      if (!props?.data?.data_query_params) {
         onChangeBlock(block, {
-          ...data,
-          data_query_params: [...props.data_query],
-        });
-      }
-
-      if (data?.data_query_params) {
-        const newDataQuery = updateBlockQueryFromPageQuery(
-          props?.data_query,
-          data?.data_query_params,
-        );
-        onChangeBlock(block, {
-          ...data,
-          data_query_params: [...newDataQuery],
+          ...props.data,
+          data_query_params: newDataQuery,
         });
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.map_visualization]);
-
-  const data_query_params = JSON.stringify(props.data.data_query_params);
+  }, [props.data_query, isSameData]);
 
   React.useEffect(() => {
     const updatedMapData = applyQueriesToMapLayers(
@@ -127,14 +97,8 @@ const Edit = (props) => {
       props.data.enable_queries,
     );
     setMapData(updatedMapData);
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    props.map_visualization,
-    props.data.data_query_params,
-    props.data.enable_queries,
-    data_query_params,
-  ]);
+  }, [props.map_visualization, props.data]);
 
   return (
     <>
