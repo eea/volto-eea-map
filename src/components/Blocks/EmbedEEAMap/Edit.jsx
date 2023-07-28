@@ -73,6 +73,10 @@ const Edit = (props) => {
           ...prevData,
           data_query_params: [...props.data_query],
         }));
+        onChangeBlock(block, {
+          ...data,
+          data_query_params: [...props.data_query],
+        });
       }
 
       //if block data_query_params exist, deep check them then change them in block data
@@ -86,6 +90,10 @@ const Edit = (props) => {
           ...prevData,
           data_query_params: [...newDataQuery],
         }));
+        onChangeBlock(block, {
+          ...data,
+          data_query_params: [...newDataQuery],
+        });
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
