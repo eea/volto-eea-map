@@ -1,4 +1,4 @@
-# volto-addon-template
+# volto-eea-map
 
 [![Releases](https://img.shields.io/github/v/release/eea/volto-eea-map)](https://github.com/eea/volto-eea-map/releases)
 
@@ -17,71 +17,77 @@
 
 [Volto](https://github.com/plone/volto) add-on
 
-# volto-eea-map
+## Features
 
-Before starting make sure your development environment is properly set. See [Volto Developer Documentation](https://docs.voltocms.com/getting-started/install/)
+Demo GIF
 
-1.  Make sure you have installed `yo`, `@plone/generator-volto` and `mrs-developer`
+## Getting started
 
-        npm install -g yo @plone/generator-volto mrs-developer
+### Try volto-eea-map with Docker
 
-1.  Create new volto app
+      git clone https://github.com/eea/volto-eea-map.git
+      cd volto-eea-map
+      make
+      make start
 
-        yo @plone/volto my-volto-project --addon @eeacms/volto-eea-map --skip-install
-        cd my-volto-project
+Go to http://localhost:3000
 
-1.  Add the following to `mrs.developer.json`:
+### Add volto-eea-map to your Volto project
 
-        {
-            "volto-eea-map": {
-                "url": "https://github.com/eea/volto-eea-map.git",
-                "package": "@eeacms/volto-eea-map",
-                "branch": "develop",
-                "path": "src"
-            }
-        }
+1. Make sure you have a [Plone backend](https://plone.org/download) up-and-running at http://localhost:8080/Plone
 
-1.  Install
+   ```Bash
+   docker compose up backend
+   ```
 
-        yarn develop
-        yarn
+1. Start Volto frontend
 
-1.  Start backend
+* If you already have a volto project, just update `package.json`:
 
-        docker pull plone
-        docker run -d --name plone -p 8080:8080 -e SITE=Plone -e PROFILES="profile-plone.restapi:blocks" plone
+   ```JSON
+   "addons": [
+       "@eeacms/volto-eea-map"
+   ],
 
-    ...wait for backend to setup and start - `Ready to handle requests`:
+   "dependencies": {
+       "@eeacms/volto-eea-map": "*"
+   }
+   ```
 
-        docker logs -f plone
+* If not, create one:
 
-    ...you can also check http://localhost:8080/Plone
+   ```
+   npm install -g yo @plone/generator-volto
+   yo @plone/volto my-volto-project --canary --addon @eeacms/volto-eea-map
+   cd my-volto-project
+   ```
 
-1.  Start frontend
+1. Install new add-ons and restart Volto:
 
-        yarn start
+   ```
+   yarn
+   yarn start
+   ```
 
-1.  Go to http://localhost:3000
+1. Go to http://localhost:3000
 
-1.  Happy hacking!
+1. Happy editing!
 
-        cd src/addons/volto-eea-map/
+## Release
 
-# Configuration
+See [RELEASE.md](https://github.com/eea/volto-eea-map/blob/master/RELEASE.md).
 
-This addon contains the EEA Embed Map Block & EEA Map Block. It's configured to work with the map visualization content type and give more access to ArcGIS maps. See available maps here https://discomap.eea.europa.eu/ 
+## How to contribute
 
-# Enable data queries auto-import 
+See [DEVELOP.md](https://github.com/eea/volto-eea-map/blob/master/DEVELOP.md).
 
-To enable automatic import of queries from the content-type, "Parameters for data connections" should be checked as behavior on the content-type that uses the map. 
+## Copyright and license
 
-    controlpanel/dexterity-types/{content-type-id}
-# Enable Sources
+The Initial Owner of the Original Code is European Environment Agency (EEA).
+All Rights Reserved.
 
-Sources (Data provenance) should be set on the visualization. To enable this, "EEA Core Metadata" should be  checked as behavior on the  visualization content-type. 
+See [LICENSE.md](https://github.com/eea/volto-eea-map/blob/master/LICENSE.md) for details.
 
-    controlpanel/dexterity-types/map_visualization
-    
-After this, sources can be added from the visualization edit interface. "Data Provenance" tab => "Add source"
+## Funding
 
-
+[European Environment Agency (EU)](http://eea.europa.eu)
