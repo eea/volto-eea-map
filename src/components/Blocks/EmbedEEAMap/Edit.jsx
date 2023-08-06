@@ -15,12 +15,14 @@ import { getVisualization } from '@eeacms/volto-eea-map/actions';
 import { deepUpdateDataQueryParams } from './helpers';
 
 const Edit = (props) => {
-  const { block, data, onChangeBlock, selected, data_provenance = {} } = props;
-  const { height = '' } = data;
+  const { block, onChangeBlock, selected, data_provenance = {} } = props;
   const schema = Schema(props);
   const [mapData, setMapData] = React.useState('');
+  const dataQuery = React.useMemo(() => props.data_query, [props.data_query]);
+  const data = React.useMemo(() => props.data, [props.data]);
+  const { height = '' } = data;
 
-  deepUpdateDataQueryParams(block, data, props.data_query, onChangeBlock);
+  deepUpdateDataQueryParams(block, data, dataQuery, onChangeBlock);
 
   React.useEffect(() => {
     props.getVisualization(props.data.vis_url);
