@@ -1,3 +1,6 @@
+import React from 'react';
+import { deepUpdateDataQueryParams } from './helpers';
+
 const ProtectionSchema = () => ({
   title: 'Data Protection',
 
@@ -64,6 +67,12 @@ const ProtectionSchema = () => ({
 });
 
 export const Schema = (props) => {
+  const { block, onChangeBlock } = props;
+
+  const dataQuery = React.useMemo(() => props.data_query, [props.data_query]);
+  const data = React.useMemo(() => props.data, [props.data]);
+
+  deepUpdateDataQueryParams(block, data, dataQuery, onChangeBlock);
   return {
     title: 'Embed EEA Map Block',
     fieldsets: [
