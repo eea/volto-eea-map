@@ -32,6 +32,7 @@ export default (config) => {
     'water.discomap.eea.europa.eu',
     'noise.discomap.eea.europa.eu',
     'copernicus.discomap.eea.europa.eu',
+    'utility.arcgisonline.com',
   ];
 
   config.blocks.blocksConfig.embed_eea_map_block = {
