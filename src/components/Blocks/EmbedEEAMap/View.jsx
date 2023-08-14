@@ -3,6 +3,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
+import { expandToBackendURL } from '@plone/volto/helpers';
+
 import { PrivacyProtection } from '@eeacms/volto-embed';
 
 import Webmap from '@eeacms/volto-eea-map/components/Webmap';
@@ -17,7 +19,12 @@ const View = (props) => {
   const [mapData, setMapData] = React.useState('');
 
   React.useEffect(() => {
-    props.getVisualization(props.data.vis_url);
+    if (props.data.vis_url) {
+      props.getVisualization(expandToBackendURL(props.data.vis_url));
+    }
+    if (!props.data.vis_url) {
+      setMapData('');
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.data.vis_url]);
 
@@ -61,10 +68,12 @@ export default compose(
   connect(
     (state, props) => ({
       map_visualization: props.data.vis_url
-        ? state.map_visualizations?.data[props.data.vis_url]?.data
+        ? state.map_visualizations?.data[expandToBackendURL(props.data.vis_url)]
+            ?.data
         : '',
       data_provenance: props.data.vis_url
-        ? state.map_visualizations?.data[props.data.vis_url]?.data_provenance
+        ? state.map_visualizations?.data[expandToBackendURL(props.data.vis_url)]
+            ?.data_provenance
         : '',
     }),
     {
