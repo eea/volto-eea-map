@@ -8,6 +8,8 @@ import BlockDataForm from '@plone/volto/components/manage/Form/BlockDataForm';
 import Webmap from '@eeacms/volto-eea-map/components/Webmap';
 import ExtraViews from '@eeacms/volto-eea-map/components/ExtraViews';
 
+import { expandToBackendURL } from '@plone/volto/helpers';
+
 import { Schema } from './Schema';
 import { applyQueriesToMapLayers } from '@eeacms/volto-eea-map/utils';
 
@@ -19,9 +21,13 @@ const Edit = (props) => {
   const [mapData, setMapData] = React.useState('');
   const data = React.useMemo(() => props.data, [props.data]);
   const { height = '' } = data;
-
   React.useEffect(() => {
-    props.getVisualization(props.data.vis_url);
+    if (props.data.vis_url) {
+      props.getVisualization(expandToBackendURL(props.data.vis_url));
+    }
+    if (!props.data.vis_url) {
+      setMapData('');
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.data.vis_url]);
 
@@ -76,10 +82,12 @@ export default compose(
     (state, props) => ({
       data_query: state.content.data.data_query,
       map_visualization: props.data.vis_url
-        ? state.map_visualizations?.data[props.data.vis_url]?.data
+        ? state.map_visualizations?.data[expandToBackendURL(props.data.vis_url)]
+            ?.data
         : '',
       data_provenance: props.data.vis_url
-        ? state.map_visualizations?.data[props.data.vis_url]?.data_provenance
+        ? state.map_visualizations?.data[expandToBackendURL(props.data.vis_url)]
+            ?.data_provenance
         : '',
     }),
     {
