@@ -17,6 +17,7 @@ const MODULES = [
   'esri/widgets/Print',
   'esri/widgets/Zoom',
   'esri/widgets/ScaleBar',
+  'esri/widgets/Fullscreen',
 ];
 
 const Webmap = (props) => {
@@ -71,6 +72,7 @@ const Webmap = (props) => {
           Print,
           Zoom,
           ScaleBar,
+          Fullscreen,
         ] = modules;
         setModules({
           Map,
@@ -85,6 +87,7 @@ const Webmap = (props) => {
           Print,
           Zoom,
           ScaleBar,
+          Fullscreen,
         });
       });
     }
@@ -134,6 +137,7 @@ const Webmap = (props) => {
       Print,
       Zoom,
       ScaleBar,
+      Fullscreen,
     } = modules;
     let layers =
       map_layers && map_layers.length > 0
@@ -280,6 +284,12 @@ const Webmap = (props) => {
         position: 'bottom-left',
       });
     }
+
+    const fullscreenWidget = new Fullscreen({
+      view: view,
+    });
+
+    view.ui.add(fullscreenWidget, 'top-right');
 
     if (layers && layers[0] && general && general.centerOnExtent) {
       const firstLayer = layers[0];
