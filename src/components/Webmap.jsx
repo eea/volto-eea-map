@@ -291,6 +291,8 @@ const Webmap = (props) => {
 
     view.ui.add(fullscreenWidget, 'top-right');
 
+    //detect when fullscreen is on
+
     if (layers && layers[0] && general && general.centerOnExtent) {
       const firstLayer = layers[0];
       if (firstLayer.type === 'feature') {
@@ -344,20 +346,23 @@ const Webmap = (props) => {
     return { view, map };
   }, [modules, data, data.layers, map_layers]);
 
+  const heightPx =
+    height && !editMode
+      ? `${height}px`
+      : device === 'tablet' || device === 'mobile'
+      ? '300px'
+      : '500px';
+
+  const dynamicStyle = `
+  .esri-map {
+    height: ${heightPx} !important
+  }
+  `;
+
   return (
     <div>
-      <div
-        style={{
-          height:
-            height && !editMode
-              ? `${height}px`
-              : device === 'tablet' || device === 'mobile'
-              ? '300px'
-              : '500px',
-        }}
-        ref={mapRef}
-        className="esri-map"
-      ></div>
+      <style>{dynamicStyle}</style>
+      <div ref={mapRef} className="esri-map"></div>
     </div>
   );
 };
