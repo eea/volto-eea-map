@@ -21,6 +21,29 @@ const Edit = (props) => {
   const [mapData, setMapData] = React.useState('');
   const data = React.useMemo(() => props.data, [props.data]);
   const { height = '' } = data;
+
+  React.useEffect(() => {
+    if (!Object.hasOwn(data, 'show_legend')) {
+      onChangeBlock(block, {
+        ...data,
+        show_legend: true,
+      });
+    }
+    if (!Object.hasOwn(data, 'show_sources')) {
+      onChangeBlock(block, {
+        ...data,
+        show_sources: true,
+      });
+    }
+    if (!Object.hasOwn(data, 'dataprotection')) {
+      onChangeBlock(block, {
+        ...data,
+        dataprotection: { enabled: true },
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data.show_legend, data.show_sources, data.dataprotection]);
+
   React.useEffect(() => {
     if (props.data.vis_url) {
       props.getVisualization(expandToBackendURL(props.data.vis_url));

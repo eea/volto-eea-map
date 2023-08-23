@@ -111,12 +111,10 @@ export const Schema = (props) => {
         title: 'Show sources',
         description: 'Will show sources set in this page Data provenance',
         type: 'boolean',
-        defaultValue: true,
       },
       show_legend: {
         title: 'Show legend',
         type: 'boolean',
-        defaultValue: true,
       },
       show_viewer: {
         title: 'Show API link',
