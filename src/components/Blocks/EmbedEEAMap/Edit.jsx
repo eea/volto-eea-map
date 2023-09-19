@@ -29,6 +29,12 @@ const Edit = (props) => {
         show_legend: true,
       });
     }
+    if (!Object.hasOwn(data, 'show_note')) {
+      onChangeBlock(block, {
+        ...data,
+        show_note: true,
+      });
+    }
     if (!Object.hasOwn(data, 'show_sources')) {
       onChangeBlock(block, {
         ...data,
@@ -42,7 +48,12 @@ const Edit = (props) => {
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data.show_legend, data.show_sources, data.dataprotection]);
+  }, [
+    data.show_legend,
+    data.show_note,
+    data.show_sources,
+    data.dataprotection,
+  ]);
 
   React.useEffect(() => {
     if (props.data.vis_url) {

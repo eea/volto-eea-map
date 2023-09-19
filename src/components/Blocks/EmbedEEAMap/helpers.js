@@ -2,7 +2,7 @@ import { updateBlockQueryFromPageQuery } from '@eeacms/volto-eea-map/utils';
 
 const deepUpdateDataQueryParams = (block, data, data_query, onChangeBlock) => {
   // If block data_query_params do not exist, init them
-  if (!data?.data_query_params) {
+  if (!data?.data_query_params && data_query) {
     onChangeBlock(block, {
       ...data,
       data_query_params: [...data_query],

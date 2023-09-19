@@ -85,6 +85,7 @@ export const Schema = (props) => {
           'height',
           'show_legend',
           'show_viewer',
+          'show_note',
           'show_sources',
           'enable_queries',
           ...(props.data.enable_queries ? ['data_query_params'] : []),
@@ -106,6 +107,10 @@ export const Schema = (props) => {
       description: {
         title: 'Description',
         widget: 'slate',
+      },
+      show_note: {
+        title: 'Show note',
+        type: 'boolean',
       },
       show_sources: {
         title: 'Show sources',

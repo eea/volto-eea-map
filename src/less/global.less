@@ -225,6 +225,34 @@
   color: green;
 }
 
+.eea-map-info {
+  display: flex;
+  flex-direction: row;
+  padding-top: 10px;
+  margin: 0 auto;
+
+  > * {
+    padding: 0 0.5rem;
+    border-collapse: collapse;
+  }
+
+  > *:first-child {
+    padding-left: 0;
+  }
+
+  > *:last-child {
+    padding-right: 0;
+  }
+
+  > *:not(:last-child) {
+    border-right: 2px solid @textColor;
+  }
+}
+
+.eea-map-more-info {
+  padding: 1px 0 0 3px;
+}
+
 /* sources */
 
 .eea-map-sources-list {
@@ -233,16 +261,18 @@
   padding-inline-start: 0;
 }
 
-#eea-map-sources-popup .ui.popup {
+#eea-map-sources-popup .ui.popup,
+#eea-map-note-popup .ui.popup {
   min-width: 600px;
   background-color: #f9f9f9;
   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 }
 
-.eea-map-sources-button {
+.eea-map-sources-button,
+.eea-map-note-button,
+.eea-map-more-info-button {
   display: inline-flex;
   align-items: center;
-  padding-top: 10px;
   padding-bottom: 3px;
   border: none;
   background-color: transparent;
@@ -284,7 +314,9 @@
   }
 
   .eea-map-sources-container,
-  #eea-map-sources-popup {
+  .eea-map-note-container,
+  #eea-map-sources-popup,
+  #eea-map-note-popup {
     display: none;
   }
 }
