@@ -13,6 +13,7 @@ const ExtraViews = ({ data }) => {
     show_viewer,
     show_note,
     show_sources,
+    show_more_info,
     data_provenance = {},
   } = data;
 
@@ -24,7 +25,7 @@ const ExtraViews = ({ data }) => {
       <div className="eea-map-info">
         {show_note && <FigureNote note={'Example note'} />}
         {show_sources && <Sources sources={data_provenance?.data} />}
-        <MoreInfoLink contentTypeLink={data?.vis_url} />
+        {show_more_info && <MoreInfoLink contentTypeLink={data?.vis_url} />}
       </div>
       {description && serializeNodes(description)}
     </div>

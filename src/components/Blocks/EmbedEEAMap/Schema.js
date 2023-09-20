@@ -87,6 +87,7 @@ export const Schema = (props) => {
           'show_viewer',
           'show_note',
           'show_sources',
+          'show_more_info',
           'enable_queries',
           ...(props.data.enable_queries ? ['data_query_params'] : []),
           'dataprotection',
@@ -115,6 +116,10 @@ export const Schema = (props) => {
       show_sources: {
         title: 'Show sources',
         description: 'Will show sources set in this page Data provenance',
+        type: 'boolean',
+      },
+      show_more_info: {
+        title: 'Show more info',
         type: 'boolean',
       },
       show_legend: {

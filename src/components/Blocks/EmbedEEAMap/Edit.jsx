@@ -41,6 +41,12 @@ const Edit = (props) => {
         show_sources: true,
       });
     }
+    if (!Object.hasOwn(data, 'show_more_info')) {
+      onChangeBlock(block, {
+        ...data,
+        show_more_info: true,
+      });
+    }
     if (!Object.hasOwn(data, 'dataprotection')) {
       onChangeBlock(block, {
         ...data,
@@ -52,6 +58,7 @@ const Edit = (props) => {
     data.show_legend,
     data.show_note,
     data.show_sources,
+    data.show_more_info,
     data.dataprotection,
   ]);
 
