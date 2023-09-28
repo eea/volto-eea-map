@@ -21,7 +21,7 @@ const Edit = (props) => {
     onChangeBlock,
     selected,
     data_provenance = {},
-    figureNote = '',
+    figure_note = [],
   } = props;
   const schema = Schema(props);
   const [mapData, setMapData] = React.useState('');
@@ -98,7 +98,7 @@ const Edit = (props) => {
             data={{
               ...data,
               data_provenance,
-              figureNote,
+              figure_note,
               map_data: props.map_visualization,
             }}
           />
@@ -137,9 +137,9 @@ export default compose(
         ? state.map_visualizations?.data[expandToBackendURL(props.data.vis_url)]
             ?.data_provenance
         : '',
-      figureNote: props.data.vis_url
+      figure_note: props.data.vis_url
         ? state.map_visualizations?.data[expandToBackendURL(props.data.vis_url)]
-            ?.figureNote
+            ?.figure_note
         : '',
     }),
     {

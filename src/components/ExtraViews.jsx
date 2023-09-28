@@ -15,7 +15,7 @@ const ExtraViews = ({ data }) => {
     show_sources,
     show_more_info,
     data_provenance = {},
-    figureNote = '',
+    figure_note = [],
   } = data;
 
   return (
@@ -24,7 +24,7 @@ const ExtraViews = ({ data }) => {
         <LegendView data={map_data} show_viewer={show_viewer} />
       )}
       <div className="eea-map-info">
-        {show_note && <FigureNote note={figureNote} />}
+        {show_note && <FigureNote note={figure_note} />}
         {show_sources && <Sources sources={data_provenance?.data} />}
         {show_more_info && <MoreInfoLink contentTypeLink={data?.vis_url} />}
       </div>
