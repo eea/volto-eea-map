@@ -14,12 +14,25 @@
 [![Bugs](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-eea-map-develop&metric=bugs)](https://sonarqube.eea.europa.eu/dashboard?id=volto-eea-map-develop)
 [![Duplicated Lines (%)](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-eea-map-develop&metric=duplicated_lines_density)](https://sonarqube.eea.europa.eu/dashboard?id=volto-eea-map-develop)
 
-
 [Volto](https://github.com/plone/volto) add-on
 
-## Features
+# Configuration
 
-Demo GIF
+This addon contains the EEA Embed Map Block & EEA Map Block. It's configured to work with the map visualization content type and give more access to ArcGIS maps. See available maps here https://discomap.eea.europa.eu/ 
+
+# Enable data queries auto-import 
+
+To enable automatic import of queries from the content-type, "Parameters for data connections" should be checked as behavior on the content-type that uses the map. 
+
+    controlpanel/dexterity-types/{content-type-id}
+
+# Enable Sources
+
+Sources (Data provenance) should be set on the visualization. To enable this, "EEA Core Metadata" should be  checked as behavior on the  visualization content-type. 
+
+    controlpanel/dexterity-types/map_visualization
+    
+After this, sources can be added from the visualization edit interface. "Data Provenance" tab => "Add source"
 
 ## Getting started
 
