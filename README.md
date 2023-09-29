@@ -88,18 +88,18 @@ Go to http://localhost:3000
 
 ## Release
 
-See [RELEASE.md](https://github.com/eea/volto-addon-template/blob/master/RELEASE.md).
+See [RELEASE.md](https://github.com/eea/volto-eea-map/blob/master/RELEASE.md).
 
 ## How to contribute
 
-See [DEVELOP.md](https://github.com/eea/volto-addon-template/blob/master/DEVELOP.md).
+See [DEVELOP.md](https://github.com/eea/volto-eea-map/blob/master/DEVELOP.md).
 
 ## Copyright and license
 
 The Initial Owner of the Original Code is European Environment Agency (EEA).
 All Rights Reserved.
 
-See [LICENSE.md](https://github.com/eea/volto-addon-template/blob/master/LICENSE.md) for details.
+See [LICENSE.md](https://github.com/eea/volto-eea-map/blob/master/LICENSE.md) for details.
 
 ## Funding
 
