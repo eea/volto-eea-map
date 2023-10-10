@@ -257,11 +257,19 @@
   padding-inline-start: 0;
 }
 
-#eea-map-sources-popup .ui.popup,
-#eea-map-note-popup .ui.popup {
-  min-width: 600px;
-  background-color: #f9f9f9;
-  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+#eea-map-sources-popup,
+#eea-map-note-popup {
+  .ui.popup {
+    min-width: 600px;
+    background-color: @grey-1;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+  }
+
+  @media screen and (max-width: @largestMobileScreen) {
+    .ui.popup {
+      min-width: 300px;
+    }
+  }
 }
 
 .eea-map-sources-button,
