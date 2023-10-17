@@ -88,6 +88,7 @@ export const Schema = (props) => {
           'show_note',
           'show_sources',
           'show_more_info',
+          'show_share',
           'enable_queries',
           ...(props.data.enable_queries ? ['data_query_params'] : []),
           'dataprotection',
@@ -120,6 +121,10 @@ export const Schema = (props) => {
       },
       show_more_info: {
         title: 'Show more info',
+        type: 'boolean',
+      },
+      show_share: {
+        title: 'Show share button',
         type: 'boolean',
       },
       show_legend: {

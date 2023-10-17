@@ -13,7 +13,7 @@ const MoreInfoLink = ({ contentTypeLink }) => {
   return (
     <Link href={contentTypeLink}>
       <button className={cx('eea-map-more-info-button')}>
-        More info {'>'}
+        More info <i class="ri-external-link-line"></i>
       </button>
     </Link>
   );

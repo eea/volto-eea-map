@@ -59,6 +59,12 @@ const Edit = (props) => {
         dataprotection: { enabled: true },
       });
     }
+    if (!Object.hasOwn(data, 'show_share')) {
+      onChangeBlock(block, {
+        ...data,
+        show_share: true,
+      });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     data.show_legend,
@@ -66,6 +72,7 @@ const Edit = (props) => {
     data.show_sources,
     data.show_more_info,
     data.dataprotection,
+    data.show_share,
   ]);
 
   React.useEffect(() => {
