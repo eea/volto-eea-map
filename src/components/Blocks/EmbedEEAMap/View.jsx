@@ -13,7 +13,7 @@ import { applyQueriesToMapLayers } from '@eeacms/volto-eea-map/utils';
 import { getVisualization } from '@eeacms/volto-eea-map/actions';
 
 const View = (props) => {
-  const { data, data_provenance = {} } = props || {};
+  const { data, data_provenance = {}, figure_note = [] } = props || {};
   const { height = '' } = data;
 
   const [mapData, setMapData] = React.useState('');
@@ -52,6 +52,7 @@ const View = (props) => {
             data={{
               ...data,
               data_provenance,
+              figure_note,
               map_data: props.map_visualization,
             }}
           />
@@ -74,6 +75,10 @@ export default compose(
       data_provenance: props.data.vis_url
         ? state.map_visualizations?.data[expandToBackendURL(props.data.vis_url)]
             ?.data_provenance
+        : '',
+      figure_note: props.data.vis_url
+        ? state.map_visualizations?.data[expandToBackendURL(props.data.vis_url)]
+            ?.figure_note
         : '',
     }),
     {

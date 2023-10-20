@@ -16,7 +16,13 @@ import { applyQueriesToMapLayers } from '@eeacms/volto-eea-map/utils';
 import { getVisualization } from '@eeacms/volto-eea-map/actions';
 
 const Edit = (props) => {
-  const { block, onChangeBlock, selected, data_provenance = {} } = props;
+  const {
+    block,
+    onChangeBlock,
+    selected,
+    data_provenance = {},
+    figure_note = [],
+  } = props;
   const schema = Schema(props);
   const [mapData, setMapData] = React.useState('');
   const data = React.useMemo(() => props.data, [props.data]);
@@ -29,10 +35,22 @@ const Edit = (props) => {
         show_legend: true,
       });
     }
+    if (!Object.hasOwn(data, 'show_note')) {
+      onChangeBlock(block, {
+        ...data,
+        show_note: true,
+      });
+    }
     if (!Object.hasOwn(data, 'show_sources')) {
       onChangeBlock(block, {
         ...data,
         show_sources: true,
+      });
+    }
+    if (!Object.hasOwn(data, 'show_more_info')) {
+      onChangeBlock(block, {
+        ...data,
+        show_more_info: true,
       });
     }
     if (!Object.hasOwn(data, 'dataprotection')) {
@@ -41,8 +59,21 @@ const Edit = (props) => {
         dataprotection: { enabled: true },
       });
     }
+    if (!Object.hasOwn(data, 'show_share')) {
+      onChangeBlock(block, {
+        ...data,
+        show_share: true,
+      });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data.show_legend, data.show_sources, data.dataprotection]);
+  }, [
+    data.show_legend,
+    data.show_note,
+    data.show_sources,
+    data.show_more_info,
+    data.dataprotection,
+    data.show_share,
+  ]);
 
   React.useEffect(() => {
     if (props.data.vis_url) {
@@ -74,6 +105,7 @@ const Edit = (props) => {
             data={{
               ...data,
               data_provenance,
+              figure_note,
               map_data: props.map_visualization,
             }}
           />
@@ -111,6 +143,10 @@ export default compose(
       data_provenance: props.data.vis_url
         ? state.map_visualizations?.data[expandToBackendURL(props.data.vis_url)]
             ?.data_provenance
+        : '',
+      figure_note: props.data.vis_url
+        ? state.map_visualizations?.data[expandToBackendURL(props.data.vis_url)]
+            ?.figure_note
         : '',
     }),
     {

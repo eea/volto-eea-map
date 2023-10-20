@@ -1,5 +1,7 @@
 /* eslint-disable no-throw-literal */
+import React from 'react';
 import { getBaseUrl } from '@plone/volto/helpers';
+
 const setLegendColumns = (legendsNo, device) => {
   switch (device) {
     case 'widescreen':
@@ -118,9 +120,32 @@ const updateBlockQueryFromPageQuery = (data_query, data_query_params) => {
   return newDataQuery;
 };
 
+const useCopyToClipboard = (text) => {
+  const [copyStatus, setCopyStatus] = React.useState('inactive');
+  const copy = React.useCallback(() => {
+    navigator.clipboard.writeText(text).then(
+      () => setCopyStatus('copied'),
+      () => setCopyStatus('failed'),
+    );
+  }, [text]);
+
+  React.useEffect(() => {
+    if (copyStatus === 'inactive') {
+      return;
+    }
+
+    const timeout = setTimeout(() => setCopyStatus('inactive'), 3000);
+
+    return () => clearTimeout(timeout);
+  }, [copyStatus]);
+
+  return [copyStatus, copy];
+};
+
 export {
   setLegendColumns,
   fetchArcGISData,
   applyQueriesToMapLayers,
   updateBlockQueryFromPageQuery,
+  useCopyToClipboard,
 };
