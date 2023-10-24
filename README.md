@@ -34,6 +34,8 @@ Sources (Data provenance) should be set on the visualization. To enable this, "E
     
 After this, sources can be added from the visualization edit interface. "Data Provenance" tab => "Add source"
 
+[EEA MAP](https://raw.githubusercontent.com/eea/volto-eea-map/master/docs/volto-eea-map.gif)
+
 ## Getting started
 
 ### Try volto-eea-map with Docker
