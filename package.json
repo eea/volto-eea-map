@@ -17,10 +17,12 @@
     "url": "git@github.com:eea/volto-eea-map.git"
   },
   "addons": [
+    "@eeacms/volto-datablocks",
     "@eeacms/volto-embed",
     "@eeacms/volto-object-widget"
   ],
   "dependencies": {
+    "@eeacms/volto-datablocks": "*",
     "@eeacms/volto-embed": "*",
     "@eeacms/volto-object-widget": "*",
     "@plone/scripts": "*",

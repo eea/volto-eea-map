@@ -1,10 +1,14 @@
 import React from 'react';
 import { serializeNodes } from '@plone/volto-slate/editor/render';
+import {
+  FigureNote,
+  Sources,
+  MoreInfo,
+  Share,
+} from '@eeacms/volto-datablocks/Toolbar';
 import LegendView from '@eeacms/volto-eea-map/components/LegendView';
-import Sources from './Sources';
-import FigureNote from './FigureNote';
-import MoreInfoLink from './MoreInfoLink';
-import Share from './Share';
+
+import '@eeacms/volto-datablocks/Toolbar/styles.less';
 
 const ExtraViews = ({ data }) => {
   const {
@@ -21,22 +25,22 @@ const ExtraViews = ({ data }) => {
   } = data;
 
   return (
-    <div className="extra-eea-map-content">
+    <>
       {show_legend && map_data && (
         <LegendView data={map_data} show_viewer={show_viewer} />
       )}
-      <div className="visualization-info-container">
-        <div className="eea-map-info visualization-info">
+      <div className="visualization-toolbar">
+        <div className="left-col">
           {show_note && <FigureNote note={figure_note || []} />}
           {show_sources && <Sources sources={data_provenance?.data} />}
-          {show_more_info && <MoreInfoLink contentTypeLink={data?.vis_url} />}
+          {show_more_info && <MoreInfo href={data['@id']} />}
         </div>
-        <div className="visualization-info">
-          {show_share && <Share contentTypeLink={data?.vis_url} />}
+        <div className="right-col">
+          {show_share && <Share href={data['@id']} />}
         </div>
       </div>
       {description && serializeNodes(description)}
-    </div>
+    </>
   );
 };
 

@@ -44,9 +44,13 @@ const View = (props) => {
   ]);
 
   return (
-    <PrivacyProtection data={data} {...props}>
+    <PrivacyProtection
+      data={data}
+      className="embed-map-visualization"
+      {...props}
+    >
       {mapData && (
-        <div>
+        <>
           <Webmap data={mapData} height={height} />
           <ExtraViews
             data={{
@@ -54,9 +58,10 @@ const View = (props) => {
               data_provenance,
               figure_note,
               map_data: props.map_visualization,
+              '@id': props['@id'],
             }}
           />
-        </div>
+        </>
       )}
       {!mapData && (
         <p>No map view to show. Set visualization in block configuration.</p>
@@ -68,6 +73,11 @@ const View = (props) => {
 export default compose(
   connect(
     (state, props) => ({
+      '@id': props.data.vis_url
+        ? state.map_visualizations?.data[
+            expandToBackendURL(props.data.vis_url)
+          ]?.['@id']
+        : props.content['@id'],
       map_visualization: props.data.vis_url
         ? state.map_visualizations?.data[expandToBackendURL(props.data.vis_url)]
             ?.data
