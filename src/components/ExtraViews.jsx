@@ -5,10 +5,10 @@ import {
   Sources,
   MoreInfo,
   Share,
-} from '@eeacms/volto-datablocks/Toolbar';
+} from '@eeacms/volto-embed/Toolbar';
 import LegendView from '@eeacms/volto-eea-map/components/LegendView';
 
-import '@eeacms/volto-datablocks/Toolbar/styles.less';
+import '@eeacms/volto-embed/Toolbar/styles.less';
 
 const ExtraViews = ({ data }) => {
   const {
