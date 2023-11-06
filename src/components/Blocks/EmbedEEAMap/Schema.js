@@ -60,10 +60,11 @@ const ProtectionSchema = () => ({
     background_image: {
       title: 'Static map preview image',
       widget: 'file',
+      required: true,
     },
   },
 
-  required: [],
+  required: ['background_image'],
 });
 
 export const Schema = (props) => {
