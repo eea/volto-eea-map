@@ -1,11 +1,9 @@
 import React from 'react';
 import { Button, Grid } from 'semantic-ui-react';
+import cx from 'classnames';
 import { fetchArcGISData, setLegendColumns } from '../utils';
-import { Icon } from '@plone/volto/components';
 import { serializeNodes } from '@plone/volto-slate/editor/render';
 
-import rightKeySVG from '@plone/volto/icons/right-key.svg';
-import downKeySVG from '@plone/volto/icons/down-key.svg';
 import { withDeviceSize } from '@eeacms/volto-eea-map/hocs';
 
 import codeSVG from '@eeacms/volto-eea-map/static/code-line.svg';
@@ -40,14 +38,7 @@ const LayerLegend = ({ data, show_viewer }) => {
           justifyContent: 'space-between',
         }}
       >
-        <h5
-          style={{
-            marginTop: '15px',
-            marginBottom: '5px',
-          }}
-        >
-          {name}
-        </h5>
+        <h5 style={{ marginBottom: '0.5rem' }}>{name}</h5>
         {show_viewer && map_service_url && (
           <a
             target="_blank"
@@ -112,41 +103,42 @@ const LegendView = (props) => {
 
   const legendColumns =
     map_layers && setLegendColumns(map_layers.length, device);
+
   return (
-    <>
-      <div className="legend-container">
-        <button className="legend-action" onClick={() => setExpand(!expand)}>
-          {/* <h3 role="presentation" className="legend-title"> */}
-          Legend
-          <Icon
-            name={expand ? downKeySVG : rightKeySVG}
-            title={expand ? 'Collapse' : 'Expand'}
-            size="17px"
-          />
-          {/* </h3> */}
-        </button>
-        <Grid columns={legendColumns}>
-          {(!map_layers || map_layers.length === 0) && (
-            <p>
-              No layer found for legend. Please add a map layer from editor.
-            </p>
-          )}
-          {expand && (
-            <Grid.Row divided>
-              {map_layers &&
-                map_layers.length > 0 &&
-                map_layers.map((l, i) => (
-                  <LayerLegend
-                    key={i}
-                    data={l.map_layer}
-                    show_viewer={show_viewer}
-                  />
-                ))}
-            </Grid.Row>
-          )}
+    <div className={cx('legend-toolbar', { open: expand })}>
+      <button
+        className={cx('trigger-button', { open: expand })}
+        onClick={() => setExpand(!expand)}
+      >
+        Legend
+        <i
+          className={cx({
+            'ri-arrow-right-s-line': !expand,
+            'ri-arrow-down-s-line': expand,
+          })}
+        />
+      </button>
+      {expand && (
+        <Grid className="legend-container" columns={legendColumns}>
+          <Grid.Row divided>
+            {(!map_layers || map_layers.length === 0) && (
+              <Grid.Column>
+                <p>
+                  No layer found for legend. Please add a map layer from editor.
+                </p>
+              </Grid.Column>
+            )}
+            {map_layers?.map((l, i) => (
+              <LayerLegend
+                key={i}
+                data={l.map_layer}
+                show_viewer={show_viewer}
+              />
+            ))}
+          </Grid.Row>
         </Grid>
-      </div>
-    </>
+      )}
+    </div>
   );
 };
 

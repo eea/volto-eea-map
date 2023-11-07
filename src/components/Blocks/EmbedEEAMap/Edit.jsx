@@ -136,6 +136,11 @@ export default compose(
   connect(
     (state, props) => ({
       data_query: state.content.data.data_query,
+      '@id': props.data.vis_url
+        ? state.map_visualizations?.data[
+            expandToBackendURL(props.data.vis_url)
+          ]?.['@id']
+        : props.content['@id'],
       map_visualization: props.data.vis_url
         ? state.map_visualizations?.data[expandToBackendURL(props.data.vis_url)]
             ?.data
