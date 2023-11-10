@@ -84,16 +84,25 @@ export const Schema = (props) => {
           'vis_url',
           'description',
           'height',
+          'enable_queries',
+          ...(props.data.enable_queries ? ['data_query_params'] : []),
+        ],
+      },
+      {
+        id: 'toolbar',
+        title: 'Toolbar',
+        fields: [
           'show_legend',
           'show_viewer',
           'show_note',
           'show_sources',
           'show_more_info',
           'show_share',
-          'enable_queries',
-          ...(props.data.enable_queries ? ['data_query_params'] : []),
-          'dataprotection',
         ],
+      },
+      {
+        fields: ['dataprotection'],
+        title: 'Data Protection',
       },
     ],
     properties: {
@@ -114,19 +123,23 @@ export const Schema = (props) => {
       show_note: {
         title: 'Show note',
         type: 'boolean',
+        defaultValue: true,
       },
       show_sources: {
         title: 'Show sources',
         description: 'Will show sources set in this page Data provenance',
         type: 'boolean',
+        defaultValue: true,
       },
       show_more_info: {
         title: 'Show more info',
         type: 'boolean',
+        defaultValue: true,
       },
       show_share: {
         title: 'Show share button',
         type: 'boolean',
+        defaultValue: true,
       },
       show_legend: {
         title: 'Show legend',
