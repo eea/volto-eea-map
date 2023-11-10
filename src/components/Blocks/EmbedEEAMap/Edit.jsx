@@ -140,7 +140,7 @@ export default compose(
         ? state.map_visualizations?.data[
             expandToBackendURL(props.data.vis_url)
           ]?.['@id']
-        : props.content['@id'],
+        : props.content?.['@id'],
       map_visualization: props.data.vis_url
         ? state.map_visualizations?.data[expandToBackendURL(props.data.vis_url)]
             ?.data
