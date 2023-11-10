@@ -13,7 +13,7 @@ import { applyQueriesToMapLayers } from '@eeacms/volto-eea-map/utils';
 import { getVisualization } from '@eeacms/volto-eea-map/actions';
 
 const View = (props) => {
-  const { data, data_provenance = {} } = props || {};
+  const { data, data_provenance = {}, figure_note = [] } = props || {};
   const { height = '' } = data;
 
   const [mapData, setMapData] = React.useState('');
@@ -44,18 +44,24 @@ const View = (props) => {
   ]);
 
   return (
-    <PrivacyProtection data={data} {...props}>
+    <PrivacyProtection
+      data={data}
+      className="embed-map-visualization"
+      {...props}
+    >
       {mapData && (
-        <div>
+        <>
           <Webmap data={mapData} height={height} />
           <ExtraViews
             data={{
               ...data,
               data_provenance,
+              figure_note,
               map_data: props.map_visualization,
+              '@id': props['@id'],
             }}
           />
-        </div>
+        </>
       )}
       {!mapData && (
         <p>No map view to show. Set visualization in block configuration.</p>
@@ -67,6 +73,11 @@ const View = (props) => {
 export default compose(
   connect(
     (state, props) => ({
+      '@id': props.data.vis_url
+        ? state.map_visualizations?.data[
+            expandToBackendURL(props.data.vis_url)
+          ]?.['@id']
+        : props.content?.['@id'],
       map_visualization: props.data.vis_url
         ? state.map_visualizations?.data[expandToBackendURL(props.data.vis_url)]
             ?.data
@@ -74,6 +85,10 @@ export default compose(
       data_provenance: props.data.vis_url
         ? state.map_visualizations?.data[expandToBackendURL(props.data.vis_url)]
             ?.data_provenance
+        : '',
+      figure_note: props.data.vis_url
+        ? state.map_visualizations?.data[expandToBackendURL(props.data.vis_url)]
+            ?.figure_note
         : '',
     }),
     {

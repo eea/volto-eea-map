@@ -1,27 +1,65 @@
-import React from 'react';
+import React, { useEffect, useState, useRef } from 'react';
+import { connect } from 'react-redux';
+import cx from 'classnames';
 import { serializeNodes } from '@plone/volto-slate/editor/render';
+import {
+  FigureNote,
+  Sources,
+  MoreInfo,
+  Share,
+} from '@eeacms/volto-embed/Toolbar';
 import LegendView from '@eeacms/volto-eea-map/components/LegendView';
-import Sources from './Sources';
 
-const ExtraViews = ({ data }) => {
+import '@eeacms/volto-embed/Toolbar/styles.less';
+
+const ExtraViews = ({ data, screen }) => {
+  const toolbar = useRef();
+  const [mobile, setMobile] = useState(false);
   const {
     map_data = {},
     description,
     show_legend,
     show_viewer,
-    show_sources,
+    show_note = true,
+    show_sources = true,
+    show_more_info = true,
+    show_share = true,
     data_provenance = {},
+    figure_note = [],
   } = data;
 
+  useEffect(() => {
+    if (toolbar.current) {
+      const toolbarParentWidth = toolbar.current.parentElement.offsetWidth;
+
+      if (toolbarParentWidth < 600 && !mobile) {
+        setMobile(true);
+      } else if (toolbarParentWidth >= 600 && mobile) {
+        setMobile(false);
+      }
+    }
+  }, [screen, mobile]);
+
   return (
-    <div className="extra-eea-map-content">
+    <>
       {show_legend && map_data && (
         <LegendView data={map_data} show_viewer={show_viewer} />
       )}
-      {show_sources && <Sources sources={data_provenance?.data} />}
+      <div className={cx('visualization-toolbar', { mobile })} ref={toolbar}>
+        <div className="left-col">
+          {show_note && <FigureNote note={figure_note || []} />}
+          {show_sources && <Sources sources={data_provenance?.data} />}
+          {show_more_info && <MoreInfo href={data['@id']} />}
+        </div>
+        <div className="right-col">
+          {show_share && <Share href={data['@id']} />}
+        </div>
+      </div>
       {description && serializeNodes(description)}
-    </div>
+    </>
   );
 };
 
-export default ExtraViews;
+export default connect((state) => ({
+  screen: state.screen,
+}))(ExtraViews);

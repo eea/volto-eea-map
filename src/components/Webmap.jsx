@@ -360,7 +360,7 @@ const Webmap = (props) => {
   `;
 
   return (
-    <div>
+    <div className="esri-map-wrapper">
       <style>{dynamicStyle}</style>
       <div ref={mapRef} className="esri-map"></div>
     </div>
