@@ -7,7 +7,7 @@ import { compose } from 'redux';
 import BlockDataForm from '@plone/volto/components/manage/Form/BlockDataForm';
 import Webmap from '@eeacms/volto-eea-map/components/Webmap';
 import ExtraViews from '@eeacms/volto-eea-map/components/ExtraViews';
-
+import { flattenToAppURL } from '@plone/volto/helpers';
 import { expandToBackendURL } from '@plone/volto/helpers';
 
 import { Schema } from './Schema';
@@ -153,6 +153,10 @@ export default compose(
         ? state.map_visualizations?.data[expandToBackendURL(props.data.vis_url)]
             ?.figure_note
         : '',
+      data: {
+        ...(props.data || {}),
+        vis_url: flattenToAppURL(props.data?.vis_url || ''),
+      },
     }),
     {
       getVisualization,
