@@ -75,7 +75,7 @@ const Webmap = (props) => {
           Fullscreen,
         ] = modules;
         setModules({
-          Map:map,
+          Map: map,
           MapView,
           FeatureLayer,
           MapImageLayer,
