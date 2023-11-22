@@ -1,118 +1,83 @@
-import React from 'react';
-import { SidebarPortal } from '@plone/volto/components';
-
+import React, { useEffect, useMemo } from 'react';
+import { Message } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
+import { SidebarPortal } from '@plone/volto/components';
+import { getContent } from '@plone/volto/actions';
+import { flattenToAppURL } from '@plone/volto/helpers';
 import BlockDataForm from '@plone/volto/components/manage/Form/BlockDataForm';
 import Webmap from '@eeacms/volto-eea-map/components/Webmap';
 import ExtraViews from '@eeacms/volto-eea-map/components/ExtraViews';
 
-import { expandToBackendURL } from '@plone/volto/helpers';
-
 import { Schema } from './Schema';
 import { applyQueriesToMapLayers } from '@eeacms/volto-eea-map/utils';
 
-import { getVisualization } from '@eeacms/volto-eea-map/actions';
+import { getMapVisualizationData } from './helpers';
 
 const Edit = (props) => {
+  const { id, block, onChangeBlock, selected, data, getContent } = props;
   const {
-    block,
-    onChangeBlock,
-    selected,
-    data_provenance = {},
-    figure_note = [],
-  } = props;
+    data_query_params,
+    enable_queries,
+    show_legend = true,
+    show_note = true,
+    show_sources = true,
+    show_more_info = true,
+    show_share = true,
+    dataprotection = { enabled: true },
+    height = '',
+  } = data;
   const schema = Schema(props);
   const [mapData, setMapData] = React.useState('');
-  const data = React.useMemo(() => props.data, [props.data]);
-  const { height = '' } = data;
 
-  React.useEffect(() => {
-    if (!Object.hasOwn(data, 'show_legend')) {
-      onChangeBlock(block, {
-        ...data,
-        show_legend: true,
-      });
-    }
-    if (!Object.hasOwn(data, 'show_note')) {
-      onChangeBlock(block, {
-        ...data,
-        show_note: true,
-      });
-    }
-    if (!Object.hasOwn(data, 'show_sources')) {
-      onChangeBlock(block, {
-        ...data,
-        show_sources: true,
-      });
-    }
-    if (!Object.hasOwn(data, 'show_more_info')) {
-      onChangeBlock(block, {
-        ...data,
-        show_more_info: true,
-      });
-    }
-    if (!Object.hasOwn(data, 'dataprotection')) {
-      onChangeBlock(block, {
-        ...data,
-        dataprotection: { enabled: true },
-      });
-    }
-    if (!Object.hasOwn(data, 'show_share')) {
-      onChangeBlock(block, {
-        ...data,
-        show_share: true,
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    data.show_legend,
-    data.show_note,
-    data.show_sources,
-    data.show_more_info,
-    data.dataprotection,
-    data.show_share,
+  const vis_url = useMemo(() => flattenToAppURL(data.vis_url), [data.vis_url]);
+
+  const map_visualization_data = useMemo(() => getMapVisualizationData(props), [
+    props,
   ]);
 
-  React.useEffect(() => {
-    if (props.data.vis_url) {
-      props.getVisualization(expandToBackendURL(props.data.vis_url));
+  useEffect(() => {
+    const mapVisId = flattenToAppURL(map_visualization_data['@id'] || '');
+    if (vis_url && vis_url !== mapVisId) {
+      getContent(vis_url, null, id);
     }
-    if (!props.data.vis_url) {
+    if (!vis_url) {
       setMapData('');
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.data.vis_url]);
+  }, [id, getContent, vis_url, map_visualization_data]);
 
   React.useEffect(() => {
     const updatedMapData = applyQueriesToMapLayers(
-      props.map_visualization,
-      props.data.data_query_params,
-      props.data.enable_queries,
+      map_visualization_data,
+      data_query_params,
+      enable_queries,
     );
     setMapData(updatedMapData);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.map_visualization, props.data]);
+  }, [map_visualization_data, data_query_params, enable_queries]);
 
   return (
     <>
-      {mapData && (
+      {!vis_url && (
+        <Message>Please select a visualization from block editor.</Message>
+      )}
+
+      {!!vis_url && mapData && (
         <div>
           <Webmap data={mapData} height={height} isEdit={true} />
           <ExtraViews
             data={{
               ...data,
-              data_provenance,
-              figure_note,
-              map_data: props.map_visualization,
+              show_legend,
+              show_note,
+              show_sources,
+              show_more_info,
+              show_share,
+              dataprotection,
+              map_visualization_data,
             }}
           />
         </div>
-      )}
-      {!mapData && (
-        <p>No map view to show. Set visualization in block configuration.</p>
       )}
       <SidebarPortal selected={selected}>
         <BlockDataForm
@@ -135,27 +100,11 @@ const Edit = (props) => {
 export default compose(
   connect(
     (state, props) => ({
+      mapContent: state.content.subrequests?.[props.id]?.data,
       data_query: state.content.data.data_query,
-      '@id': props.data.vis_url
-        ? state.map_visualizations?.data[
-            expandToBackendURL(props.data.vis_url)
-          ]?.['@id']
-        : props.content?.['@id'],
-      map_visualization: props.data.vis_url
-        ? state.map_visualizations?.data[expandToBackendURL(props.data.vis_url)]
-            ?.data
-        : '',
-      data_provenance: props.data.vis_url
-        ? state.map_visualizations?.data[expandToBackendURL(props.data.vis_url)]
-            ?.data_provenance
-        : '',
-      figure_note: props.data.vis_url
-        ? state.map_visualizations?.data[expandToBackendURL(props.data.vis_url)]
-            ?.figure_note
-        : '',
     }),
     {
-      getVisualization,
+      getContent,
     },
   ),
 )(Edit);

@@ -60,7 +60,7 @@ const Webmap = (props) => {
         css: true,
       }).then((modules) => {
         const [
-          Map,
+          MapBlock,
           MapView,
           FeatureLayer,
           MapImageLayer,
@@ -75,7 +75,7 @@ const Webmap = (props) => {
           Fullscreen,
         ] = modules;
         setModules({
-          Map,
+          MapBlock,
           MapView,
           FeatureLayer,
           MapImageLayer,
@@ -125,7 +125,7 @@ const Webmap = (props) => {
   const esri = React.useMemo(() => {
     if (Object.keys(modules).length === 0) return {};
     const {
-      Map,
+      MapBlock,
       MapView,
       FeatureLayer,
       MapImageLayer,
@@ -257,7 +257,7 @@ const Webmap = (props) => {
       return customBase;
     };
 
-    const map = new Map({
+    const map = new MapBlock({
       basemap:
         data?.base?.use_custom_base && data?.base?.custom_base_layer
           ? setCustomBasemap(data?.base?.custom_base_layer)

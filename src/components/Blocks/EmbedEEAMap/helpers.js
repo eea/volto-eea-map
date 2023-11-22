@@ -1,3 +1,4 @@
+import { pickMetadata } from '@eeacms/volto-embed/helpers';
 import { updateBlockQueryFromPageQuery } from '@eeacms/volto-eea-map/utils';
 
 const deepUpdateDataQueryParams = (block, data, data_query, onChangeBlock) => {
@@ -27,4 +28,14 @@ const deepUpdateDataQueryParams = (block, data, data_query, onChangeBlock) => {
   }
 };
 
-export { deepUpdateDataQueryParams };
+function getMapVisualizationData(props) {
+  const content = props.mapContent || {};
+  const map_visualization_data =
+    content.map_visualization_data || props.data?.map_visualization_data || {};
+  return {
+    ...pickMetadata(content),
+    ...map_visualization_data,
+  };
+}
+
+export { deepUpdateDataQueryParams, getMapVisualizationData };
