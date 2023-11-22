@@ -16,7 +16,7 @@ const ExtraViews = ({ data, screen }) => {
   const toolbar = useRef();
   const [mobile, setMobile] = useState(false);
   const {
-    map_data = {},
+    map_visualization_data = {},
     description,
     show_legend,
     show_viewer,
@@ -24,9 +24,9 @@ const ExtraViews = ({ data, screen }) => {
     show_sources = true,
     show_more_info = true,
     show_share = true,
-    data_provenance = {},
-    figure_note = [],
   } = data;
+
+  const { data_provenance = {}, figure_note = [] } = map_visualization_data;
 
   useEffect(() => {
     if (toolbar.current) {
@@ -42,8 +42,8 @@ const ExtraViews = ({ data, screen }) => {
 
   return (
     <>
-      {show_legend && map_data && (
-        <LegendView data={map_data} show_viewer={show_viewer} />
+      {show_legend && map_visualization_data && (
+        <LegendView data={map_visualization_data} show_viewer={show_viewer} />
       )}
       <div className={cx('visualization-toolbar', { mobile })} ref={toolbar}>
         <div className="left-col">
