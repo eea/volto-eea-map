@@ -13,7 +13,6 @@ import VisualizationView from './components/visualization/VisualizationView';
 import SimpleColorPickerWidget from './components/widgets/SimpleColorPickerWidget';
 
 import { data_visualizations } from './middlewares';
-import * as addonReducers from './reducers';
 
 import './less/global.less';
 
@@ -71,11 +70,6 @@ export default (config) => {
     ...(config.settings.storeExtenders || []),
     data_visualizations,
   ];
-
-  config.addonReducers = {
-    ...config.addonReducers,
-    ...addonReducers,
-  };
 
   return config;
 };
