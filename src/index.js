@@ -12,8 +12,6 @@ import VisualizationView from './components/visualization/VisualizationView';
 
 import SimpleColorPickerWidget from './components/widgets/SimpleColorPickerWidget';
 
-import { data_visualizations } from './middlewares';
-
 import './less/global.less';
 
 export default (config) => {
@@ -65,11 +63,6 @@ export default (config) => {
   config.widgets.views.id.map_visualization_data = VisualizationViewWidget;
   //map viewer for the visualization(content-type)
   config.views.contentTypesViews.map_visualization = VisualizationView;
-
-  config.settings.storeExtenders = [
-    ...(config.settings.storeExtenders || []),
-    data_visualizations,
-  ];
 
   return config;
 };
