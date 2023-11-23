@@ -21,7 +21,7 @@
     "@eeacms/volto-object-widget"
   ],
   "dependencies": {
-    "@eeacms/volto-embed": "github:eea/volto-embed#develop",
+    "@eeacms/volto-embed": "*",
     "@eeacms/volto-object-widget": "*",
     "@plone/scripts": "*",
     "esri-loader": "3.6.0",

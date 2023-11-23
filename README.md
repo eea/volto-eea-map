@@ -18,25 +18,29 @@
 
 # Configuration
 
-This addon contains the EEA Embed Map Block & EEA Map Block. It's configured to work with the map visualization content type and give more access to ArcGIS maps. See available maps here https://discomap.eea.europa.eu/ 
+This addon contains the EEA Embed Map Block & EEA Map Block. It's configured to work with the map visualization content type and give more access to ArcGIS maps. See available maps here https://discomap.eea.europa.eu/
 
-# Enable data queries auto-import 
+# Enable data queries auto-import
 
-To enable automatic import of queries from the content-type, "Parameters for data connections" should be checked as behavior on the content-type that uses the map. 
+To enable automatic import of queries from the content-type, "Parameters for data connections" should be checked as behavior on the content-type that uses the map.
 
     controlpanel/dexterity-types/{content-type-id}
 
 # Enable Sources
 
-Sources (Data provenance) should be set on the visualization. To enable this, "EEA Core Metadata" should be  checked as behavior on the  visualization content-type. 
+Sources (Data provenance) should be set on the visualization. To enable this, "EEA Core Metadata" should be checked as behavior on the visualization content-type.
 
     controlpanel/dexterity-types/map_visualization
-    
+
 After this, sources can be added from the visualization edit interface. "Data Provenance" tab => "Add source"
 
 [EEA MAP](https://raw.githubusercontent.com/eea/volto-eea-map/master/docs/volto-eea-map.gif)
 
 ## Getting started
+
+### Upgrade
+
+#### 3.0.0 -> requires >= eea.api.dataconnector@7.0
 
 ### Try volto-eea-map with Docker
 
@@ -57,25 +61,25 @@ Go to http://localhost:3000
 
 1. Start Volto frontend
 
-* If you already have a volto project, just update `package.json`:
+- If you already have a volto project, just update `package.json`:
 
-   ```JSON
-   "addons": [
-       "@eeacms/volto-eea-map"
-   ],
+  ```JSON
+  "addons": [
+      "@eeacms/volto-eea-map"
+  ],
 
-   "dependencies": {
-       "@eeacms/volto-eea-map": "*"
-   }
-   ```
+  "dependencies": {
+      "@eeacms/volto-eea-map": "*"
+  }
+  ```
 
-* If not, create one:
+- If not, create one:
 
-   ```
-   npm install -g yo @plone/generator-volto
-   yo @plone/volto my-volto-project --canary --addon @eeacms/volto-eea-map
-   cd my-volto-project
-   ```
+  ```
+  npm install -g yo @plone/generator-volto
+  yo @plone/volto my-volto-project --canary --addon @eeacms/volto-eea-map
+  cd my-volto-project
+  ```
 
 1. Install new add-ons and restart Volto:
 
