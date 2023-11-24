@@ -47,12 +47,12 @@ const ExtraViews = ({ data, screen }) => {
       )}
       <div className={cx('visualization-toolbar', { mobile })} ref={toolbar}>
         <div className="left-col">
-          {show_note && <FigureNote note={figure_note || []} />}
+          {show_note && <FigureNote notes={figure_note || []} />}
           {show_sources && <Sources sources={data_provenance?.data} />}
-          {show_more_info && <MoreInfo href={data['@id']} />}
+          {show_more_info && <MoreInfo href={map_visualization_data['@id']} />}
         </div>
         <div className="right-col">
-          {show_share && <Share href={data['@id']} />}
+          {show_share && <Share href={map_visualization_data['@id']} />}
         </div>
       </div>
       {description && serializeNodes(description)}

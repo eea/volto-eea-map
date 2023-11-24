@@ -7,13 +7,23 @@ import { applyQueriesToMapLayers } from '@eeacms/volto-eea-map/utils';
 import { getMapVisualizationData } from './helpers';
 
 const View = (props) => {
-  const { data_query_params, enable_queries, height = '' } = props.data;
+  const { data } = props;
+  const {
+    data_query_params,
+    enable_queries,
+    show_legend = true,
+    show_note = true,
+    show_sources = true,
+    show_more_info = true,
+    show_share = true,
+    dataprotection = { enabled: true },
+    height = '',
+  } = data;
 
   const map_visualization_data = useMemo(() => getMapVisualizationData(props), [
     props,
   ]);
 
-  const { data_provenance = {}, figure_note = [] } = map_visualization_data;
   const [mapData, setMapData] = React.useState('');
 
   React.useEffect(() => {
@@ -27,7 +37,7 @@ const View = (props) => {
 
   return (
     <PrivacyProtection
-      data={props.data}
+      data={data}
       className="embed-map-visualization"
       {...props}
     >
@@ -36,11 +46,14 @@ const View = (props) => {
           <Webmap data={mapData} height={height} />
           <ExtraViews
             data={{
-              ...props.data,
-              data_provenance,
-              figure_note,
-              map_data: map_visualization_data,
-              '@id': props['@id'],
+              ...data,
+              show_legend,
+              show_note,
+              show_sources,
+              show_more_info,
+              show_share,
+              dataprotection,
+              map_visualization_data,
             }}
           />
         </>
