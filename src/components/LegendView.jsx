@@ -128,13 +128,15 @@ const LegendView = (props) => {
                 </p>
               </Grid.Column>
             )}
-            {map_layers?.map((l, i) => (
-              <LayerLegend
-                key={i}
-                data={l.map_layer}
-                show_viewer={show_viewer}
-              />
-            ))}
+            {map_layers &&
+              map_layers.length > 0 &&
+              map_layers?.map((l, i) => (
+                <LayerLegend
+                  key={i}
+                  data={l.map_layer}
+                  show_viewer={show_viewer}
+                />
+              ))}
           </Grid.Row>
         </Grid>
       )}
