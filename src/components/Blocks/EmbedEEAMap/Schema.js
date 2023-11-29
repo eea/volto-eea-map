@@ -75,7 +75,7 @@ export const Schema = (props) => {
 
   deepUpdateDataQueryParams(block, data, dataQuery, onChangeBlock);
   return {
-    title: 'Embed EEA Map Block',
+    title: 'Embed Map layers (ArcGis)',
     fieldsets: [
       {
         id: 'default',
