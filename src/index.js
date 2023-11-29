@@ -1,3 +1,5 @@
+import { uniqBy } from 'lodash';
+
 import EmbedMapView from './components/Blocks/EmbedEEAMap/View';
 import EmbedMapEdit from './components/Blocks/EmbedEEAMap/Edit';
 
@@ -34,9 +36,9 @@ export default (config) => {
 
   config.blocks.blocksConfig.embed_eea_map_block = {
     id: 'embed_eea_map_block', // The name (id) of the block
-    title: 'Embed EEA Map', // The display name of the block
+    title: 'Embed Map layers (ArcGis)', // The display name of the block
     icon: world, // The icon used in the block chooser
-    group: 'common', // The group (blocks can be grouped, displayed in the chooser)
+    group: 'data_visualizations', // The group (blocks can be grouped, displayed in the chooser)
     view: EmbedMapView, // The view mode component
     edit: EmbedMapEdit, // The edit mode component
     sidebarTab: 1, // The sidebar tab you want to be selected when selecting the block
@@ -53,6 +55,14 @@ export default (config) => {
       },
     ],
   };
+
+  config.blocks.groupBlocksOrder = uniqBy(
+    [
+      ...config.blocks.groupBlocksOrder,
+      { id: 'data_visualizations', title: 'Data Visualizations' },
+    ],
+    'id',
+  );
 
   config.widgets.widget.map_layers_widget = LayerSelectWidget;
   config.widgets.widget.data_query_widget = DataQueryWidget;
