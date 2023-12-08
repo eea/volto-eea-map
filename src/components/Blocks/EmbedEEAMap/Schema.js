@@ -107,7 +107,7 @@ export const Schema = (props) => {
     ],
     properties: {
       vis_url: {
-        widget: 'object_by_path',
+        widget: 'internal_url',
         title: 'Visualization',
       },
       height: {
