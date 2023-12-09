@@ -68,12 +68,20 @@ const ProtectionSchema = () => ({
 });
 
 export const Schema = (props) => {
-  const { block, onChangeBlock } = props;
+  const { block, onChangeBlock, unsaved_data_queries, data_query } = props;
 
-  const dataQuery = React.useMemo(() => props.data_query, [props.data_query]);
-  const data = React.useMemo(() => props.data, [props.data]);
+  const effectiveQueryParams =
+    unsaved_data_queries.length > 0 ? unsaved_data_queries : data_query;
 
-  deepUpdateDataQueryParams(block, data, dataQuery, onChangeBlock);
+  React.useEffect(() => {
+    deepUpdateDataQueryParams(
+      block,
+      props.data,
+      effectiveQueryParams,
+      onChangeBlock,
+    );
+  }, [block, props.data, effectiveQueryParams, onChangeBlock]);
+
   return {
     title: 'Embed Map layers (ArcGis)',
     fieldsets: [
