@@ -34,7 +34,7 @@ const Share = ({ contentTypeLink = '' }) => {
         <div className="eea-map-share-container">
           <button className={cx('eea-map-share-button', { expanded })}>
             <span>Share</span>
-            <i class="ri-share-fill"></i>
+            <i className="ri-share-fill"></i>
           </button>
         </div>
       }
