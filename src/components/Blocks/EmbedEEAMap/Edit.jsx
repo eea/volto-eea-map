@@ -39,8 +39,6 @@ const Edit = (props) => {
   const schema = Schema(props);
   const [mapData, setMapData] = React.useState('');
 
-  console.log('HERE', props.data_query);
-
   const vis_url = useMemo(() => flattenToAppURL(data.vis_url), [data.vis_url]);
 
   const map_visualization_data = useMemo(
