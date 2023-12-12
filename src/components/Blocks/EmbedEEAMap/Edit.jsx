@@ -16,7 +16,15 @@ import { applyQueriesToMapLayers } from '@eeacms/volto-eea-map/utils';
 import { getMapVisualizationData } from './helpers';
 
 const Edit = (props) => {
-  const { id, block, onChangeBlock, selected, data, getContent } = props;
+  const {
+    id,
+    block,
+    onChangeBlock,
+    selected,
+    data,
+    mapContent,
+    getContent,
+  } = props;
   const {
     data_query_params,
     enable_queries,
@@ -31,11 +39,14 @@ const Edit = (props) => {
   const schema = Schema(props);
   const [mapData, setMapData] = React.useState('');
 
+  console.log('HERE', props.data_query);
+
   const vis_url = useMemo(() => flattenToAppURL(data.vis_url), [data.vis_url]);
 
-  const map_visualization_data = useMemo(() => getMapVisualizationData(props), [
-    props,
-  ]);
+  const map_visualization_data = useMemo(
+    () => getMapVisualizationData({ mapContent, data }),
+    [mapContent, data],
+  );
 
   useEffect(() => {
     const mapVisId = flattenToAppURL(map_visualization_data['@id'] || '');
@@ -99,10 +110,13 @@ const Edit = (props) => {
 
 export default compose(
   connect(
-    (state, props) => ({
-      mapContent: state.content.subrequests?.[props.id]?.data,
-      data_query: state.content.data.data_query,
-    }),
+    (state, props) => {
+      const pathname = flattenToAppURL(state.content.data['@id']);
+      return {
+        mapContent: state.content.subrequests?.[props.id]?.data,
+        data_query: state.connected_data_parameters.byContextPath[pathname],
+      };
+    },
     {
       getContent,
     },

@@ -28,10 +28,10 @@ const deepUpdateDataQueryParams = (block, data, data_query, onChangeBlock) => {
   }
 };
 
-function getMapVisualizationData(props) {
-  const content = props.mapContent || {};
+function getMapVisualizationData({ mapContent, data }) {
+  const content = mapContent || {};
   const map_visualization_data =
-    content.map_visualization_data || props.data?.map_visualization_data || {};
+    content.map_visualization_data || data?.map_visualization_data || {};
   return {
     ...pickMetadata(content),
     ...map_visualization_data,
