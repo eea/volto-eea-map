@@ -23,11 +23,11 @@ const Edit = (props) => {
     selected,
     data,
     getContent,
-    unsaved_data_queries,
+    connected_data_parameters, // page level queries
   } = props;
 
   const {
-    data_query_params,
+    data_query_params, //block level queries
     enable_queries,
     show_legend = true,
     show_note = true,
@@ -57,12 +57,17 @@ const Edit = (props) => {
   }, [id, getContent, vis_url, map_visualization_data]);
 
   useEffect(() => {
-    const mergedQueries = unsaved_data_queries.map((unsavedQuery, index) => {
-      const correspondingQuery = data_query_params[index];
-      return { ...unsavedQuery, alias: correspondingQuery?.alias };
-    });
+    const mergedQueries =
+      connected_data_parameters &&
+      connected_data_parameters.length > 0 &&
+      connected_data_parameters.map((unsavedQuery, index) => {
+        const correspondingQuery = data_query_params[index];
+        return { ...unsavedQuery, alias: correspondingQuery?.alias };
+      });
     const queriesToUse =
-      mergedQueries.length > 0 ? mergedQueries : data_query_params;
+      mergedQueries && mergedQueries.length > 0
+        ? mergedQueries
+        : data_query_params;
 
     const updatedMapData = applyQueriesToMapLayers(
       map_visualization_data,
@@ -78,7 +83,7 @@ const Edit = (props) => {
     map_visualization_data,
     data_query_params,
     enable_queries,
-    unsaved_data_queries,
+    connected_data_parameters,
   ]);
 
   return (
@@ -126,8 +131,12 @@ export default compose(
     (state, props) => ({
       mapContent: state.content.subrequests?.[props.id]?.data,
       data_query: state.content.data.data_query,
-      unsaved_data_queries: state.unsaved_data_queries,
-      state,
+      //unsaved_data_queries: state.unsaved_data_queries,
+      connected_data_parameters:
+        state?.connected_data_parameters?.byContextPath &&
+        state.connected_data_parameters?.byContextPath[
+          flattenToAppURL(props.properties['@id'])
+        ],
     }),
     { getContent },
   ),

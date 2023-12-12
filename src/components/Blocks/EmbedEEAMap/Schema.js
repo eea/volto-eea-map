@@ -68,10 +68,14 @@ const ProtectionSchema = () => ({
 });
 
 export const Schema = (props) => {
-  const { block, onChangeBlock, unsaved_data_queries, data_query } = props;
+  const { block, onChangeBlock, connected_data_parameters, data_query } = props;
 
   const effectiveQueryParams =
-    unsaved_data_queries.length > 0 ? unsaved_data_queries : data_query;
+    connected_data_parameters && connected_data_parameters.length > 0
+      ? connected_data_parameters
+      : data_query;
+
+  // const effectiveQueryParams = data_query;
 
   React.useEffect(() => {
     deepUpdateDataQueryParams(
