@@ -1,6 +1,3 @@
-import React from 'react';
-import { deepUpdateDataQueryParams } from './helpers';
-
 const ProtectionSchema = () => ({
   title: 'Data Protection',
 
@@ -68,24 +65,6 @@ const ProtectionSchema = () => ({
 });
 
 export const Schema = (props) => {
-  const { block, onChangeBlock, connected_data_parameters, data_query } = props;
-
-  const effectiveQueryParams =
-    connected_data_parameters && connected_data_parameters.length > 0
-      ? connected_data_parameters
-      : data_query;
-
-  // const effectiveQueryParams = data_query;
-
-  React.useEffect(() => {
-    deepUpdateDataQueryParams(
-      block,
-      props.data,
-      effectiveQueryParams,
-      onChangeBlock,
-    );
-  }, [block, props.data, effectiveQueryParams, onChangeBlock]);
-
   return {
     title: 'Embed Map layers (ArcGis)',
     fieldsets: [

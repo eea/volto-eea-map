@@ -12,7 +12,7 @@ import ExtraViews from '@eeacms/volto-eea-map/components/ExtraViews';
 
 import { Schema } from './Schema';
 import { applyQueriesToMapLayers } from '@eeacms/volto-eea-map/utils';
-import { getMapVisualizationData } from './helpers';
+import { deepUpdateDataQueryParams, getMapVisualizationData } from './helpers';
 import { isEqual } from 'lodash';
 
 const Edit = (props) => {
@@ -23,7 +23,8 @@ const Edit = (props) => {
     selected,
     data,
     getContent,
-    connected_data_parameters, // page level queries
+    connected_data_parameters, // page level queries live from widget
+    data_query, // page level queries
   } = props;
 
   const {
@@ -46,6 +47,20 @@ const Edit = (props) => {
     props,
   ]);
 
+  const effectiveQueryParams =
+    connected_data_parameters && connected_data_parameters.length > 0
+      ? connected_data_parameters
+      : data_query;
+
+  React.useEffect(() => {
+    deepUpdateDataQueryParams(
+      block,
+      props.data,
+      effectiveQueryParams,
+      onChangeBlock,
+    );
+  }, [block, props.data, effectiveQueryParams, onChangeBlock]);
+
   useEffect(() => {
     const mapVisId = flattenToAppURL(map_visualization_data['@id'] || '');
     if (vis_url && vis_url !== mapVisId) {
@@ -61,7 +76,8 @@ const Edit = (props) => {
       connected_data_parameters &&
       connected_data_parameters.length > 0 &&
       connected_data_parameters.map((unsavedQuery, index) => {
-        const correspondingQuery = data_query_params[index];
+        const correspondingQuery =
+          data_query_params && data_query_params[index];
         return { ...unsavedQuery, alias: correspondingQuery?.alias };
       });
     const queriesToUse =
@@ -128,16 +144,16 @@ const Edit = (props) => {
 
 export default compose(
   connect(
-    (state, props) => ({
-      mapContent: state.content.subrequests?.[props.id]?.data,
-      data_query: state.content.data.data_query,
-      //unsaved_data_queries: state.unsaved_data_queries,
-      connected_data_parameters:
-        state?.connected_data_parameters?.byContextPath &&
-        state.connected_data_parameters?.byContextPath[
-          flattenToAppURL(props.properties['@id'])
-        ],
-    }),
+    (state, props) => {
+      const pathname = flattenToAppURL(state.content.data['@id']);
+      return {
+        mapContent: state.content.subrequests?.[props.id]?.data,
+        data_query: state.content.data.data_query,
+        connected_data_parameters:
+          state?.connected_data_parameters?.byContextPath &&
+          state.connected_data_parameters?.byContextPath[pathname],
+      };
+    },
     { getContent },
   ),
 )(Edit);
