@@ -25,6 +25,7 @@ const Edit = (props) => {
     getContent,
     connected_data_parameters, // page level queries live from widget
     data_query, // page level queries
+    mapContent,
   } = props;
 
   const {
@@ -43,9 +44,11 @@ const Edit = (props) => {
   const [mapData, setMapData] = React.useState('');
 
   const vis_url = useMemo(() => flattenToAppURL(data.vis_url), [data.vis_url]);
-  const map_visualization_data = useMemo(() => getMapVisualizationData(props), [
-    props,
-  ]);
+
+  const map_visualization_data = useMemo(
+    () => getMapVisualizationData({ mapContent, data }),
+    [mapContent, data],
+  );
 
   const effectiveQueryParams =
     connected_data_parameters && connected_data_parameters.length > 0
