@@ -28,15 +28,15 @@ const Webmap = (props) => {
   const data = React.useMemo(() => props.data || {}, [props.data]);
 
   const layers = React.useMemo(() => props?.data?.layers || {}, [
-    props.data.layers,
+    props.data?.layers,
   ]);
   const base = React.useMemo(() => props?.data?.base || {}, [props.data.base]);
 
   const general = React.useMemo(() => props?.data?.general || {}, [
-    props.data.general,
+    props.data?.general,
   ]);
   const styles = React.useMemo(() => props?.data?.styles || {}, [
-    props.data.styles,
+    props.data?.styles,
   ]);
 
   const { base_layer = '' } = base;
