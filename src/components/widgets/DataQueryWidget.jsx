@@ -26,7 +26,8 @@ const DataQueryWidget = (props) => {
               <Accordion.Content active={true}>
                 <Segment>
                   <p className="data-param-title">
-                    <strong>{param.i}:</strong> {param.v.join(', ')}
+                    <strong>{param?.i}:</strong>{' '}
+                    {param?.v && param.v.join(', ')}
                   </p>
                   <Field
                     id={i}

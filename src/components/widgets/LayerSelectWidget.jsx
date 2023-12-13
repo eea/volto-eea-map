@@ -4,6 +4,7 @@ import { Input, Select, Button, Grid, Checkbox } from 'semantic-ui-react';
 import { QueryBuilder } from 'react-querybuilder';
 import 'react-querybuilder/dist/query-builder.css';
 
+import { flattenToAppURL } from '@plone/volto/helpers';
 import RichTextWidget from '@plone/volto-slate/widgets/RichTextWidget';
 
 import { connect } from 'react-redux';
@@ -442,10 +443,13 @@ const LayerSelectWidget = (props) => {
 
 export default compose(
   connect(
-    (state, props) => ({
-      content: state.content.data,
-      data_query: state.content.data.data_query,
-    }),
+    (state) => {
+      const pathname = flattenToAppURL(state.content.data['@id']);
+      return {
+        content: state.content.data,
+        data_query: state.connected_data_parameters.byContextPath[pathname],
+      };
+    },
     {
       getContent,
     },

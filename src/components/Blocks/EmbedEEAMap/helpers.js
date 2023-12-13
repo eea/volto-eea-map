@@ -1,37 +1,41 @@
 import { pickMetadata } from '@eeacms/volto-embed/helpers';
-import { updateBlockQueryFromPageQuery } from '@eeacms/volto-eea-map/utils';
+// import { updateBlockQueryFromPageQuery } from '@eeacms/volto-eea-map/utils';
 
-const deepUpdateDataQueryParams = (block, data, data_query, onChangeBlock) => {
-  // If block data_query_params do not exist, init them
-  if (!data?.data_query_params && data_query) {
+const deepUpdateDataQueryParams = (
+  block,
+  data,
+  effectiveQueryParams,
+  onChangeBlock,
+) => {
+  const updatedQueryParams =
+    effectiveQueryParams &&
+    effectiveQueryParams.length > 0 &&
+    effectiveQueryParams.map((param) => {
+      // Find the matching query in the block's current data_query_params
+      const existingParam =
+        data?.data_query_params &&
+        data.data_query_params.find((p) => p.i === param.i);
+
+      // If found, merge it with the effective query parameter, preserving the alias
+      return existingParam ? { ...param, alias: existingParam.alias } : param;
+    });
+
+  // Update the block data if there are changes
+  if (
+    JSON.stringify(data.data_query_params) !==
+    JSON.stringify(updatedQueryParams)
+  ) {
     onChangeBlock(block, {
       ...data,
-      data_query_params: [...data_query],
+      data_query_params: updatedQueryParams,
     });
-  }
-
-  // If block data_query_params exist, deep check them then change them in block data
-  if (data_query && data?.data_query_params) {
-    const newDataQuery = updateBlockQueryFromPageQuery(
-      data_query,
-      data?.data_query_params,
-    );
-
-    if (
-      JSON.stringify(newDataQuery) !== JSON.stringify(data.data_query_params)
-    ) {
-      onChangeBlock(block, {
-        ...data,
-        data_query_params: [...newDataQuery],
-      });
-    }
   }
 };
 
-function getMapVisualizationData(props) {
-  const content = props.mapContent || {};
+function getMapVisualizationData({ mapContent, data }) {
+  const content = mapContent || {};
   const map_visualization_data =
-    content.map_visualization_data || props.data?.map_visualization_data || {};
+    content.map_visualization_data || data?.map_visualization_data || {};
   return {
     ...pickMetadata(content),
     ...map_visualization_data,
