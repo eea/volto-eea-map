@@ -35,7 +35,7 @@ const View = (props) => {
     setMapData(updatedMapData);
   }, [map_visualization_data, data_query_params, enable_queries]);
 
-  const mapUrl = map_visualization_data?.layers.map_layers[0]?.map_layer
+  const mapUrl = map_visualization_data?.layers?.map_layers[0]?.map_layer
     ?.map_service_url
     ? `${map_visualization_data.layers.map_layers[0].map_layer.map_service_url}?f=jsapi`
     : '';
