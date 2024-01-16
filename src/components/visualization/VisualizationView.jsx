@@ -6,9 +6,12 @@ import Webmap from '../Webmap';
 import ExtraViews from '../ExtraViews';
 
 const VisualizationView = (props) => {
-  const { content = {} } = props;
+  const content = props && props.content ? props.content : {};
 
-  const { map_visualization_data = {} } = content;
+  const map_visualization_data =
+    content && content.map_visualization_data
+      ? content.map_visualization_data
+      : {};
 
   return (
     <div id="page-document" className="view-viewarcgismap">

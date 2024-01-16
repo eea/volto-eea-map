@@ -11,7 +11,10 @@ import codeSVG from '@eeacms/volto-eea-map/static/code-line.svg';
 const LayerLegend = ({ data, show_viewer }) => {
   const [legendRows, setLegendRows] = React.useState([]);
 
-  const { map_service_url = '', layer = {} } = data;
+  const map_service_url =
+    data && data.map_service_url ? data.map_service_url : '';
+
+  const layer = data && data.layer ? data.layer : {};
   const { id, name } = layer || {};
 
   const fetchLegend = async (url, activeLayerID) => {
@@ -23,11 +26,11 @@ const LayerLegend = ({ data, show_viewer }) => {
   };
 
   React.useEffect(() => {
-    if (data.map_service_url && id !== undefined) {
+    if (data?.map_service_url && id !== undefined) {
       fetchLegend(`${data.map_service_url}/legend`, id);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id, data.map_service_url]);
+  }, [id, data]);
 
   return (
     <Grid.Column>
@@ -61,7 +64,7 @@ const LayerLegend = ({ data, show_viewer }) => {
           </a>
         )}
       </div>
-      {data.description && serializeNodes(data.description)}
+      {data?.description && serializeNodes(data.description)}
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         {legendRows.length > 0 &&
           legendRows.map((item, i) => {
