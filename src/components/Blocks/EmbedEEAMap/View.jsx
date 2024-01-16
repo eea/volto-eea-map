@@ -13,7 +13,6 @@ const View = (props) => {
     enable_queries,
     show_legend = true,
     show_note = true,
-    show_sources = true,
     show_more_info = true,
     show_share = true,
     dataprotection = { enabled: true },
@@ -40,6 +39,12 @@ const View = (props) => {
     ? `${map_visualization_data.layers.map_layers[0].map_layer.map_service_url}?f=jsapi`
     : '';
 
+  if (map_visualization_data?.error) {
+    return (
+      <p dangerouslySetInnerHTML={{ __html: map_visualization_data.error }} />
+    );
+  }
+
   return (
     <PrivacyProtection
       className="embed-map-visualization"
@@ -54,7 +59,7 @@ const View = (props) => {
               ...data,
               show_legend,
               show_note,
-              show_sources,
+              show_sources: true,
               show_more_info,
               show_share,
               dataprotection,
