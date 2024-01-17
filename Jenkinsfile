@@ -236,7 +236,7 @@ pipeline {
       }
       steps {
         script {
-          def scannerHome = tool 'SonarQubeScanner'
+          def scannerHome = tool 'SonarQubeScanner5'
           def nodeJS = tool 'NodeJS'
           sh "pwd"
           withSonarQubeEnv('Sonarqube') {
