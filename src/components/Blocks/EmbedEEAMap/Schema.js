@@ -86,7 +86,6 @@ export const Schema = (props) => {
           'show_legend',
           'show_viewer',
           'show_note',
-          'show_sources',
           'show_more_info',
           'show_share',
         ],

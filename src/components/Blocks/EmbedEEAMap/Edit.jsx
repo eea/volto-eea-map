@@ -33,7 +33,6 @@ const Edit = (props) => {
     enable_queries,
     show_legend = true,
     show_note = true,
-    show_sources = true,
     show_more_info = true,
     show_share = true,
     dataprotection = { enabled: true },
@@ -66,7 +65,7 @@ const Edit = (props) => {
 
   useEffect(() => {
     const mapVisId = flattenToAppURL(map_visualization_data['@id'] || '');
-    if (vis_url && vis_url !== mapVisId) {
+    if (!map_visualization_data?.error && vis_url && vis_url !== mapVisId) {
       getContent(vis_url, null, id);
     }
     if (!vis_url) {
@@ -118,7 +117,7 @@ const Edit = (props) => {
               ...data,
               show_legend,
               show_note,
-              show_sources,
+              show_sources: true,
               show_more_info,
               show_share,
               dataprotection,

@@ -13,7 +13,6 @@ const View = (props) => {
     enable_queries,
     show_legend = true,
     show_note = true,
-    show_sources = true,
     show_more_info = true,
     show_share = true,
     dataprotection = { enabled: true },
@@ -35,11 +34,22 @@ const View = (props) => {
     setMapData(updatedMapData);
   }, [map_visualization_data, data_query_params, enable_queries]);
 
+  const mapUrl = map_visualization_data?.layers?.map_layers[0]?.map_layer
+    ?.map_service_url
+    ? `${map_visualization_data.layers.map_layers[0].map_layer.map_service_url}?f=jsapi`
+    : '';
+
+  if (map_visualization_data?.error) {
+    return (
+      <p dangerouslySetInnerHTML={{ __html: map_visualization_data.error }} />
+    );
+  }
+
   return (
     <PrivacyProtection
-      data={data}
       className="embed-map-visualization"
       {...props}
+      data={mapUrl ? { ...data, url: mapUrl } : data}
     >
       {!!mapData && (
         <>
@@ -49,7 +59,7 @@ const View = (props) => {
               ...data,
               show_legend,
               show_note,
-              show_sources,
+              show_sources: true,
               show_more_info,
               show_share,
               dataprotection,

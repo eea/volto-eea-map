@@ -21,25 +21,20 @@ const MODULES = [
 ];
 
 const Webmap = (props) => {
-  const { editMode, height, id } = props;
+  const editMode = props && props.editMode ? props.editMode : false;
+  const height = props && props.height ? props.height : '';
+  const id = props && props.id ? props.id : '';
+  const device = props && props.device ? props.device : {};
+  const data = props && props.data ? props.data : {};
 
-  const device = React.useMemo(() => props.device || {}, [props.device]);
-
-  const data = React.useMemo(() => props.data || {}, [props.data]);
-
-  const layers = React.useMemo(() => props?.data?.layers || {}, [
-    props.data?.layers,
-  ]);
-  const base = React.useMemo(() => props?.data?.base || {}, [props.data.base]);
-
-  const general = React.useMemo(() => props?.data?.general || {}, [
-    props.data?.general,
-  ]);
-  const styles = React.useMemo(() => props?.data?.styles || {}, [
-    props.data?.styles,
-  ]);
-
-  const { base_layer = '' } = base;
+  const layers =
+    props && props.data && props.data.layers ? props.data.layers : {};
+  const base = props && props.data && props.data.base ? props.data.base : {};
+  const general =
+    props && props.data && props.data.general ? props.data.general : {};
+  const styles =
+    props && props.data && props.data.styles ? props.data.styles : {};
+  const base_layer = base && base.base_layer ? base.base_layer : '';
 
   const map_layers =
     layers &&
@@ -146,7 +141,7 @@ const Webmap = (props) => {
             .map(
               (
                 {
-                  map_service_url,
+                  map_service_url = '',
                   layer,
                   fullLayer,
                   query = '',
