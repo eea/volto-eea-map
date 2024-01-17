@@ -38,7 +38,7 @@ pipeline {
       when {
         allOf {
           not { branch 'master' }
-          not { branch 'develop' }
+          not { branch 'test' }
           environment name: 'CHANGE_ID', value: ''
         }
       }
@@ -60,7 +60,7 @@ pipeline {
         anyOf {
           allOf {
             not { environment name: 'CHANGE_ID', value: '' }
-            environment name: 'CHANGE_TARGET', value: 'develop'
+            environment name: 'CHANGE_TARGET', value: 'test'
             environment name: 'SKIP_TESTS', value: ''
           }
           allOf {
@@ -220,13 +220,13 @@ pipeline {
         anyOf {
           allOf {
             not { environment name: 'CHANGE_ID', value: '' }
-            environment name: 'CHANGE_TARGET', value: 'develop'
+            environment name: 'CHANGE_TARGET', value: 'test'
           }
           allOf {
             environment name: 'CHANGE_ID', value: ''
             anyOf {
               allOf {
-                branch 'develop'
+                branch 'test'
                 not { changelog '.*^Automated release [0-9\\.]+$' }
               }
               branch 'master'
@@ -250,7 +250,6 @@ pipeline {
             sh "pwd"
           }          
           sh "pwd"
-          sh "ls -ltr /var/jenkins_home/worker/workspace/lto-addons_volto-eea-map_develop"
         }
       }
     }
@@ -260,11 +259,11 @@ pipeline {
         anyOf {
           allOf {
             not { environment name: 'CHANGE_ID', value: '' }
-            environment name: 'CHANGE_TARGET', value: 'develop'
+            environment name: 'CHANGE_TARGET', value: 'test'
           }
           allOf {
             environment name: 'CHANGE_ID', value: ''
-            branch 'develop'
+            branch 'test'
             not { changelog '.*^Automated release [0-9\\.]+$' }
           }
         }
