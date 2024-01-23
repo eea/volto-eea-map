@@ -10,7 +10,7 @@ const VisualizationEditorWidget = (props) => {
   const [open, setOpen] = React.useState(false);
   const { onChange = {}, id } = props;
   const block = React.useMemo(() => props.block, [props.block]);
-  const value = React.useMemo(() => props.value, [props.value]);
+  const value = React.useMemo(() => props.value || {}, [props.value]);
 
   const [intValue, setIntValue] = React.useState(value);
 
