@@ -3,9 +3,10 @@ import { Button } from 'semantic-ui-react';
 import LayerSelectWidget from './LayerSelectWidget';
 
 const LayersPanelWidget = ({ data, onChange, block }) => {
-  const map_layers = React.useMemo(() => data.map_layers || [], [
-    data.map_layers,
-  ]);
+  const map_layers = React.useMemo(
+    () => data.map_layers || [],
+    [data.map_layers],
+  );
 
   React.useEffect(() => {
     if (!data.map_layers) {

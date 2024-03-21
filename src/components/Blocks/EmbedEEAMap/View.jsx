@@ -19,9 +19,10 @@ const View = (props) => {
     height = '',
   } = data;
 
-  const map_visualization_data = useMemo(() => getMapVisualizationData(props), [
-    props,
-  ]);
+  const map_visualization_data = useMemo(
+    () => getMapVisualizationData(props),
+    [props],
+  );
 
   const [mapData, setMapData] = React.useState('');
 

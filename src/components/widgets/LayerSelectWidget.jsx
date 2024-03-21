@@ -41,9 +41,8 @@ const LayerSelectWidget = (props) => {
   const [serviceUrl, setServiceUrl] = React.useState(map_service_url);
   const [selectedLayer, setSelectedLayer] = React.useState(layer);
 
-  const [availableLayers, setAvailableLayers] = React.useState(
-    available_layers,
-  );
+  const [availableLayers, setAvailableLayers] =
+    React.useState(available_layers);
 
   const [builtQuery, setBuiltQuery] = React.useState(query);
 
