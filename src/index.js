@@ -16,7 +16,7 @@ import SimpleColorPickerWidget from './components/widgets/SimpleColorPickerWidge
 
 import './less/global.less';
 
-export default (config) => {
+const applyConfig = (config) => {
   config.settings.allowed_cors_destinations = [
     ...(config.settings.allowed_cors_destinations || []),
     'land.discomap.eea.europa.eu',
@@ -76,3 +76,5 @@ export default (config) => {
 
   return config;
 };
+
+export default applyConfig;

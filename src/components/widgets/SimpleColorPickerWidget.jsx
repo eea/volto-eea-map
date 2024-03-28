@@ -7,7 +7,7 @@ import checkSVG from '@plone/volto/icons/check.svg';
 
 const ReactColor = loadable.lib(() => import('react-color'));
 
-export default (props) => {
+const SimpleColorPickerWidget = (props) => {
   const { id, value, onChange, available_colors } = props;
   const [showPicker, setShowPicker] = React.useState(false);
 
@@ -117,3 +117,5 @@ export default (props) => {
     </FormFieldWrapper>
   );
 };
+
+export default SimpleColorPickerWidget;

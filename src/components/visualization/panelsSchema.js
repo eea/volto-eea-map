@@ -185,7 +185,7 @@ const GeneralSchema = ({ data = {} }) => {
   };
 };
 
-export default ({ data = {} }) => {
+const PanelsSchema = ({ data = {} }) => {
   const generalSchema = GeneralSchema({ data });
   const baseLayerSchema = BaseLayerSchema({ data });
   const stylesLayerSchema = StylesLayersSchema({ data });
@@ -225,3 +225,5 @@ export default ({ data = {} }) => {
     required: [],
   };
 };
+
+export default PanelsSchema;
