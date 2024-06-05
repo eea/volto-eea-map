@@ -45,7 +45,7 @@ const LayerLegend = ({ data, show_viewer }) => {
         {show_viewer && map_service_url && (
           <a
             target="_blank"
-            rel="noreferrer"
+            rel="noreferrer noopener"
             title="Open ArcGIS Service location"
             href={
               `https://www.arcgis.com/home/webmap/viewer.html?url=` +

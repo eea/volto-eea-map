@@ -21,6 +21,7 @@
     "@eeacms/volto-object-widget"
   ],
   "dependencies": {
+    "@arcgis/core": "4.29.10",
     "@eeacms/volto-embed": "*",
     "@eeacms/volto-object-widget": "*",
     "@plone/scripts": "*",
@@ -31,6 +32,7 @@
     "react-querybuilder": "4.2.3"
   },
   "devDependencies": {
+    "@babel/preset-env": "7.24.6",
     "@cypress/code-coverage": "^3.10.0",
     "@plone/scripts": "*",
     "babel-plugin-transform-class-properties": "^6.24.1",

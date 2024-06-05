@@ -20,7 +20,7 @@ const VisualizationView = (props) => {
       ) : (
         <>
           <Webmap data={map_visualization_data} />
-          <ExtraViews
+          {/* <ExtraViews
             data={{
               show_viewer: true,
               show_legend: true,
@@ -33,7 +33,7 @@ const VisualizationView = (props) => {
                 ...pickMetadata(content),
               },
             }}
-          />
+          /> */}
         </>
       )}
     </div>
