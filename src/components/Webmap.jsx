@@ -2,7 +2,6 @@
 import React from 'react';
 import { withDeviceSize } from '../hocs';
 import { loadModules } from 'esri-loader';
-import { formatQuery } from 'react-querybuilder';
 
 const MODULES = [
   'esri/Map',
@@ -45,12 +44,19 @@ const Webmap = (props) => {
 
   const mapRef = React.useRef();
   const [modules, setModules] = React.useState({});
+  const [reactQueryBuilder, setReactQueryBuilder] = React.useState(null);
 
   const modules_loaded = React.useRef(false);
 
   React.useEffect(() => {
     if (!modules_loaded.current) {
       modules_loaded.current = true;
+      import(
+        /* webpackChunkName: "react-querybuilder" */ 'react-querybuilder'
+      ).then((module) => {
+        setReactQueryBuilder(module);
+      });
+
       loadModules(MODULES, {
         css: true,
       }).then((modules) => {
@@ -168,7 +174,7 @@ const Webmap = (props) => {
                             : layer?.maxScale,
                           opacity: opacity ? parseFloat(opacity) : 1,
                           definitionExpression: query
-                            ? formatQuery(query, 'sql')
+                            ? reactQueryBuilder.formatQuery(query, 'sql')
                             : '',
                         },
                       ],
@@ -179,7 +185,7 @@ const Webmap = (props) => {
                       layerId: layer.id,
                       url,
                       definitionExpression: query
-                        ? formatQuery(query, 'sql')
+                        ? reactQueryBuilder.formatQuery(query, 'sql')
                         : '',
                       minScale: minScaleOverride
                         ? minScaleOverride
