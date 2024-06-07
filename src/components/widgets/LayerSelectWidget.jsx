@@ -1,8 +1,6 @@
 import React from 'react';
 import { Icon } from '@plone/volto/components';
 import { Input, Select, Button, Grid, Checkbox } from 'semantic-ui-react';
-import { QueryBuilder } from 'react-querybuilder';
-import 'react-querybuilder/dist/query-builder.css';
 
 import { flattenToAppURL } from '@plone/volto/helpers';
 import RichTextWidget from '@plone/volto-slate/widgets/RichTextWidget';
@@ -18,6 +16,12 @@ import aheadSVG from '@plone/volto/icons/ahead.svg';
 import resetSVG from '@plone/volto/icons/reset.svg';
 
 import { fetchArcGISData } from '../../utils';
+
+import loadable from '@loadable/component';
+
+const QueryBuilder = loadable(() => import('react-querybuilder'), {
+  resolveComponent: (components) => components.QueryBuilder,
+});
 
 const LayerSelectWidget = (props) => {
   const { onChange, id, data_query } = props;
@@ -83,6 +87,9 @@ const LayerSelectWidget = (props) => {
   };
 
   React.useEffect(() => {
+    import(
+      /* webpackChunkName: "react-querybuilder-css" */ 'react-querybuilder/dist/query-builder.css'
+    );
     props.getContent('', null, id);
     //    eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
