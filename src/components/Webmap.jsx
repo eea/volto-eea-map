@@ -1,28 +1,119 @@
 import React from 'react';
 import { withDeviceSize } from '../hocs';
 import Map from '../Arcgis/Map/Map';
-import Layer from '../Arcgis/Layers/Layer';
+import Layer from '../Arcgis/Layer/Layer';
+import Widget from '../Arcgis/Widget/Widget';
 
 const Webmap = (props) => {
-  // const { base } = props?.data || {};
+  const { base, styles } = props?.data || {};
+
+  const customFeatureLayerRenderer = {
+    type: 'simple',
+    symbol: {
+      type: 'simple-fill',
+      color: styles?.symbol_color
+        ? styles?.symbol_color?.rgb
+        : {
+            r: 0,
+            g: 0,
+            b: 0,
+            a: 1,
+          },
+      style: 'solid',
+      outline: {
+        color: styles?.outline_color
+          ? styles?.outline_color?.rgb
+          : {
+              r: 0,
+              g: 0,
+              b: 0,
+              a: 1,
+            },
+        width: styles?.outline_width ? styles?.outline_width : 1,
+      },
+    },
+  };
+
+  // const layer0 = new AgFeatureLayer({
+  //   url:
+  //     'https://water.discomap.eea.europa.eu/arcgis/rest/services/Marine/MPA_networks_in_EEA_marine_assessment_areas_2021/MapServer/0',
+  //   // renderer: this.#props.customFeatureLayerRenderer,
+  //   opacity: 0.5,
+  // });
+  // const layer1 = new AgGroupLayer({
+  //   url:
+  //     'https://water.discomap.eea.europa.eu/arcgis/rest/services/Marine/MPA_networks_in_EEA_marine_assessment_areas_2021/MapServer/1',
+  //   renderer: this.#props.customFeatureLayerRenderer,
+  //   opacity: 0.5,
+  // });
+  // const layer2 = new AgFeatureLayer({
+  //   url:
+  //     'https://water.discomap.eea.europa.eu/arcgis/rest/services/Marine/MPA_networks_in_EEA_marine_assessment_areas_2021/MapServer/5',
+  //   renderer: this.#props.customFeatureLayerRenderer,
+  //   opacity: 0.5,
+  // });
+  // const layer3 = new AgFeatureLayer({
+  //   url:
+  //     'https://bio.discomap.eea.europa.eu/arcgis/rest/services/ProtectedSites/CDDA_Dyna_WM/MapServer/3',
+  //   renderer: this.#props.customFeatureLayerRenderer,
+  //   opacity: 0.5,
+  // });
+  // const layer4 = new AgFeatureLayer({
+  //   url:
+  //     'https://bio.discomap.eea.europa.eu/arcgis/rest/services/ProtectedSites/CDDA_Dyna_WM/MapServer/4',
+  //   renderer: this.#props.customFeatureLayerRenderer,
+  //   opacity: 0.5,
+  // });
 
   return (
     <>
       <Map
-        id="my-map"
-        x={100}
-        MapProperties={
-          {
-            // basemap: base?.base_layer,
-          }
-        }
+        customFeatureLayerRenderer={customFeatureLayerRenderer}
+        MapProperties={{
+          basemap: base?.base_layer,
+        }}
         ViewProperties={{
           constraints: {
             minZoom: 2,
           },
         }}
       >
-        <Layer url="https://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer/0" />
+        <Widget name="Home" order={1} />
+        <Widget name="Compass" order={2} />
+        <Widget
+          name="LayerList"
+          order={3}
+          position="top-right"
+          ExpandProperties={{
+            expandTooltip: 'Layers',
+          }}
+          expand
+        />
+        <Widget
+          name="Print"
+          order={4}
+          position="top-right"
+          ExpandProperties={{
+            expandTooltip: 'Print',
+          }}
+          expand
+        />
+        <Widget name="Fullscreen" order={5} position="top-right" />
+        <Widget
+          name="Legend"
+          position="bottom-left"
+          respectLayerVisibility={false}
+          ExpandProperties={{
+            expandTooltip: 'Legend',
+          }}
+          expand
+        />
+        <Widget name="ScaleBar" position="bottom-right" />
+        <Layer url="https://water.discomap.eea.europa.eu/arcgis/rest/services/Marine/MPA_networks_in_EEA_marine_assessment_areas_2021/MapServer/0" />
+        <Layer url="https://bio.discomap.eea.europa.eu/arcgis/rest/services/ProtectedSites/CDDA_Dyna_WM/MapServer/0" />
+        {/* <Layer url="https://bio.discomap.eea.europa.eu/arcgis/rest/services/ProtectedSites/CDDA_Dyna_WM/MapServer/2" /> */}
+        {/* <Layer url="https://bio.discomap.eea.europa.eu/arcgis/rest/services/ProtectedSites/CDDA_Dyna_WM/MapServer/3" /> */}
+        {/* <Layer url="https://bio.discomap.eea.europa.eu/arcgis/rest/services/ProtectedSites/CDDA_Dyna_WM/MapServer/4" /> */}
       </Map>
     </>
   );

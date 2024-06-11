@@ -1,0 +1,159 @@
+import { useContext, useEffect, useMemo } from 'react';
+import { EventEmitter } from 'events';
+
+import MapContext from '../Map/MapContext';
+
+import useClass from '@eeacms/volto-eea-map/hooks/useClass';
+
+const modules = {};
+
+const TIMEOUT = 2000;
+
+class $Widget extends EventEmitter {
+  #isReady = false;
+  #props = {};
+  #name = '';
+  #order = -1;
+  #initiate = false;
+  #widget = null;
+  #expand = null;
+  #modulesLoaded = false;
+
+  constructor(props) {
+    super();
+
+    this.#props = props;
+    this.#name = props.name;
+    this.#order = props.order || 1;
+
+    if (this.order <= 1) {
+      this.#initiate = true;
+      return;
+    }
+
+    this.#props.$map.on('widget-added', (widget) => {
+      if (this.#isReady) return;
+      if (this.#order - widget.order === 1) {
+        this.#initiate = true;
+      }
+    });
+  }
+
+  get isReady() {
+    return this.#isReady && !!this.#widget;
+  }
+
+  get widget() {
+    return this.#widget;
+  }
+
+  get order() {
+    return this.#order;
+  }
+
+  connect() {
+    this.loadModules().then(() => {
+      if (this.#order <= 1) {
+        this.init();
+        return;
+      }
+      let time = 0;
+      const clock = setInterval(() => {
+        if (time >= TIMEOUT) {
+          clearInterval(clock);
+          return;
+        }
+        time += 50;
+        if (!this.#initiate) return;
+        this.init();
+        clearInterval(clock);
+      }, 50);
+    });
+  }
+
+  async loadModules() {
+    const $arcgis = __CLIENT__ ? window.$arcgis : null;
+    if (__SERVER__ || !$arcgis) return Promise.reject();
+    if (!this.#modulesLoaded) {
+      const AgWidget = modules[`Ag${this.#name}`];
+      modules[`Ag${this.#name}`] =
+        AgWidget || (await $arcgis.import(`esri/widgets/${this.#name}`));
+      modules.AgExpand = await $arcgis.import('esri/widgets/Expand');
+      this.#modulesLoaded = true;
+    }
+    return Promise.resolve();
+  }
+
+  async init() {
+    const {
+      $map,
+      expand,
+      position = 'top-left',
+      ExpandProperties = {},
+    } = this.#props;
+    const AgWidget = modules[`Ag${this.#name}`];
+    const AgExpand = modules.AgExpand;
+    if (!this.#modulesLoaded || !$map.isReady) return;
+    if (!AgWidget || !AgExpand) {
+      throw new Error('$Widget modules not loaded');
+    }
+
+    this.#widget = new AgWidget({
+      view: $map.view,
+      ...(this.#props || {}),
+    });
+
+    if (expand) {
+      this.#expand = new AgExpand({
+        view: $map.view,
+        content: this.#widget,
+        ...ExpandProperties,
+      });
+    }
+
+    const content = this.#expand || this.#widget;
+
+    $map.view.ui.add(content, position);
+
+    this.#isReady = true;
+    this.#initiate = false;
+
+    this.emit('connected');
+    $map.emit('widget-added', this);
+  }
+
+  disconnect() {
+    if (this.#widget) {
+      this.#widget.destroy();
+    }
+    if (this.#expand) {
+      this.#expand.destroy();
+    }
+    this.#widget = null;
+    this.#expand = null;
+    this.#isReady = false;
+    this.emit('disconnected');
+  }
+}
+
+// https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Widget.html
+function Widget(props) {
+  const { $map } = useContext(MapContext);
+  const context = useMemo(() => ({ ...props, $map }), [props, $map]);
+
+  const $widget = useClass($Widget, context);
+
+  useEffect(() => {
+    if (!$widget) return;
+
+    $widget.connect();
+
+    return () => {
+      $widget.disconnect();
+    };
+  }, [$map, $widget]);
+
+  return null;
+}
+
+export default Widget;

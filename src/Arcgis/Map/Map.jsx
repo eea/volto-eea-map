@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, useMemo } from 'react';
 import { EventEmitter } from 'events';
 
-import loadArcgis from '@eeacms/volto-eea-map/arcgis';
 import useClass from '@eeacms/volto-eea-map/hooks/useClass';
 
 import MapContext from './MapContext';
+import withArcgis from '../../hocs/withArcgis';
+
+import '@eeacms/volto-eea-map/styles/map.less';
 
 let modules = {
   loaded: false,
@@ -15,22 +17,11 @@ class $Map extends EventEmitter {
   #props = {};
   #map = null;
   #view = null;
-  #layers = [];
 
   constructor(props) {
     super();
 
     this.#props = props;
-
-    loadArcgis();
-
-    this.on('add-layer', ($layer) => {
-      if (this.isReady && $layer.isReady) {
-        this.#map.add($layer.layer);
-      }
-    });
-
-    __CLIENT__ && window.addEventListener('message', this.interceptArcgis);
   }
 
   get isReady() {
@@ -45,10 +36,6 @@ class $Map extends EventEmitter {
     return this.#view;
   }
 
-  get layers() {
-    return this.#layers;
-  }
-
   connect() {
     this.loadModules().then(() => {
       this.init();
@@ -56,23 +43,17 @@ class $Map extends EventEmitter {
     });
   }
 
-  interceptArcgis = (event) => {
-    if (event.type === 'message' && event.data.type === 'arcgis-loaded') {
-      this.connect();
-    }
-  };
-
   async loadModules() {
     const $arcgis = __CLIENT__ ? window.$arcgis : null;
     if (__SERVER__ || !$arcgis) return Promise.reject();
     if (!modules.loaded) {
-      modules.Map = await $arcgis.import('esri/Map');
+      modules.AgMap = await $arcgis.import('esri/Map');
       switch (this.#props.dimension) {
         case '3d':
-          modules.View = await $arcgis.import('esri/views/SceneView');
+          modules.AgView = await $arcgis.import('esri/views/SceneView');
           break;
         default:
-          modules.View = await $arcgis.import('esri/views/MapView');
+          modules.AgView = await $arcgis.import('esri/views/MapView');
           break;
       }
       modules.loaded = true;
@@ -81,35 +62,32 @@ class $Map extends EventEmitter {
   }
 
   init() {
-    const { View, Map, loaded } = modules;
+    const { AgView, AgMap, loaded } = modules;
     if (!loaded) return;
-    if (!View || !Map) {
+    if (!AgView || !AgMap) {
       throw new Error('$Map modules not loaded');
     }
-    const { id, ViewProperties = {}, MapProperties = {} } = this.#props;
-    this.#map = new Map({
+    const { mapEl, ViewProperties = {}, MapProperties = {} } = this.#props;
+    this.#map = new AgMap({
       basemap: 'topo',
       ...MapProperties,
     });
-    this.#view = new View({
-      container: id,
+    this.#view = new AgView({
+      container: mapEl.current,
       map: this.#map,
       ...ViewProperties,
     });
     this.#isReady = true;
   }
 
-  destroy() {
-    if (__CLIENT__ && modules.loaded) {
-      window.removeEventListener('message', this.interceptArcgis);
-    }
+  disconnect() {
     if (this.#view) {
       this.#view.destroy();
     }
     this.#map = null;
     this.#view = null;
     this.#isReady = false;
-    this.emit('destroyed');
+    this.emit('disconnected');
   }
 }
 
@@ -122,12 +100,14 @@ class $Map extends EventEmitter {
  * @param {object} props.ViewProperties - The properties of the view. See https://developers.arcgis.com/javascript/latest/api-reference/esri-views-View.html
  * @returns {JSX.Element} The rendered map component.
  */
-export default function Map(props) {
-  const { id, children } = props;
-  const $map = useClass($Map, props);
+function Map(props) {
+  const mapEl = useRef(null);
   const [isReady, setIsReady] = useState(false);
+  const { children, agLoaded } = props;
 
-  console.log(isReady);
+  const context = useMemo(() => ({ ...props, mapEl }), [props, mapEl]);
+
+  const $map = useClass($Map, context);
 
   useEffect(() => {
     if (!$map) return;
@@ -136,28 +116,37 @@ export default function Map(props) {
       setIsReady(true);
     }
 
-    if (window.$arcgis) {
+    function onDisconnect() {
+      setIsReady(false);
+    }
+
+    if (agLoaded) {
       $map.connect();
     }
+
     $map.on('connected', onConnect);
+    $map.on('disconnected', onDisconnect);
 
     return () => {
       if (!$map) return;
+      $map.disconnect();
       $map.off('connected', onConnect);
-      $map.destroy();
+      $map.off('disconnected', onDisconnect);
     };
-  }, [$map]);
+  }, [$map, agLoaded]);
 
   return (
     <MapContext.Provider
       value={{
-        id,
+        mapEl,
         $map,
       }}
     >
-      <div id={id} style={{ height: '600px' }}>
+      <div ref={mapEl} style={{ '--ag-map-height': '600px' }}>
         {isReady && children}
       </div>
     </MapContext.Provider>
   );
 }
+
+export default withArcgis(Map);

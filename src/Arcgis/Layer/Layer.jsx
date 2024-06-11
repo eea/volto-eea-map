@@ -1,22 +1,23 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useMemo } from 'react';
 import { EventEmitter } from 'events';
 
 import MapContext from '../Map/MapContext';
 
 import useClass from '@eeacms/volto-eea-map/hooks/useClass';
 
-let modules = {
-  loaded: false,
-};
+let modules = {};
 
 class $Layer extends EventEmitter {
   #isReady = false;
   #props = {};
+  #name = '';
   #layer = null;
+  #modulesLoaded = false;
 
   constructor(props) {
     super();
 
+    this.#name = props.name || 'FeatureLayer';
     this.#props = props;
   }
 
@@ -38,30 +39,33 @@ class $Layer extends EventEmitter {
   async loadModules() {
     const $arcgis = __CLIENT__ ? window.$arcgis : null;
     if (__SERVER__ || !$arcgis) return Promise.reject();
-    if (!modules.loaded) {
-      switch (this.#props.type) {
-        default:
-          modules.Layer = await $arcgis.import('esri/layers/FeatureLayer');
-          break;
-      }
-      modules.loaded = true;
+    if (!this.#modulesLoaded) {
+      const AgLayer = modules[`Ag${this.#name}`];
+      modules[`Ag${this.#name}`] =
+        AgLayer || (await $arcgis.import(`esri/layers/${this.#name}`));
+      this.#modulesLoaded = true;
     }
     return Promise.resolve();
   }
 
   async init() {
-    const { Layer, loaded } = modules;
-    if (!loaded) return;
-    if (!Layer) {
+    const $map = this.#props.$map;
+    const AgLayer = modules[`Ag${this.#name}`];
+    if (!this.#modulesLoaded || !$map.isReady) return;
+    if (!AgLayer) {
       throw new Error('$Layer modules not loaded');
     }
-    this.#layer = new Layer({
+
+    this.#layer = new AgLayer({
       ...(this.#props || {}),
     });
+
+    $map.map.add(this.#layer);
+
     this.#isReady = true;
   }
 
-  destroy() {
+  disconnect() {
     if (this.#layer) {
       this.#layer.destroy();
     }
@@ -74,23 +78,19 @@ class $Layer extends EventEmitter {
 // https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-Layer.html
 export default function Layer(props) {
   const { $map } = useContext(MapContext);
-  const $layer = useClass($Layer, props);
+  const context = useMemo(() => ({ ...props, $map }), [props, $map]);
+
+  const $layer = useClass($Layer, context);
 
   useEffect(() => {
     if (!$layer) return;
 
-    function onConnect() {
-      $map.emit('add-layer', $layer);
-    }
-
     $layer.connect();
-    $layer.on('connected', onConnect);
 
     return () => {
-      $layer.off('connected', onConnect);
-      $layer.destroy();
+      $layer.disconnect();
     };
-  }, [$map, $layer]);
+  }, [$layer]);
 
   return null;
 }
