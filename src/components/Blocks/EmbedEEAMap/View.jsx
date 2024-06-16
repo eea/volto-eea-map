@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { PrivacyProtection } from '@eeacms/volto-embed';
-import Webmap from '@eeacms/volto-eea-map/components/Webmap';
+import MapBuilder from '@eeacms/volto-eea-map/Arcgis/Map/MapBuilder';
 import ExtraViews from '@eeacms/volto-eea-map/components/ExtraViews';
 import { applyQueriesToMapLayers } from '@eeacms/volto-eea-map/utils';
 
@@ -19,10 +19,9 @@ const View = (props) => {
     height = '',
   } = data;
 
-  const map_visualization_data = useMemo(
-    () => getMapVisualizationData(props),
-    [props],
-  );
+  const map_visualization_data = useMemo(() => getMapVisualizationData(props), [
+    props,
+  ]);
 
   const [mapData, setMapData] = React.useState('');
 
@@ -54,7 +53,7 @@ const View = (props) => {
     >
       {!!mapData && (
         <>
-          <Webmap data={mapData} height={height} />
+          <MapBuilder data={mapData} height={height} />
           <ExtraViews
             data={{
               ...data,

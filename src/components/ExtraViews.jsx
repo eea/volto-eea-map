@@ -8,7 +8,6 @@ import {
   MoreInfo,
   Share,
 } from '@eeacms/volto-embed/Toolbar';
-import LegendView from '@eeacms/volto-eea-map/components/LegendView';
 
 import '@eeacms/volto-embed/Toolbar/styles.less';
 
@@ -18,8 +17,6 @@ const ExtraViews = ({ data, screen }) => {
   const {
     map_visualization_data = {},
     description,
-    show_legend,
-    show_viewer,
     show_note = true,
     show_sources = true,
     show_more_info = true,
@@ -42,9 +39,6 @@ const ExtraViews = ({ data, screen }) => {
 
   return (
     <>
-      {show_legend && map_visualization_data && (
-        <LegendView data={map_visualization_data} show_viewer={show_viewer} />
-      )}
       <div className={cx('visualization-toolbar', { mobile })} ref={toolbar}>
         <div className="left-col">
           {show_note && <FigureNote notes={figure_note || []} />}

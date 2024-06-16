@@ -7,7 +7,7 @@ import { SidebarPortal } from '@plone/volto/components';
 import { getContent } from '@plone/volto/actions';
 import { flattenToAppURL } from '@plone/volto/helpers';
 import BlockDataForm from '@plone/volto/components/manage/Form/BlockDataForm';
-import Webmap from '@eeacms/volto-eea-map/components/Webmap';
+import MapBuilder from '@eeacms/volto-eea-map/Arcgis/Map/MapBuilder';
 import ExtraViews from '@eeacms/volto-eea-map/components/ExtraViews';
 
 import { Schema } from './Schema';
@@ -111,7 +111,7 @@ const Edit = (props) => {
       )}
       {!!vis_url && mapData && (
         <div>
-          <Webmap data={mapData} height={height} isEdit={true} />
+          <MapBuilder data={mapData} height={height} isEdit={true} />
           <ExtraViews
             data={{
               ...data,

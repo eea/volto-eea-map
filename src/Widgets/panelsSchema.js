@@ -1,4 +1,4 @@
-import { base_layers } from '../../constants';
+import { base_layers } from '@eeacms/volto-eea-map/constants';
 
 const customBaselayers = [
   ['positron-composite', 'positron-composite'],

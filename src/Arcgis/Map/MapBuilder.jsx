@@ -1,11 +1,15 @@
-import React from 'react';
-import { withDeviceSize } from '../hocs';
-import Map from '../Arcgis/Map/Map';
-import Layer from '../Arcgis/Layer/Layer';
-import Widget from '../Arcgis/Widget/Widget';
+import React, { useMemo } from 'react';
+import Map from './Map';
+import Layer from '../Layer/Layer';
+import Widget from '../Widget/Widget';
 
-const Webmap = (props) => {
-  const { base, styles } = props?.data || {};
+import { getBasemap, getLayers } from '../helpers';
+
+export default function MapBuilder(props) {
+  const { data } = props || {};
+  const { styles } = data || {};
+  const basemap = useMemo(() => getBasemap(data), [data]);
+  const layers = useMemo(() => getLayers(data), [data]);
 
   const customFeatureLayerRenderer = {
     type: 'simple',
@@ -65,57 +69,66 @@ const Webmap = (props) => {
   //   opacity: 0.5,
   // });
 
+  // console.log(
+  //   lib.formatQuery(data.layers.map_layers[0].map_layer.query, 'sql'),
+  // );
+
+  console.log('HERE', layers);
+
   return (
-    <>
-      <Map
-        customFeatureLayerRenderer={customFeatureLayerRenderer}
-        MapProperties={{
-          basemap: base?.base_layer,
+    <Map
+      customFeatureLayerRenderer={customFeatureLayerRenderer}
+      MapProperties={{
+        basemap,
+      }}
+      ViewProperties={
+        {
+          // constraints: {
+          //   minZoom: 2,
+          // },
+        }
+      }
+    >
+      <Widget name="Home" order={1} />
+      <Widget name="Compass" order={2} />
+      <Widget
+        name="LayerList"
+        order={3}
+        position="top-right"
+        ExpandProperties={{
+          expandTooltip: 'Layers',
         }}
-        ViewProperties={{
-          constraints: {
-            minZoom: 2,
-          },
+        expand
+      />
+      <Widget
+        name="Print"
+        order={4}
+        position="top-right"
+        ExpandProperties={{
+          expandTooltip: 'Print',
         }}
-      >
-        <Widget name="Home" order={1} />
-        <Widget name="Compass" order={2} />
-        <Widget
-          name="LayerList"
-          order={3}
-          position="top-right"
-          ExpandProperties={{
-            expandTooltip: 'Layers',
-          }}
-          expand
-        />
-        <Widget
-          name="Print"
-          order={4}
-          position="top-right"
-          ExpandProperties={{
-            expandTooltip: 'Print',
-          }}
-          expand
-        />
-        <Widget name="Fullscreen" order={5} position="top-right" />
-        <Widget
-          name="Legend"
-          position="bottom-left"
-          respectLayerVisibility={false}
-          ExpandProperties={{
-            expandTooltip: 'Legend',
-          }}
-          expand
-        />
-        <Widget name="ScaleBar" position="bottom-right" />
-        <Layer url="https://water.discomap.eea.europa.eu/arcgis/rest/services/Marine/MPA_networks_in_EEA_marine_assessment_areas_2021/MapServer/0" />
-        <Layer url="https://bio.discomap.eea.europa.eu/arcgis/rest/services/ProtectedSites/CDDA_Dyna_WM/MapServer/0" />
-        {/* <Layer url="https://bio.discomap.eea.europa.eu/arcgis/rest/services/ProtectedSites/CDDA_Dyna_WM/MapServer/2" /> */}
-        {/* <Layer url="https://bio.discomap.eea.europa.eu/arcgis/rest/services/ProtectedSites/CDDA_Dyna_WM/MapServer/3" /> */}
-        {/* <Layer url="https://bio.discomap.eea.europa.eu/arcgis/rest/services/ProtectedSites/CDDA_Dyna_WM/MapServer/4" /> */}
-      </Map>
-    </>
+        expand
+      />
+      <Widget name="Fullscreen" order={5} position="top-right" />
+      <Widget
+        name="Legend"
+        position="bottom-left"
+        respectLayerVisibility={false}
+        ExpandProperties={{
+          expandTooltip: 'Legend',
+        }}
+        expand
+      />
+      <Widget name="ScaleBar" position="bottom-right" unit="dual" />
+      {layers.map((layer, index) => (
+        <Layer key={index} {...layer} />
+      ))}
+      {/* <Layer url="https://water.discomap.eea.europa.eu/arcgis/rest/services/Marine/MPA_networks_in_EEA_marine_assessment_areas_2021/MapServer/0" /> */}
+      {/* <Layer url="https://bio.discomap.eea.europa.eu/arcgis/rest/services/ProtectedSites/CDDA_Dyna_WM/MapServer/0" /> */}
+      {/* <Layer url="https://bio.discomap.eea.europa.eu/arcgis/rest/services/ProtectedSites/CDDA_Dyna_WM/MapServer/2" /> */}
+      {/* <Layer url="https://bio.discomap.eea.europa.eu/arcgis/rest/services/ProtectedSites/CDDA_Dyna_WM/MapServer/3" /> */}
+      {/* <Layer url="https://bio.discomap.eea.europa.eu/arcgis/rest/services/ProtectedSites/CDDA_Dyna_WM/MapServer/4" /> */}
+    </Map>
   );
 
   // const editMode = props && props.editMode ? props.editMode : false;
@@ -458,6 +471,6 @@ const Webmap = (props) => {
   //     <div ref={mapRef} className="esri-map"></div>
   //   </div>
   // );
-};
+}
 
-export default withDeviceSize(React.memo(Webmap));
+// export default withDeviceSize(React.memo(MapBuilder));

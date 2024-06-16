@@ -4,13 +4,62 @@ import { EventEmitter } from 'events';
 import useClass from '@eeacms/volto-eea-map/hooks/useClass';
 
 import MapContext from './MapContext';
-import withArcgis from '../../hocs/withArcgis';
+import withArcgis from '@eeacms/volto-eea-map/hocs/withArcgis';
 
 import '@eeacms/volto-eea-map/styles/map.less';
 
 let modules = {
   loaded: false,
 };
+
+function getBaseMap(props) {
+  const { basemap } = props;
+
+  if (!basemap.name && !basemap.url_template) return 'topo';
+
+  const { AgWebTileLayer, AgBasemap } = modules;
+
+  if (!AgWebTileLayer || !AgBasemap) {
+    throw new Error('$Map modules not loaded');
+  }
+
+  if (basemap.url_template) {
+    return new AgBasemap({
+      baseLayers: [
+        new AgWebTileLayer({
+          urlTemplate: basemap.url_template,
+        }),
+      ],
+    });
+  }
+
+  switch (basemap.name) {
+    case 'positron-composite':
+      return new AgBasemap({
+        baseLayers: [
+          new AgWebTileLayer({
+            urlTemplate:
+              'https://gisco-services.ec.europa.eu/maps/tiles/OSMPositronComposite/EPSG3857/{level}/{col}/{row}.png',
+          }),
+        ],
+        thumbnailUrl:
+          'https://gisco-services.ec.europa.eu/maps/tiles/OSMPositronComposite/EPSG3857/0/0/0.png',
+      });
+    case 'blossom-composite':
+      return new AgBasemap({
+        baseLayers: [
+          new AgWebTileLayer({
+            urlTemplate:
+              'https://gisco-services.ec.europa.eu/maps/tiles/OSMBlossomComposite/EPSG3857/{level}/{col}/{row}.png',
+          }),
+        ],
+        thumbnailUrl:
+          'https://gisco-services.ec.europa.eu/maps/tiles/OSMBlossomComposite/EPSG3857/0/0/0.png',
+      });
+    default:
+      return basemap.name;
+  }
+}
 
 class $Map extends EventEmitter {
   #isReady = false;
@@ -21,7 +70,7 @@ class $Map extends EventEmitter {
   constructor(props) {
     super();
 
-    this.#props = props;
+    this.updateProps(props);
   }
 
   get isReady() {
@@ -36,10 +85,13 @@ class $Map extends EventEmitter {
     return this.#view;
   }
 
+  updateProps(props) {
+    this.#props = props;
+  }
+
   connect() {
     this.loadModules().then(() => {
       this.init();
-      this.emit('connected');
     });
   }
 
@@ -48,6 +100,8 @@ class $Map extends EventEmitter {
     if (__SERVER__ || !$arcgis) return Promise.reject();
     if (!modules.loaded) {
       modules.AgMap = await $arcgis.import('esri/Map');
+      modules.AgWebTileLayer = await $arcgis.import('esri/layers/WebTileLayer');
+      modules.AgBasemap = await $arcgis.import('esri/Basemap');
       switch (this.#props.dimension) {
         case '3d':
           modules.AgView = await $arcgis.import('esri/views/SceneView');
@@ -69,8 +123,8 @@ class $Map extends EventEmitter {
     }
     const { mapEl, ViewProperties = {}, MapProperties = {} } = this.#props;
     this.#map = new AgMap({
-      basemap: 'topo',
       ...MapProperties,
+      basemap: getBaseMap(MapProperties),
     });
     this.#view = new AgView({
       container: mapEl.current,
@@ -78,6 +132,7 @@ class $Map extends EventEmitter {
       ...ViewProperties,
     });
     this.#isReady = true;
+    this.emit('connected');
   }
 
   disconnect() {
@@ -92,9 +147,8 @@ class $Map extends EventEmitter {
 }
 
 /**
- * Renders a map component with the specified ID and dimensions.
+ * Renders a map component with the specified dimensions.
  * @param {object} props - The component props.
- * @param {string} props.id - The unique identifier for the map component.
  * @param {object} props.dimension - The dimensions of the map component.
  * @param {object} props.MapProperties - The properties of the map. See https://developers.arcgis.com/javascript/latest/api-reference/esri-Map.html
  * @param {object} props.ViewProperties - The properties of the view. See https://developers.arcgis.com/javascript/latest/api-reference/esri-views-View.html
@@ -111,6 +165,8 @@ function Map(props) {
 
   useEffect(() => {
     if (!$map) return;
+
+    $map.updateProps(context);
 
     function onConnect() {
       setIsReady(true);
@@ -133,7 +189,7 @@ function Map(props) {
       $map.off('connected', onConnect);
       $map.off('disconnected', onDisconnect);
     };
-  }, [$map, agLoaded]);
+  }, [$map, agLoaded, context]);
 
   return (
     <MapContext.Provider

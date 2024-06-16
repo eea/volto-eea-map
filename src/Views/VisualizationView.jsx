@@ -1,9 +1,9 @@
 import React from 'react';
 import { hasBlocksData } from '@plone/volto/helpers';
 import RenderBlocks from '@plone/volto/components/theme/View/RenderBlocks';
-import { pickMetadata } from '@eeacms/volto-embed/helpers';
-import Webmap from '../Webmap';
-import ExtraViews from '../ExtraViews';
+// import { pickMetadata } from '@eeacms/volto-embed/helpers';
+import MapBuilder from '@eeacms/volto-eea-map/Arcgis/Map/MapBuilder';
+import ExtraViews from '../components/ExtraViews';
 
 const VisualizationView = (props) => {
   const content = props && props.content ? props.content : {};
@@ -19,7 +19,7 @@ const VisualizationView = (props) => {
         <RenderBlocks {...props} />
       ) : (
         <>
-          <Webmap data={map_visualization_data} />
+          <MapBuilder data={map_visualization_data} />
           {/* <ExtraViews
             data={{
               show_viewer: true,

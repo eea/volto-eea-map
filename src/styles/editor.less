@@ -1,0 +1,344 @@
+.arcgis-map {
+  &__editor {
+    --color-background-light: #f3f6fa;
+    --color-background-top: #fff;
+    --color-border-default: #c8d4e3;
+    --color-border-light: #dfe8f3;
+    --color-text-active: #2a3f5f;
+    --color-accent: #119dff;
+    --color-accent-shade: #0d76bf;
+    --color-accent-shade-mid: #0d76bf;
+    --color-button-primary-base-fill: var(--color-accent);
+    --color-button-primary-base-border: var(--color-accent-shade);
+    --color-button-primary-hover-fill: var(--color-accent-shade-mid);
+    --color-button-primary-hover-border: var(--color-accent-shade);
+    --color-button-primary-base-text: #fff;
+    --color-button-primary-hover-text: #fff;
+    --text-shadow-dark-color: rgba(42, 63, 95, 0.7);
+    --border-default: 1px solid var(--color-border-default);
+    --border-light: 1px solid var(--color-border-light);
+    --border-radius: 5px;
+    --spacing-half-unit: 12px;
+    --spacing-quarter-unit: 6px;
+    --sidebar-background: #fff;
+    --sidebar-group-background-base: var(--sidebar-background);
+    --sidebar-item-background-base: var(--color-background-light);
+    --sidebar-width: 100px;
+    --panel-width: 335px;
+    --panel-background: #ebf0f8;
+    --editor-width: calc(var(--sidebar-width) + var(--panel-width) + 1px);
+    --font-weight-normal: 400;
+    --font-weight-semibold: 600;
+    --font-size-small: 12px;
+    --font-size-base: 13px;
+    --font-size-medium: 14px;
+    --color-text-base: #506784;
+    --text-shadow-dark-ui: 0 1px 2px var(--text-shadow-dark-color);
+    --text-shadow-dark-ui-inactive: 0 1px 1px rgba(42, 63, 95, 0.4);
+    --box-shadow-base-color: rgba(80, 103, 132, 0.2);
+    --box-shadow-base: 0px 2px 9px var(--box-shadow-base-color);
+    --fold-header-background-base: #506784;
+    --fold-header-border-color-base: #506784;
+    --fold-header-text-color-closed: #fff;
+    --fold-header-text-color-base: #fff;
+    --fold-header-border-color-closed: #2a3f5f;
+    --fold-header-background-closed: #2a3f5f;
+
+    display: flex;
+    flex-grow: 1;
+    height: 100%;
+    max-height: 100%;
+    width: 100%;
+
+    button {
+      display: inline-flex;
+      align-items: center;
+      column-gap: 0.25rem;
+      padding: var(--spacing-quarter-unit) var(--spacing-half-unit);
+      line-height: 1;
+      letter-spacing: 0.5px;
+      text-transform: capitalize;
+      text-align: center;
+      cursor: pointer;
+      height: 36px;
+      outline: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      font-size: var(--font-size-medium);
+      font-weight: var(--font-weight-semibold);
+      border-width: 1px;
+      border-style: solid;
+      border-color: transparent;
+      border-radius: var(--border-radius);
+      transition: all 0.15s ease-in-out;
+
+      &.btn-primary {
+        background-color: var(--color-button-primary-base-fill);
+        border-color: var(--color-button-primary-base-border);
+        color: var(--color-button-primary-base-text);
+        text-shadow: var(--text-shadow-dark-ui);
+
+        &:hover {
+          background-color: var(--color-button-primary-hover-fill);
+          border: 1px solid var(--color-button-primary-hover-border);
+          color: var(--color-button-primary-hover-text);
+        }
+      }
+    }
+  }
+
+  &__view {
+    .esri-view {
+      --ag-map-height: 100% !important;
+    }
+  }
+
+  &__controls {
+    position: relative;
+    width: var(--editor-width);
+    margin-right: 1rem;
+    flex-shrink: 0;
+    overflow: hidden;
+    display: flex;
+  }
+
+  &__view {
+    position: sticky;
+    top: 10px;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__sidebar {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    height: 100%;
+    min-width: var(--sidebar-width);
+    width: var(--sidebar-width);
+    max-width: var(--sidebar-width);
+    text-align: center;
+    background: var(--sidebar-background);
+    overflow-y: auto;
+    overflow-x: hidden;
+    float: left;
+    border-right: var(--border-default);
+    flex-grow: 1;
+    -webkit-overflow-scrolling: touch;
+
+    .sidebar-group {
+      &--title {
+        background-color: var(--sidebar-group-background-base);
+        cursor: pointer;
+        width: 100%;
+
+        color: var(--color-text-base);
+        font-size: var(--font-size-medium);
+        font-weight: var(--font-weight-normal);
+        padding: var(--spacing-half-unit) 0;
+        text-transform: capitalize;
+        text-align: left;
+        border-bottom: var(--border-light);
+        display: flex;
+        position: relative;
+        align-items: center;
+
+        &__icon {
+          height: 20px;
+
+          svg {
+            rotate: 90deg;
+          }
+        }
+      }
+
+      &--item {
+        color: var(--color-text-base);
+        cursor: pointer;
+        font-size: var(--font-size-medium);
+        font-weight: var(--font-weight-normal);
+        line-height: var(--font-size-medium);
+        text-transform: capitalize;
+        background-color: var(--sidebar-item-background-base);
+        padding: 10px;
+        padding-left: 18px;
+        padding-right: var(--spacing-quarter-unit);
+        text-align: left;
+        border-bottom: var(--border-light);
+        position: relative;
+        overflow: hidden;
+
+        &::before {
+          content: '';
+          position: absolute;
+          height: 100%;
+          top: 0;
+          left: 0;
+          width: 5px;
+          background-color: var(--color-accent);
+          transform: scaleX(0);
+          transform-origin: left center;
+          will-change: transform;
+          transition: all 0.15s ease-in-out;
+        }
+
+        &__is-active {
+          color: var(--color-text-active);
+          font-weight: var(--font-weight-semibold);
+          cursor: default;
+
+          &::before {
+            transform: none;
+          }
+        }
+      }
+
+      &--expanded {
+        .sidebar-group--title {
+          position: relative;
+          z-index: 4;
+          box-shadow: var(--box-shadow-base);
+
+          &__icon svg {
+            rotate: 180deg;
+          }
+        }
+      }
+
+      &--is-active {
+        .sidebar-group--title {
+          font-weight: var(--font-weight-semibold);
+          color: var(--color-text-active);
+          &__icon svg {
+            fill: var(--color-accent) !important;
+          }
+        }
+      }
+    }
+  }
+
+  &__panel {
+    flex-grow: 1;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: var(--spacing-half-unit);
+    box-sizing: border-box;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: var(--panel-width);
+    -webkit-overflow-scrolling: touch;
+    background-color: var(--panel-background);
+    border-right: var(--border-default);
+
+    .panel {
+      &--header {
+        margin-bottom: var(--spacing-half-unit);
+        display: flex;
+        flex-shrink: 0;
+      }
+    }
+
+    .fold {
+      margin-bottom: var(--spacing-half-unit);
+      width: 100%;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+
+      &.foldable {
+        cursor: pointer;
+      }
+
+      &--top {
+        display: flex;
+        justify-content: space-between;
+        clear: both;
+        padding: var(--spacing-quarter-unit) var(--spacing-half-unit);
+        color: var(--fold-header-text-color-closed);
+        font-size: var(--font-size-base);
+        border: 1px solid var(--fold-header-border-color-closed);
+        background-color: var(--fold-header-background-closed);
+        height: auto;
+        border-radius: var(--border-radius);
+        text-shadow: var(--text-shadow-dark-ui);
+        transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out,
+          border 0.1s ease-in-out;
+
+        &__content {
+          display: flex;
+          flex-grow: 1;
+        }
+
+        &__fold {
+          rotate: 90deg;
+        }
+
+        &__title {
+          margin-left: calc(var(--spacing-half-unit) / 3);
+          font-size: var(--font-size-medium);
+          line-height: var(--font-size-medium);
+          font-weight: var(--font-weight-semibold);
+          transform: translateY(1px);
+          white-space: nowrap;
+          max-width: 230px;
+          letter-spacing: 0.2px;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+      }
+
+      &--content {
+        background: var(--color-background-top);
+        border: var(--border-default);
+        border-width: 0 1px 1px 1px;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+        padding: 0.5rem;
+      }
+
+      &__open {
+        .fold--top {
+          color: var(--fold-header-text-color-base);
+          background-color: var(--fold-header-background-base);
+          border: 1px solid var(--fold-header-border-color-base);
+          border-radius: var(--border-radius) var(--border-radius) 0 0;
+          text-shadow: var(--text-shadow-dark-ui-inactive);
+        }
+
+        .fold--top__fold {
+          rotate: 180deg;
+        }
+      }
+    }
+  }
+}
+
+.arcgis-map__editor {
+  .inline.field {
+    font-size: var(--font-size-small);
+  }
+
+  .inline.field .wrapper {
+    min-height: unset;
+    margin-top: 0 !important;
+  }
+
+  .inline.field.textarea textarea {
+    margin-top: 0 !important;
+  }
+
+  .react-select__control {
+    min-height: unset;
+    line-height: 1;
+  }
+
+  .inline.field.textarea textarea {
+    max-width: 100%;
+    padding: 4px;
+  }
+}

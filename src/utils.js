@@ -2,7 +2,7 @@
 import React from 'react';
 import { getBaseUrl } from '@plone/volto/helpers';
 
-const setLegendColumns = (legendsNo, device) => {
+export function setLegendColumns(legendsNo, device) {
   switch (device) {
     case 'widescreen':
       return legendsNo ? legendsNo : 1;
@@ -17,9 +17,9 @@ const setLegendColumns = (legendsNo, device) => {
     default:
       return 1;
   }
-};
+}
 
-const fetchArcGISData = async (url) => {
+export async function fetchArcGISData(url) {
   const res = await fetch(`${getBaseUrl('')}/cors-proxy/${url}?f=json`);
   if (res.status !== 200) {
     const error = await res.json();
@@ -30,13 +30,13 @@ const fetchArcGISData = async (url) => {
     throw { message: data.error.message.message, status: data.status };
   }
   return data;
-};
+}
 
-const applyQueriesToMapLayers = (
+export function applyQueriesToMapLayers(
   map_visualization,
   block_data_query_params,
   enable_queries,
-) => {
+) {
   //break reference to the original map_visualization object
   //so i safely manipulate data
   var altMapData = map_visualization
@@ -89,9 +89,9 @@ const applyQueriesToMapLayers = (
     });
   }
   return altMapData;
-};
+}
 
-const updateBlockQueryFromPageQuery = (data_query, data_query_params) => {
+export function updateBlockQueryFromPageQuery(data_query, data_query_params) {
   var pageDataQuery = JSON.parse(JSON.stringify(data_query));
   var blockDataQuery = data_query_params
     ? JSON.parse(JSON.stringify(data_query_params))
@@ -118,9 +118,9 @@ const updateBlockQueryFromPageQuery = (data_query, data_query_params) => {
     return parameter;
   });
   return newDataQuery;
-};
+}
 
-const useCopyToClipboard = (text) => {
+export function useCopyToClipboard(text) {
   const [copyStatus, setCopyStatus] = React.useState('inactive');
   const copy = React.useCallback(() => {
     navigator.clipboard.writeText(text).then(
@@ -140,12 +140,4 @@ const useCopyToClipboard = (text) => {
   }, [copyStatus]);
 
   return [copyStatus, copy];
-};
-
-export {
-  setLegendColumns,
-  fetchArcGISData,
-  applyQueriesToMapLayers,
-  updateBlockQueryFromPageQuery,
-  useCopyToClipboard,
-};
+}

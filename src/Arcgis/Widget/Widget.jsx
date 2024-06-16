@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo } from 'react';
+import { useContext, useEffect, useMemo, memo } from 'react';
 import { EventEmitter } from 'events';
 
 import MapContext from '../Map/MapContext';
@@ -18,13 +18,12 @@ class $Widget extends EventEmitter {
   #widget = null;
   #expand = null;
   #modulesLoaded = false;
+  #clock = null;
 
   constructor(props) {
     super();
 
-    this.#props = props;
-    this.#name = props.name;
-    this.#order = props.order || 1;
+    this.updateProps(props);
 
     if (this.order <= 1) {
       this.#initiate = true;
@@ -51,22 +50,29 @@ class $Widget extends EventEmitter {
     return this.#order;
   }
 
+  updateProps(props) {
+    this.#props = props;
+    this.#name = props.name;
+    this.#order = props.order || 1;
+  }
+
   connect() {
+    clearInterval(this.#clock);
     this.loadModules().then(() => {
       if (this.#order <= 1) {
         this.init();
         return;
       }
       let time = 0;
-      const clock = setInterval(() => {
-        if (time >= TIMEOUT) {
-          clearInterval(clock);
+      this.#clock = setInterval(() => {
+        if (time >= TIMEOUT || this.#isReady) {
+          clearInterval(this.#clock);
           return;
         }
         time += 50;
         if (!this.#initiate) return;
+        clearInterval(this.#clock);
         this.init();
-        clearInterval(clock);
       }, 50);
     });
   }
@@ -84,7 +90,7 @@ class $Widget extends EventEmitter {
     return Promise.resolve();
   }
 
-  async init() {
+  init() {
     const {
       $map,
       expand,
@@ -123,6 +129,7 @@ class $Widget extends EventEmitter {
   }
 
   disconnect() {
+    if (!this.#isReady) return;
     if (this.#widget) {
       this.#widget.destroy();
     }
@@ -146,14 +153,18 @@ function Widget(props) {
   useEffect(() => {
     if (!$widget) return;
 
-    $widget.connect();
+    $widget.updateProps(context);
+
+    if ($map.isReady) {
+      $widget.connect();
+    }
 
     return () => {
       $widget.disconnect();
     };
-  }, [$map, $widget]);
+  }, [$map, $widget, context]);
 
   return null;
 }
 
-export default Widget;
+export default memo(Widget);

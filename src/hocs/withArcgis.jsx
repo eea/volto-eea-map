@@ -12,6 +12,9 @@ export default function withArcgis(WrappedComponent) {
     };
 
     useEffect(() => {
+      if (window.$arcgis) {
+        setAgLoaded(true);
+      }
       loadArcgis();
       window.addEventListener('message', interceptArcgis);
       return () => {
