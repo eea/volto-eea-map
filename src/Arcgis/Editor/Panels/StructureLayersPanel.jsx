@@ -33,12 +33,8 @@ function getSublayers(subLayerIds, data) {
 }
 
 function Layer({ layer, layers, index, value, onChangeValue }) {
-  const {
-    servicesData,
-    layersData,
-    setServicesData,
-    setLayersData,
-  } = useContext(EditorContext);
+  const { servicesData, layersData, setServicesData, setLayersData } =
+    useContext(EditorContext);
 
   const [query, setQuery] = useState(layer.definitionExpression);
   const [uid] = useState(uuid());
