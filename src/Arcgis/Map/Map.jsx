@@ -66,11 +66,12 @@ class $Map extends EventEmitter {
   #props = {};
   #map = null;
   #view = null;
+  reactiveUtils = null;
 
   constructor(props) {
     super();
 
-    this.updateProps(props);
+    this.#props = props;
   }
 
   get isReady() {
@@ -85,14 +86,9 @@ class $Map extends EventEmitter {
     return this.#view;
   }
 
-  updateProps(props) {
+  set props(props) {
     this.#props = props;
-  }
-
-  connect() {
-    this.loadModules().then(() => {
-      this.init();
-    });
+    this.update();
   }
 
   async loadModules() {
@@ -102,6 +98,7 @@ class $Map extends EventEmitter {
       modules.AgMap = await $arcgis.import('esri/Map');
       modules.AgWebTileLayer = await $arcgis.import('esri/layers/WebTileLayer');
       modules.AgBasemap = await $arcgis.import('esri/Basemap');
+      modules.agReactiveUtils = await $arcgis.import('esri/core/reactiveUtils');
       switch (this.#props.dimension) {
         case '3d':
           modules.AgView = await $arcgis.import('esri/views/SceneView');
@@ -116,7 +113,7 @@ class $Map extends EventEmitter {
   }
 
   init() {
-    const { AgView, AgMap, loaded } = modules;
+    const { AgView, AgMap, agReactiveUtils, loaded } = modules;
     if (!loaded) return;
     if (!AgView || !AgMap) {
       throw new Error('$Map modules not loaded');
@@ -132,7 +129,42 @@ class $Map extends EventEmitter {
       ...ViewProperties,
     });
     this.#isReady = true;
+    this.reactiveUtils = agReactiveUtils;
     this.emit('connected');
+  }
+
+  update() {
+    if (!this.isReady) return;
+
+    const { ViewProperties = {}, MapProperties = {} } = this.#props;
+
+    if (
+      this.#view.constraints.rotationEnabled &&
+      !ViewProperties.constraints.rotationEnabled
+    ) {
+      this.#view.rotation = 0;
+    }
+
+    Object.keys(ViewProperties).forEach((key) => {
+      this.#view[key] = ViewProperties[key];
+    });
+
+    Object.keys(MapProperties).forEach((key) => {
+      switch (key) {
+        case 'basemap':
+          this.#map[key] = getBaseMap(MapProperties);
+          break;
+        default:
+          this.#map[key] = MapProperties[key];
+          break;
+      }
+    });
+  }
+
+  connect() {
+    this.loadModules().then(() => {
+      this.init();
+    });
   }
 
   disconnect() {
@@ -159,14 +191,18 @@ function Map(props) {
   const [isReady, setIsReady] = useState(false);
   const { children, agLoaded } = props;
 
-  const context = useMemo(() => ({ ...props, mapEl }), [props, mapEl]);
+  const context = useMemo(
+    () => ({
+      ...props,
+      mapEl,
+    }),
+    [props, mapEl],
+  );
 
   const $map = useClass($Map, context);
 
   useEffect(() => {
     if (!$map) return;
-
-    $map.updateProps(context);
 
     function onConnect() {
       setIsReady(true);
@@ -177,6 +213,7 @@ function Map(props) {
     }
 
     if (agLoaded) {
+      console.log('HERE CONNECTING MAP');
       $map.connect();
     }
 
@@ -185,11 +222,17 @@ function Map(props) {
 
     return () => {
       if (!$map) return;
+      console.log('HERE DISCONNECTING MAP');
       $map.disconnect();
       $map.off('connected', onConnect);
       $map.off('disconnected', onDisconnect);
     };
-  }, [$map, agLoaded, context]);
+  }, [$map, agLoaded]);
+
+  useEffect(() => {
+    if (!$map.isReady) return;
+    $map.props = context;
+  }, [$map, context]);
 
   return (
     <MapContext.Provider

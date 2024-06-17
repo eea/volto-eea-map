@@ -1,13 +1,13 @@
 import { useContext, useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import { isNil } from 'lodash';
+import { QueryBuilder } from 'react-querybuilder';
 import { Icon, SelectWidget, TextareaWidget } from '@plone/volto/components';
-import Panel from './Panel';
-
 import addSVG from '@plone/volto/icons/add.svg';
 import { debounce, getLayers } from '@eeacms/volto-eea-map/Arcgis/helpers';
 import EditorContext from '@eeacms/volto-eea-map/Arcgis/Editor/EditorContext';
 import SliderWidget from '@eeacms/volto-eea-map/Arcgis/Editor/Widgets/SliderWidget';
+import Panel from './Panel';
 import Fold from '../Fold/Fold';
 
 function getLayersChoices(layers = []) {
@@ -32,13 +32,18 @@ function getSublayers(subLayerIds, data) {
   }, []);
 }
 
-function Layer({ layer, layers, value, onChangeValue }) {
-  const { servicesData, setServicesData } = useContext(EditorContext);
+function Layer({ layer, layers, index, value, onChangeValue }) {
+  const {
+    servicesData,
+    layersData,
+    setServicesData,
+    setLayersData,
+  } = useContext(EditorContext);
 
-  const [url, setUrl] = useState(layer.url);
-  const [opacity, setOpacity] = useState(layer.opacity ?? 1);
+  const [query, setQuery] = useState(layer.definitionExpression);
   const [uid] = useState(uuid());
   const data = servicesData[layer.url];
+  const layerData = layersData[`${layer.url}/${layer.id}`];
   const error = data?.error?.message;
 
   const normalizedValue =
@@ -81,29 +86,41 @@ function Layer({ layer, layers, value, onChangeValue }) {
     );
   }, [uid, layer, servicesData, setServicesData]);
 
+  useEffect(() => {
+    if (isNil(layer.id) || layerData) return;
+    debounce(
+      () => {
+        fetch(`${layer.url}/${layer.id}?f=pjson`).then(async (response) => {
+          try {
+            const result = await response.json();
+            setLayersData((layersData) => ({
+              ...layersData,
+              [`${layer.url}/${layer.id}`]: result,
+            }));
+          } catch {}
+        });
+      },
+      300,
+      `fetch:layer:${uid}`,
+    );
+  }, [uid, layer, layerData, setLayersData]);
+
   return (
     <>
       <TextareaWidget
         title="Service URL"
         id="url"
-        value={url}
+        value={layer.url}
         onChange={(_, newUrl) => {
-          setUrl(newUrl);
-          debounce(
-            () => {
-              onChangeValue({
-                ...value,
-                layers: layers.map(($layer) => {
-                  if ($layer.id === layer.id) {
-                    return { url: newUrl };
-                  }
-                  return $layer;
-                }),
-              });
-            },
-            600,
-            `update:url:${uid}`,
-          );
+          onChangeValue({
+            ...value,
+            layers: layers.map(($layer, i) => {
+              if (i === index) {
+                return { url: newUrl };
+              }
+              return $layer;
+            }),
+          });
         }}
       />
 
@@ -131,8 +148,8 @@ function Layer({ layer, layers, value, onChangeValue }) {
               data?.layers.find((layer) => layer.id === newId) || {};
             onChangeValue({
               ...value,
-              layers: layers.map(($layer) => {
-                if ($layer.id === layer.id) {
+              layers: layers.map(($layer, i) => {
+                if (i === index) {
                   return {
                     ...$layer,
                     ...(newLayer || {}),
@@ -147,7 +164,40 @@ function Layer({ layer, layers, value, onChangeValue }) {
         />
       )}
 
-      {!error && !isNil(layer.id) && (
+      {/* {!error && !isNil(layer.id) && layerData?.id === layer.id && (
+        <>
+          <QueryBuilder
+            fields={layerData.fields.map((field) => {
+              return { name: field.name, label: field.name };
+            })}
+            query={query}
+            onQueryChange={(query) => {
+              setQuery(query);
+              debounce(
+                () => {
+                  onChangeValue({
+                    ...value,
+                    layers: layers.map(($layer) => {
+                      if ($layer.id === layer.id) {
+                        return {
+                          ...$layer,
+                          definitionExpression: query,
+                        };
+                      }
+                      return $layer;
+                    }),
+                  });
+                },
+                600,
+                `update:query:${uid}`,
+              );
+            }}
+            enableDragAndDrop={false}
+          />
+        </>
+      )} */}
+
+      {/* {!error && !isNil(layer.id) && (
         <SliderWidget
           title="Opacity"
           id="opacity"
@@ -174,13 +224,13 @@ function Layer({ layer, layers, value, onChangeValue }) {
             );
           }}
         />
-      )}
+      )} */}
     </>
   );
 }
 
 export default function StructureLayersPanel({ value, onChangeValue }) {
-  const layers = getLayers(value);
+  const layers = getLayers(value, false);
 
   return (
     <Panel
@@ -224,6 +274,7 @@ export default function StructureLayersPanel({ value, onChangeValue }) {
               <Layer
                 layer={layer}
                 layers={layers}
+                index={index}
                 value={value}
                 onChangeValue={onChangeValue}
               />

@@ -46,11 +46,14 @@ export default function Editor({ value, onChangeValue }) {
     panel: panels.structure[0],
   });
   const [servicesData, setServicesData] = useState({});
+  const [layersData, setLayersData] = useState({});
 
   const Panel = useMemo(() => active.panel.Panel, [active]);
 
   return (
-    <EditorContext.Provider value={{ servicesData, setServicesData }}>
+    <EditorContext.Provider
+      value={{ servicesData, layersData, setServicesData, setLayersData }}
+    >
       <div className="arcgis-map__editor">
         <div className="arcgis-map__controls">
           <div className="arcgis-map__sidebar">

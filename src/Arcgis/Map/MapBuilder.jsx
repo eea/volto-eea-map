@@ -9,7 +9,10 @@ export default function MapBuilder(props) {
   const { data } = props || {};
   const { styles } = data || {};
   const basemap = useMemo(() => getBasemap(data), [data]);
-  const layers = useMemo(() => getLayers(data), [data]);
+  const layers = useMemo(() => [getLayers(data)[0]], [data]);
+  const settings = data?.settings || {};
+
+  const rotationEnabled = settings.view?.constraints?.rotationEnabled ?? false;
 
   const customFeatureLayerRenderer = {
     type: 'simple',
@@ -73,23 +76,21 @@ export default function MapBuilder(props) {
   //   lib.formatQuery(data.layers.map_layers[0].map_layer.query, 'sql'),
   // );
 
-  console.log('HERE', layers);
-
   return (
     <Map
-      customFeatureLayerRenderer={customFeatureLayerRenderer}
+      // customFeatureLayerRenderer={customFeatureLayerRenderer}
       MapProperties={{
         basemap,
       }}
-      ViewProperties={
-        {
-          // constraints: {
-          //   minZoom: 2,
-          // },
-        }
-      }
+      ViewProperties={{
+        ...(settings.view || {}),
+        constraints: {
+          ...(settings.view?.constraints || {}),
+          rotationEnabled,
+        },
+      }}
     >
-      <Widget name="Home" order={1} />
+      {/* <Widget name="Home" order={1} />
       <Widget name="Compass" order={2} />
       <Widget
         name="LayerList"
@@ -119,10 +120,11 @@ export default function MapBuilder(props) {
         }}
         expand
       />
-      <Widget name="ScaleBar" position="bottom-right" unit="dual" />
+      <Widget name="ScaleBar" position="bottom-right" unit="dual" /> */}
       {layers.map((layer, index) => (
         <Layer key={index} {...layer} />
       ))}
+      {/* https://water.discomap.eea.europa.eu/arcgis/rest/services/Marine/MPA_networks_in_EEA_marine_assessment_areas_2021/MapServer */}
       {/* <Layer url="https://water.discomap.eea.europa.eu/arcgis/rest/services/Marine/MPA_networks_in_EEA_marine_assessment_areas_2021/MapServer/0" /> */}
       {/* <Layer url="https://bio.discomap.eea.europa.eu/arcgis/rest/services/ProtectedSites/CDDA_Dyna_WM/MapServer/0" /> */}
       {/* <Layer url="https://bio.discomap.eea.europa.eu/arcgis/rest/services/ProtectedSites/CDDA_Dyna_WM/MapServer/2" /> */}

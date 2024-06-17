@@ -1,23 +1,25 @@
-import { useState } from 'react';
 import NumberWidget from '@plone/volto/components/manage/Widgets/NumberWidget';
 import CheckboxWidget from '@plone/volto/components/manage/Widgets/CheckboxWidget';
 import Panel from './Panel';
 import Fold from '../Fold/Fold';
 
 export default function SettingsGeneralPanel({ value, onChangeValue }) {
-  const [state, setState] = useState({});
+  const constraints = value.settings?.view?.constraints || {};
 
   function onChange(id, newValue) {
     onChangeValue({
       ...value,
       settings: {
-        ...(value.settings || {}),
-        [id]: newValue,
+        view: {
+          ...(value.settings?.view || {}),
+          constraints: {
+            ...(value.settings?.view?.constraints || {}),
+            [id]: newValue,
+          },
+        },
       },
     });
   }
-
-  console.log(value);
 
   return (
     <Panel
@@ -38,30 +40,35 @@ export default function SettingsGeneralPanel({ value, onChangeValue }) {
             <NumberWidget
               title="Min scale"
               id="minScale"
+              value={constraints.minScale}
               minimum={0}
               onChange={onChange}
             />
             <NumberWidget
               title="Max scale"
               id="maxScale"
+              value={constraints.maxScale}
               minimum={0}
               onChange={onChange}
             />
             <NumberWidget
-              title="Min scale"
-              id="minScale"
+              title="Min zoom"
+              id="minZoom"
+              value={constraints.minZoom}
               minimum={0}
               onChange={onChange}
             />
             <NumberWidget
-              title="Max scale"
-              id="maxScale"
+              title="Max zoom"
+              id="maxZoom"
+              value={constraints.maxZoom}
               minimum={0}
               onChange={onChange}
             />
             <CheckboxWidget
               title="Rotation enabled"
               id="rotationEnabled"
+              value={constraints.rotationEnabled}
               onChange={onChange}
             />
           </Fold>

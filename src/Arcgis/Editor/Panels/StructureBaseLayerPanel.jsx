@@ -11,7 +11,7 @@ export default function StructureBaseLayerPanel({ value, onChangeValue }) {
   return (
     <Panel
       content={
-        <Fold title="Defaults" foldable>
+        <Fold title="Base layer" foldable>
           <SelectWidget
             title="Basemap"
             id="basemap"

@@ -24,7 +24,7 @@
     --sidebar-group-background-base: var(--sidebar-background);
     --sidebar-item-background-base: var(--color-background-light);
     --sidebar-width: 100px;
-    --panel-width: 335px;
+    --panel-width: 450px;
     --panel-background: #ebf0f8;
     --editor-width: calc(var(--sidebar-width) + var(--panel-width) + 1px);
     --font-weight-normal: 400;
@@ -322,6 +322,25 @@
 }
 
 .arcgis-map__editor {
+  .queryBuilder {
+    font-size: var(--font-size-small);
+
+    button {
+      font-size: var(--font-size-small);
+      height: auto !important;
+    }
+
+    select.rule-fields,
+    input.rule-value {
+      max-width: 100px;
+    }
+
+    // input,
+    // select {
+    //   max-width: 100px;
+    // }
+  }
+
   .inline.field {
     font-size: var(--font-size-small);
   }

@@ -20,10 +20,10 @@ class $Layer extends EventEmitter {
   #layer = null;
   #modulesLoaded = false;
 
-  constructor(props) {
+  constructor(props = {}) {
     super();
 
-    this.updateProps(props);
+    this.#props = props;
   }
 
   get isReady() {
@@ -34,8 +34,9 @@ class $Layer extends EventEmitter {
     return this.#layer;
   }
 
-  updateProps(props) {
+  set props(props = {}) {
     this.#props = props;
+    this.update();
   }
 
   getUrl(id) {
@@ -89,6 +90,7 @@ class $Layer extends EventEmitter {
       'type',
       'url',
       'id',
+      'geometryType',
       'opacity',
     ]);
 
@@ -98,8 +100,6 @@ class $Layer extends EventEmitter {
     }
 
     layerProps.opacity = parseInt(layerProps.opacity ?? 1);
-
-    console.log(layerProps);
 
     const layer = new AgLayer(
       withSublayers.includes(type)
@@ -139,6 +139,36 @@ class $Layer extends EventEmitter {
     this.emit('connected');
   }
 
+  update() {
+    const { $map, url, id } = this.#props;
+    if (!this.isReady || !$map.isReady) return;
+
+    console.log('HERE', this.#layer.url !== url || this.#layer.layerId !== id);
+
+    if (this.#layer.url !== url || this.#layer.layerId !== id) {
+      this.disconnect();
+      this.connect();
+      return;
+    }
+
+    Object.keys(
+      omitBy(this.#props || {}, ['$map', 'type', 'url', 'id']),
+    ).forEach((key) => {
+      switch (key) {
+        case 'geometryType':
+          this.#layer.geometryType =
+            geometryMapping[this.#props[key]] || this.#props[key];
+          break;
+        case 'opacity':
+          this.#layer.opacity = parseInt(this.#props[key]);
+          break;
+        default:
+          this.#layer[key] = this.#props[key];
+          break;
+      }
+    });
+  }
+
   connect() {
     this.loadModules().then(() => {
       this.init();
@@ -167,15 +197,27 @@ function Layer(props) {
   useEffect(() => {
     if (!$layer) return;
 
-    $layer.props = context;
-
     if ($map.isReady) {
+      console.log('CONNECTING LAYER');
       $layer.connect();
     }
 
     return () => {
+      console.log('DISCONNECTING LAYER');
       $layer.disconnect();
     };
+  }, [$map, $layer]);
+
+  useEffect(() => {
+    console.log('HERE UPDATE', $layer.layer);
+    if (!$map.isReady) return;
+    if (!$layer.isReady) {
+      $layer.props = context;
+      $layer.disconnect();
+      $layer.connect();
+      return;
+    }
+    $layer.props = context;
   }, [$map, $layer, context]);
 
   return null;

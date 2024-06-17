@@ -23,7 +23,9 @@ class $Widget extends EventEmitter {
   constructor(props) {
     super();
 
-    this.updateProps(props);
+    this.#props = props;
+    this.#name = props.name;
+    this.#order = props.order || 1;
 
     if (this.order <= 1) {
       this.#initiate = true;
@@ -48,33 +50,6 @@ class $Widget extends EventEmitter {
 
   get order() {
     return this.#order;
-  }
-
-  updateProps(props) {
-    this.#props = props;
-    this.#name = props.name;
-    this.#order = props.order || 1;
-  }
-
-  connect() {
-    clearInterval(this.#clock);
-    this.loadModules().then(() => {
-      if (this.#order <= 1) {
-        this.init();
-        return;
-      }
-      let time = 0;
-      this.#clock = setInterval(() => {
-        if (time >= TIMEOUT || this.#isReady) {
-          clearInterval(this.#clock);
-          return;
-        }
-        time += 50;
-        if (!this.#initiate) return;
-        clearInterval(this.#clock);
-        this.init();
-      }, 50);
-    });
   }
 
   async loadModules() {
@@ -128,6 +103,27 @@ class $Widget extends EventEmitter {
     $map.emit('widget-added', this);
   }
 
+  connect() {
+    clearInterval(this.#clock);
+    this.loadModules().then(() => {
+      if (this.#order <= 1) {
+        this.init();
+        return;
+      }
+      let time = 0;
+      this.#clock = setInterval(() => {
+        if (time >= TIMEOUT || this.#isReady) {
+          clearInterval(this.#clock);
+          return;
+        }
+        time += 50;
+        if (!this.#initiate) return;
+        clearInterval(this.#clock);
+        this.init();
+      }, 50);
+    });
+  }
+
   disconnect() {
     if (!this.#isReady) return;
     if (this.#widget) {
@@ -153,8 +149,6 @@ function Widget(props) {
   useEffect(() => {
     if (!$widget) return;
 
-    $widget.updateProps(context);
-
     if ($map.isReady) {
       $widget.connect();
     }
@@ -162,7 +156,7 @@ function Widget(props) {
     return () => {
       $widget.disconnect();
     };
-  }, [$map, $widget, context]);
+  }, [$map, $widget]);
 
   return null;
 }

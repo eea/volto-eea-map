@@ -26,19 +26,27 @@ export function getBasemap(data) {
   };
 }
 
-export function getLayers(data = {}) {
+export function getLayers(data = {}, parseQuery = true) {
   if (!data?.layers) return [];
   return (
     (
       (Array.isArray(data.layers) ? data.layers : data.layers?.map_layers) || []
     )?.map(($layer) => {
+      let definitionExpression;
       const layer = $layer.map_layer ? $layer.map_layer?.layer : $layer;
       const url = $layer.url ?? $layer.map_layer?.map_service_url;
-      const query = layer.definitionExpression;
       const subLayers = getLayers({ layers: $layer.subLayers });
+
+      try {
+        definitionExpression =
+          parseQuery && layer.definitionExpression
+            ? formatQuery(layer.definitionExpression, 'sql')
+            : layer.definitionExpression;
+      } catch {}
+
       return {
         ...layer,
-        ...(query ? { definitionExpression: formatQuery(query, 'sql') } : {}),
+        ...(definitionExpression ? { definitionExpression } : {}),
         url,
         title: layer.name,
         subLayers: subLayers.length > 0 ? subLayers : null,
