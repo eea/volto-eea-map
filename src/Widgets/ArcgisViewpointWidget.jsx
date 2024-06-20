@@ -1,15 +1,23 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { toNumber } from 'lodash';
 import { FormFieldWrapper, InlineForm } from '@plone/volto/components';
 
-export default function ArcgisExtentWidget(props) {
-  const [watchExtent, setWatchExtent] = useState(false);
+export default function ArcgisViewpointWidget(props) {
+  const [watchViewpoint, setWatchViewpoint] = useState(false);
   const { $map, id, value, onChange } = props;
 
-  // console.log('HERE', $map);
+  useEffect(() => {
+    if (!$map.current?.isReady) return;
+    const homeWidget = $map.current.view.ui.find('Home');
+    if (!homeWidget) return;
+    homeWidget.viewpoint = new $map.current.modules.AgViewpoint({
+      center: [value.longitude, value.latitude],
+      zoom: value.zoom,
+    });
+  }, [$map, value]);
 
   useEffect(() => {
-    if (watchExtent && $map.current?.isReady) {
+    if (watchViewpoint && $map.current?.isReady) {
       const reactiveUtils = $map.current.modules.agReactiveUtils;
 
       reactiveUtils.when(
@@ -25,14 +33,14 @@ export default function ArcgisExtentWidget(props) {
               zoom,
             });
           }
-          setWatchExtent(false);
+          setWatchViewpoint(false);
         },
         {
           once: true,
         },
       );
     }
-  }, [$map, watchExtent, id, value, onChange]);
+  }, [$map, watchViewpoint, id, value, onChange]);
 
   return (
     <>
@@ -47,17 +55,17 @@ export default function ArcgisExtentWidget(props) {
               textAlign: 'center',
             }}
             onClick={() => {
-              setWatchExtent(true);
+              setWatchViewpoint(true);
             }}
           >
-            {watchExtent ? 'Waiting...' : 'Drag on map'}
+            {watchViewpoint ? 'Waiting...' : 'Drag on map'}
           </button>
         </div>
       </FormFieldWrapper>
-      <div className="arcgis-extent-editor">
+      <div className="arcgis-viewpoint-editor">
         <InlineForm
           schema={{
-            title: 'Initial extent',
+            title: 'Initial viewpoint',
             fieldsets: [
               {
                 id: 'default',

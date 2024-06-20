@@ -26,7 +26,11 @@ export default function Simple(props) {
             title: 'Symbol',
             fields: [
               'type',
-              'color',
+              ...(['simple-fill', 'simple-marker', 'simple-line'].includes(
+                symbol.type,
+              )
+                ? ['color']
+                : []),
               ...(['simple-fill', 'simple-marker'].includes(symbol.type)
                 ? ['outline_color', 'outline_width']
                 : []),
@@ -85,9 +89,10 @@ export default function Simple(props) {
 
         onChange(id, {
           ...(value || {}),
+          ...(symbolId === 'type' ? { autocast: true } : {}),
           symbol: {
+            ...(symbolId !== 'type' ? symbol : {}),
             ...(symbolId === 'type' ? simpleSymbols[fieldValue] || {} : {}),
-            ...symbol,
             ...(['outline_color', 'outline_width'].includes(symbolId)
               ? {
                   outline: {

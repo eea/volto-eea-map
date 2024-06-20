@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext, useMemo } from 'react';
-import { Segment } from 'semantic-ui-react';
+import { Segment, Dimmer, Loader } from 'semantic-ui-react';
 import { isNil, toNumber } from 'lodash';
 import { v4 as uuid } from 'uuid';
 import { InlineForm } from '@plone/volto/components';
@@ -106,6 +106,10 @@ function Layer({ $map, layer, layers, index, value, onChangeValue }) {
 
   return (
     <>
+      <Dimmer active={$layer.loading}>
+        <Loader />
+      </Dimmer>
+
       <InlineForm
         schema={schema}
         formData={{
@@ -164,10 +168,9 @@ function Layer({ $map, layer, layers, index, value, onChangeValue }) {
 }
 
 export default function SettingsLayersPanel({ $map, value, onChangeValue }) {
-  const layers = useMemo(
-    () => getLayers({ layers: value.layers }, false),
-    [value.layers],
-  );
+  const layers = useMemo(() => getLayers({ layers: value.layers }, false), [
+    value.layers,
+  ]);
 
   return (
     <Panel

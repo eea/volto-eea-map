@@ -236,10 +236,9 @@ function Layer({ layer, layers, index, value, onChangeValue }) {
 }
 
 export default function StructureLayersPanel({ value, onChangeValue }) {
-  const layers = useMemo(
-    () => getLayers({ layers: value.layers }, false),
-    [value.layers],
-  );
+  const layers = useMemo(() => getLayers({ layers: value.layers }, false), [
+    value.layers,
+  ]);
 
   return (
     <Panel

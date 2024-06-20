@@ -1,4 +1,11 @@
-import React, { forwardRef, useEffect, useState, useMemo } from 'react';
+import React, {
+  forwardRef,
+  useImperativeHandle,
+  useEffect,
+  useState,
+  useMemo,
+  useRef,
+} from 'react';
 import Map from './Map';
 import Layer from '../Layer/Layer';
 import Widget from '../Widget/Widget';
@@ -8,20 +15,24 @@ import { getBasemap, getLayers, getWidgets } from '../helpers';
 const MapBuilder = forwardRef((props, ref) => {
   const { data } = props || {};
   const { styles } = data || {};
+  const $map = useRef(null);
   const [renderWidgets, setRenderWidgets] = useState(true);
   const basemap = useMemo(
     () => getBasemap({ basemap: data.basemap, base: data.base }),
     [data.basemap, data.base],
   );
-  const layers = useMemo(
-    () => getLayers({ layers: data.layers }),
-    [data.layers],
+  const layers = useMemo(() => getLayers({ layers: data.layers }), [
+    data.layers,
+  ]);
+  const widgets = useMemo(() => getWidgets({ widgets: data.widgets }), [
+    data.widgets,
+  ]);
+  const settings = useMemo(() => data.settings || {}, [data.settings]);
+  const viewSettings = useMemo(() => settings.view || {}, [settings.view]);
+  const initialViewpoint = useMemo(
+    () => ({ center: viewSettings.center, zoom: viewSettings.zoom }),
+    [viewSettings.center, viewSettings.zoom],
   );
-  const widgets = useMemo(
-    () => getWidgets({ widgets: data.widgets }),
-    [data.widgets],
-  );
-  const settings = data?.settings || {};
 
   const rotationEnabled = settings.view?.constraints?.rotationEnabled ?? false;
 
@@ -62,6 +73,19 @@ const MapBuilder = forwardRef((props, ref) => {
     }
   }, [renderWidgets]);
 
+  useEffect(() => {
+    if (!$map.current?.isReady) return;
+    const homeWidget = $map.current.view.ui.find('Home');
+    if (!homeWidget || !initialViewpoint.center) return;
+    console.log('Setting initial viewpoint');
+    homeWidget.viewpoint = new $map.current.modules.AgViewpoint({
+      center: initialViewpoint.center,
+      zoom: initialViewpoint.zoom || 0,
+    });
+  }, [ref, initialViewpoint]);
+
+  useImperativeHandle(ref, () => $map.current);
+
   return (
     <Map
       MapProperties={{
@@ -75,7 +99,7 @@ const MapBuilder = forwardRef((props, ref) => {
           rotationEnabled,
         },
       }}
-      ref={ref}
+      ref={$map}
     >
       {renderWidgets &&
         widgets.map((widget, index) => (

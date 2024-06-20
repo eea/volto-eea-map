@@ -113,6 +113,7 @@ class $Map extends EventEmitter {
       modules.AgMapView = await $arcgis.import('esri/views/MapView');
       // Common modules
       modules.AgColor = await $arcgis.import('esri/Color');
+      modules.AgViewpoint = await $arcgis.import('esri/Viewpoint');
       modules.agReactiveUtils = await $arcgis.import('esri/core/reactiveUtils');
       modules.agJsonUtils = await $arcgis.import(
         'esri/renderers/support/jsonUtils',

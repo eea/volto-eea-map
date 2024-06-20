@@ -48,8 +48,8 @@ const getViewConstraintsSchema = ({ $map }) => {
     ],
     properties: {
       initialExtent: {
-        title: 'Initial extent',
-        widget: 'arcgis_extent',
+        title: 'Initial viewpoint',
+        widget: 'arcgis_viewpoint',
         $map,
       },
       minScale: {

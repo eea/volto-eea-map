@@ -10,7 +10,7 @@ import VisualizationWidget from './Widgets/VisualizationWidget';
 import ArcgisRendererWidget from './Widgets/ArcgisRendererWidget/ArcgisRendererWidget';
 import ArcgisColorPickerWidget from './Widgets/ArcgisColorPickerWidget';
 import ArcgisSliderWidget from './Widgets/ArcgisSliderWidget';
-import ArcgisExtentWidget from './Widgets/ArcgisExtentWidget';
+import ArcgisViewpointWidget from './Widgets/ArcgisViewpointWidget';
 
 import DataQueryWidget from './Widgets/DataQueryWidget';
 import LayerSelectWidget from './Widgets/LayerSelectWidget';
@@ -73,7 +73,7 @@ const applyConfig = (config) => {
   config.widgets.widget.arcgis_renderer = ArcgisRendererWidget;
   config.widgets.widget.arcgis_color_picker = ArcgisColorPickerWidget;
   config.widgets.widget.arcgis_slider = ArcgisSliderWidget;
-  config.widgets.widget.arcgis_extent = ArcgisExtentWidget;
+  config.widgets.widget.arcgis_viewpoint = ArcgisViewpointWidget;
 
   config.widgets.widget.map_layers_widget = LayerSelectWidget;
   config.widgets.widget.data_query_widget = DataQueryWidget;
