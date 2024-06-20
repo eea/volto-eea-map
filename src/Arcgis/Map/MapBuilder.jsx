@@ -13,12 +13,14 @@ const MapBuilder = forwardRef((props, ref) => {
     () => getBasemap({ basemap: data.basemap, base: data.base }),
     [data.basemap, data.base],
   );
-  const layers = useMemo(() => getLayers({ layers: data.layers }), [
-    data.layers,
-  ]);
-  const widgets = useMemo(() => getWidgets({ widgets: data.widgets }), [
-    data.widgets,
-  ]);
+  const layers = useMemo(
+    () => getLayers({ layers: data.layers }),
+    [data.layers],
+  );
+  const widgets = useMemo(
+    () => getWidgets({ widgets: data.widgets }),
+    [data.widgets],
+  );
   const settings = data?.settings || {};
 
   const rotationEnabled = settings.view?.constraints?.rotationEnabled ?? false;
