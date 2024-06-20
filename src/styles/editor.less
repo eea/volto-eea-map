@@ -24,7 +24,7 @@
     --sidebar-group-background-base: var(--sidebar-background);
     --sidebar-item-background-base: var(--color-background-light);
     --sidebar-width: 100px;
-    --panel-width: 450px;
+    --panel-width: 500px;
     --panel-background: #ebf0f8;
     --editor-width: calc(var(--sidebar-width) + var(--panel-width) + 1px);
     --font-weight-normal: 400;
@@ -67,12 +67,15 @@
       line-height: 1;
       outline: none;
       text-align: center;
-      text-transform: capitalize;
       transition: all 0.15s ease-in-out;
       -webkit-user-select: none;
       -moz-user-select: none;
       -ms-user-select: none;
       user-select: none;
+
+      &:first-letter {
+        text-transform: capitalize;
+      }
 
       &.btn-primary {
         border-color: var(--color-button-primary-base-border);
@@ -244,6 +247,7 @@
     }
 
     .fold {
+      position: relative;
       width: 100%;
       margin-bottom: var(--spacing-half-unit);
       -webkit-user-select: none;
@@ -252,7 +256,9 @@
       user-select: none;
 
       &.foldable {
-        cursor: pointer;
+        .fold--top {
+          cursor: pointer;
+        }
       }
 
       &--top {
@@ -267,9 +273,7 @@
         color: var(--fold-header-text-color-closed);
         font-size: var(--font-size-base);
         text-shadow: var(--text-shadow-dark-ui);
-        transition:
-          background-color 0.1s ease-in-out,
-          color 0.1s ease-in-out,
+        transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out,
           border 0.1s ease-in-out;
 
         &__content {
@@ -330,37 +334,78 @@
       font-size: var(--font-size-small);
     }
 
-    select.rule-fields,
-    input.rule-value {
+    select.rule-fields {
       max-width: 100px;
     }
 
-    // input,
-    // select {
-    //   max-width: 100px;
-    // }
+    input.rule-value {
+      width: 100%;
+    }
   }
 
+  .ui.segment.form.attached .field:last-child {
+    margin-bottom: 0;
+  }
+
+  .ui.form .field .wrapper > label,
   .inline.field {
     font-size: var(--font-size-small);
   }
 
-  .inline.field .wrapper {
-    min-height: unset;
-    margin-top: 0 !important;
+  .ui.form.accordion .title {
+    align-items: center;
+    display: flex;
+    height: auto;
+    column-gap: calc(var(--spacing-half-unit) / 3);
+    flex-flow: row-reverse;
+    justify-content: flex-end;
+    padding: var(--spacing-quarter-unit) var(--spacing-half-unit);
+    clear: both;
+    font-size: var(--font-size-medium);
+    transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out,
+      border 0.1s ease-in-out;
+    border: 1px solid var(--fold-header-border-color-base);
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    background-color: var(--fold-header-background-base) !important;
+    color: var(--fold-header-text-color-base) !important;
+    text-shadow: var(--text-shadow-dark-ui-inactive);
+
+    svg {
+      height: 16px !important;
+      rotate: 180deg !important;
+    }
+
+    &:not(.active) {
+      border: 1px solid var(--fold-header-border-color-closed) !important;
+      background-color: var(--fold-header-background-closed) !important;
+      border-radius: var(--border-radius) !important;
+      color: var(--fold-header-text-color-closed) !important;
+      text-shadow: var(--text-shadow-dark-ui) !important;
+
+      svg {
+        rotate: -90deg !important;
+      }
+    }
   }
 
-  .inline.field.textarea textarea {
-    margin-top: 0 !important;
+  #blockform-fieldset-default {
+    .ui.segment.form:empty {
+      display: none;
+    }
   }
+}
 
-  .react-select__control {
-    min-height: unset;
-    line-height: 1;
+.arcgis-renderer-editor {
+  padding: 1rem 0.625rem;
+  font-size: var(--font-size-small);
+
+  .ui.form.segment {
+    padding: 0;
   }
+}
 
-  .inline.field.textarea textarea {
-    max-width: 100%;
-    padding: 4px;
+.arcgis-extent-editor {
+  .ui.form.segment {
+    padding: 0;
   }
 }

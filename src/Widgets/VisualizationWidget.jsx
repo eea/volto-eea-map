@@ -1,21 +1,103 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Modal, Button, Grid } from 'semantic-ui-react';
+import { toast } from 'react-toastify';
 
-import { FormFieldWrapper, Icon, InlineForm } from '@plone/volto/components';
-import config from '@plone/volto/registry';
+import { FormFieldWrapper, Icon, Toast } from '@plone/volto/components';
 
 import MapBuilder from '@eeacms/volto-eea-map/Arcgis/Map/MapBuilder';
-
-import PanelsSchema from './panelsSchema';
+import {
+  initEditor,
+  destroyEditor,
+  validateEditor,
+  onPasteEditor,
+} from '@eeacms/volto-eea-map/jsoneditor';
 
 import editSVG from '@plone/volto/icons/editing.svg';
 
 import '@eeacms/volto-eea-map/styles/editor.less';
 import MapEditor from '../Arcgis/Editor/Editor';
 
+function JsonEditorModal(props) {
+  const { value, onClose, onChange } = props;
+  const editor = useRef();
+  const initailValue = useRef(props.value);
+
+  async function getValue() {
+    const valid = await validateEditor(editor);
+    if (!valid) {
+      throw new Error('Invalid JSON');
+    }
+    try {
+      return editor.current.get();
+    } catch {
+      throw new Error('Invalid JSON');
+    }
+  }
+
+  useEffect(() => {
+    initEditor({
+      el: 'jsoneditor-plotlyjson',
+      editor,
+      options: {
+        schema: undefined,
+      },
+      dflt: initailValue.current,
+    });
+
+    const editorCurr = editor.current;
+
+    return () => {
+      destroyEditor(editorCurr);
+    };
+  }, []);
+
+  return (
+    <Modal size="fullscreen" open={true} className="plotly-json-modal">
+      <Modal.Content scrolling>
+        <div
+          id="jsoneditor-plotlyjson"
+          style={{ width: '100%', height: '100%' }}
+          onPaste={(e) => {
+            onPasteEditor(editor);
+          }}
+        />
+      </Modal.Content>
+      <Modal.Actions>
+        <Button
+          onClick={() => {
+            onChange(initailValue.current);
+            onClose();
+          }}
+        >
+          Close
+        </Button>
+        <Button
+          primary
+          onClick={async () => {
+            try {
+              const newValue = {
+                ...value,
+                ...(await getValue()),
+              };
+              onChange(newValue);
+              onClose();
+            } catch (error) {
+              toast.error(
+                <Toast error title={'JSON error'} content={error.message} />,
+              );
+            }
+          }}
+        >
+          Apply
+        </Button>
+      </Modal.Actions>
+    </Modal>
+  );
+}
+
 function MapEditorModal(props) {
   const [value, setValue] = useState(props.value);
-  const [showImportJSON, setShowMapEditor] = useState(false);
+  const [open, setOpen] = useState(false);
 
   return (
     <>
@@ -42,7 +124,7 @@ function MapEditorModal(props) {
                 <Button
                   secondary
                   className="json-btn"
-                  // onClick={() => setShowImportJSON(true)}
+                  onClick={() => setOpen(true)}
                 >
                   <Icon name={editSVG} size="20px" />
                   JSON
@@ -67,19 +149,19 @@ function MapEditorModal(props) {
           </Grid>
         </Modal.Actions>
       </Modal>
-      {/* {showImportJSON && (
-        <PlotlyJsonModal
+      {open && (
+        <JsonEditorModal
           value={value}
           onChange={setValue}
-          onClose={() => setShowImportJSON(false)}
+          onClose={() => setOpen(false)}
         />
-      )} */}
+      )}
     </>
   );
 }
 
 const VisualizationWidget = (props) => {
-  const { id, title, description, error, value } = props;
+  const { id, title, description, value } = props;
   const [showMapEditor, setShowMapEditor] = useState(false);
 
   if (__SERVER__) return '';

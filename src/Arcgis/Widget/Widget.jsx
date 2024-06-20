@@ -54,7 +54,7 @@ class $Widget extends EventEmitter {
 
   async loadModules() {
     const $arcgis = __CLIENT__ ? window.$arcgis : null;
-    if (__SERVER__ || !$arcgis) return Promise.reject();
+    if (__SERVER__ || !$arcgis || !this.#name) return Promise.reject();
     if (!this.#modulesLoaded) {
       const AgWidget = modules[`Ag${this.#name}`];
       modules[`Ag${this.#name}`] =
@@ -81,6 +81,7 @@ class $Widget extends EventEmitter {
 
     this.#widget = new AgWidget({
       view: $map.view,
+      ...(!this.#expand ? { id: this.#name } : {}),
       ...(this.#props || {}),
     });
 
@@ -88,6 +89,7 @@ class $Widget extends EventEmitter {
       this.#expand = new AgExpand({
         view: $map.view,
         content: this.#widget,
+        id: this.#name,
         ...ExpandProperties,
       });
     }
@@ -105,23 +107,25 @@ class $Widget extends EventEmitter {
 
   connect() {
     clearInterval(this.#clock);
-    this.loadModules().then(() => {
-      if (this.#order <= 1) {
-        this.init();
-        return;
-      }
-      let time = 0;
-      this.#clock = setInterval(() => {
-        if (time >= TIMEOUT || this.#isReady) {
-          clearInterval(this.#clock);
+    this.loadModules()
+      .then(() => {
+        if (this.#order <= 1) {
+          this.init();
           return;
         }
-        time += 50;
-        if (!this.#initiate) return;
-        clearInterval(this.#clock);
-        this.init();
-      }, 50);
-    });
+        let time = 0;
+        this.#clock = setInterval(() => {
+          if (time >= TIMEOUT || this.#isReady) {
+            clearInterval(this.#clock);
+            return;
+          }
+          time += 50;
+          if (!this.#initiate) return;
+          clearInterval(this.#clock);
+          this.init();
+        }, 50);
+      })
+      .catch(() => {});
   }
 
   disconnect() {
@@ -135,6 +139,7 @@ class $Widget extends EventEmitter {
     this.#widget = null;
     this.#expand = null;
     this.#isReady = false;
+    clearInterval(this.#clock);
     this.emit('disconnected');
   }
 }

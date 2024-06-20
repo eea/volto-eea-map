@@ -1,4 +1,5 @@
 import { formatQuery } from 'react-querybuilder';
+import { getDefaultWidgets } from '@eeacms/volto-eea-map/constants';
 
 const timer = {};
 
@@ -45,12 +46,28 @@ export function getLayers(data = {}, parseQuery = true) {
       } catch {}
 
       return {
-        ...layer,
+        ...omitBy(layer, ['geometryType', 'blendMode', 'definitionExpression']),
         ...(definitionExpression ? { definitionExpression } : {}),
+        blendMode: layer.blendMode ?? 'normal',
         url,
         title: layer.name,
         subLayers: subLayers.length > 0 ? subLayers : null,
       };
     }) || []
   );
+}
+
+export function getLayerDefaults(layer = {}) {
+  const renderer = layer.drawingInfo?.renderer;
+  return {
+    minScale: layer.minScale,
+    maxScale: layer.maxScale,
+    renderer: renderer ? { ...renderer, autocast: false } : undefined,
+    blendMode: layer.blendMode || 'normal',
+    opacity: 1,
+  };
+}
+
+export function getWidgets(data = {}) {
+  return data.widgets ?? getDefaultWidgets(data.settings?.map?.dimension);
 }

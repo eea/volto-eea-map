@@ -26,10 +26,11 @@
     "@eeacms/volto-object-widget": "*",
     "@plone/scripts": "*",
     "esri-loader": "3.6.0",
+    "jsoneditor": "10.1.0",
     "lodash": "4.17.21",
     "razzle-plugin-scss": "4.2.18",
     "react-color": "~2.19.3",
-    "react-querybuilder": "4.2.3"
+    "react-querybuilder": "6.5.5"
   },
   "devDependencies": {
     "@babel/preset-env": "7.24.6",

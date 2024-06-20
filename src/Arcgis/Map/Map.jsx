@@ -1,4 +1,11 @@
-import { useEffect, useState, useRef, useMemo } from 'react';
+import {
+  forwardRef,
+  useImperativeHandle,
+  useEffect,
+  useState,
+  useRef,
+  useMemo,
+} from 'react';
 import { EventEmitter } from 'events';
 
 import useClass from '@eeacms/volto-eea-map/hooks/useClass';
@@ -78,6 +85,10 @@ class $Map extends EventEmitter {
     return this.#isReady && !!(this.#map && this.#view);
   }
 
+  get modules() {
+    return modules;
+  }
+
   get map() {
     return this.#map;
   }
@@ -87,7 +98,7 @@ class $Map extends EventEmitter {
   }
 
   set props(props) {
-    this.#props = props;
+    this.updateProps(props);
     this.update();
   }
 
@@ -98,27 +109,27 @@ class $Map extends EventEmitter {
       modules.AgMap = await $arcgis.import('esri/Map');
       modules.AgWebTileLayer = await $arcgis.import('esri/layers/WebTileLayer');
       modules.AgBasemap = await $arcgis.import('esri/Basemap');
+      modules.AgSceneView = await $arcgis.import('esri/views/SceneView');
+      modules.AgMapView = await $arcgis.import('esri/views/MapView');
+      // Common modules
+      modules.AgColor = await $arcgis.import('esri/Color');
       modules.agReactiveUtils = await $arcgis.import('esri/core/reactiveUtils');
-      switch (this.#props.dimension) {
-        case '3d':
-          modules.AgView = await $arcgis.import('esri/views/SceneView');
-          break;
-        default:
-          modules.AgView = await $arcgis.import('esri/views/MapView');
-          break;
-      }
+      modules.agJsonUtils = await $arcgis.import(
+        'esri/renderers/support/jsonUtils',
+      );
       modules.loaded = true;
     }
     return Promise.resolve();
   }
 
   init() {
-    const { AgView, AgMap, agReactiveUtils, loaded } = modules;
+    const { mapEl, ViewProperties = {}, MapProperties = {} } = this.#props;
+    const { AgMapView, AgSceneView, AgMap, agReactiveUtils, loaded } = modules;
+    const AgView = MapProperties.dimension === '3d' ? AgSceneView : AgMapView;
     if (!loaded) return;
     if (!AgView || !AgMap) {
       throw new Error('$Map modules not loaded');
     }
-    const { mapEl, ViewProperties = {}, MapProperties = {} } = this.#props;
     this.#map = new AgMap({
       ...MapProperties,
       basemap: getBaseMap(MapProperties),
@@ -128,9 +139,14 @@ class $Map extends EventEmitter {
       map: this.#map,
       ...ViewProperties,
     });
+    this.#view.ui.components = [];
     this.#isReady = true;
     this.reactiveUtils = agReactiveUtils;
     this.emit('connected');
+  }
+
+  updateProps(props) {
+    this.#props = props;
   }
 
   update() {
@@ -186,10 +202,10 @@ class $Map extends EventEmitter {
  * @param {object} props.ViewProperties - The properties of the view. See https://developers.arcgis.com/javascript/latest/api-reference/esri-views-View.html
  * @returns {JSX.Element} The rendered map component.
  */
-function Map(props) {
+const Map = forwardRef((props, ref) => {
   const mapEl = useRef(null);
   const [isReady, setIsReady] = useState(false);
-  const { children, agLoaded } = props;
+  const { children, agLoaded, MapProperties = {} } = props;
 
   const context = useMemo(
     () => ({
@@ -200,6 +216,13 @@ function Map(props) {
   );
 
   const $map = useClass($Map, context);
+
+  useImperativeHandle(ref, () => $map, [$map]);
+
+  useEffect(() => {
+    if (!$map.isReady) return;
+    $map.props = context;
+  }, [$map, context]);
 
   useEffect(() => {
     if (!$map) return;
@@ -212,8 +235,9 @@ function Map(props) {
       setIsReady(false);
     }
 
+    $map.updateProps(context);
+
     if (agLoaded) {
-      console.log('HERE CONNECTING MAP');
       $map.connect();
     }
 
@@ -222,17 +246,13 @@ function Map(props) {
 
     return () => {
       if (!$map) return;
-      console.log('HERE DISCONNECTING MAP');
       $map.disconnect();
       $map.off('connected', onConnect);
       $map.off('disconnected', onDisconnect);
     };
-  }, [$map, agLoaded]);
-
-  useEffect(() => {
-    if (!$map.isReady) return;
-    $map.props = context;
-  }, [$map, context]);
+    // We handle the props change in the useEffect above.
+    /* eslint-disable-next-line */
+  }, [$map, agLoaded, MapProperties.dimension]);
 
   return (
     <MapContext.Provider
@@ -246,6 +266,6 @@ function Map(props) {
       </div>
     </MapContext.Provider>
   );
-}
+});
 
 export default withArcgis(Map);

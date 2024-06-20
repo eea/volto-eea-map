@@ -5,10 +5,15 @@ import EmbedMapEdit from './components/Blocks/EmbedEEAMap/Edit';
 
 import world from '@plone/volto/icons/world.svg';
 
+import VisualizationWidget from './Widgets/VisualizationWidget';
+
+import ArcgisRendererWidget from './Widgets/ArcgisRendererWidget/ArcgisRendererWidget';
+import ArcgisColorPickerWidget from './Widgets/ArcgisColorPickerWidget';
+import ArcgisSliderWidget from './Widgets/ArcgisSliderWidget';
+import ArcgisExtentWidget from './Widgets/ArcgisExtentWidget';
+
 import DataQueryWidget from './Widgets/DataQueryWidget';
 import LayerSelectWidget from './Widgets/LayerSelectWidget';
-import SimpleColorPickerWidget from './Widgets/SimpleColorPickerWidget';
-import VisualizationWidget from './Widgets/VisualizationWidget';
 import VisualizationViewWidget from './Widgets/VisualizationViewWidget';
 
 import VisualizationView from './Views/VisualizationView';
@@ -65,9 +70,13 @@ const applyConfig = (config) => {
 
   config.views.contentTypesViews.map_visualization = VisualizationView;
 
+  config.widgets.widget.arcgis_renderer = ArcgisRendererWidget;
+  config.widgets.widget.arcgis_color_picker = ArcgisColorPickerWidget;
+  config.widgets.widget.arcgis_slider = ArcgisSliderWidget;
+  config.widgets.widget.arcgis_extent = ArcgisExtentWidget;
+
   config.widgets.widget.map_layers_widget = LayerSelectWidget;
   config.widgets.widget.data_query_widget = DataQueryWidget;
-  config.widgets.widget.simple_color_picker_widget = SimpleColorPickerWidget;
   config.widgets.id.map_visualization_data = VisualizationWidget;
   config.widgets.views.id.map_visualization_data = VisualizationViewWidget;
 

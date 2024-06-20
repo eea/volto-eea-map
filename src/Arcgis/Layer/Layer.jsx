@@ -4,11 +4,7 @@ import { uniq } from 'lodash';
 
 import useClass from '@eeacms/volto-eea-map/hooks/useClass';
 import { omitBy } from '@eeacms/volto-eea-map/Arcgis/helpers';
-import {
-  layersMapping,
-  withSublayers,
-  geometryMapping,
-} from '@eeacms/volto-eea-map/constants';
+import { layersMapping, withSublayers } from '@eeacms/volto-eea-map/constants';
 
 import MapContext from '@eeacms/volto-eea-map/Arcgis/Map/MapContext';
 
@@ -24,6 +20,10 @@ class $Layer extends EventEmitter {
     super();
 
     this.#props = props;
+  }
+
+  get props() {
+    return this.#props;
   }
 
   get isReady() {
@@ -59,6 +59,18 @@ class $Layer extends EventEmitter {
     ]);
   }
 
+  getRenderer(renderer) {
+    const { $map } = this.#props;
+    const agJsonUtils = $map.modules.agJsonUtils;
+
+    if (!renderer) return;
+
+    if (renderer.autocast) {
+      return renderer;
+    }
+    return agJsonUtils.fromJSON(renderer);
+  }
+
   async loadModules() {
     const $arcgis = __CLIENT__ ? window.$arcgis : null;
     if (__SERVER__ || !$arcgis) return Promise.reject();
@@ -85,21 +97,19 @@ class $Layer extends EventEmitter {
       throw new Error('$Layer modules not loaded');
     }
 
+    const renderer = this.getRenderer(props.renderer);
+
     const layerProps = omitBy(props || {}, [
       '$map',
       'type',
       'url',
       'id',
-      'geometryType',
-      'opacity',
+      'renderer',
     ]);
 
-    if (layerProps.geometryType) {
-      layerProps.geometryType =
-        geometryMapping[layerProps.geometryType] || layerProps.geometryType;
+    if (renderer) {
+      layerProps.renderer = renderer;
     }
-
-    layerProps.opacity = parseInt(layerProps.opacity ?? 1);
 
     const layer = new AgLayer(
       withSublayers.includes(type)
@@ -136,31 +146,23 @@ class $Layer extends EventEmitter {
     }
 
     this.#isReady = true;
+
     this.emit('connected');
   }
 
   update() {
-    const { $map, url, id } = this.#props;
+    const { $map } = this.#props;
     if (!this.isReady || !$map.isReady) return;
-
-    console.log('HERE', this.#layer.url !== url || this.#layer.layerId !== id);
-
-    if (this.#layer.url !== url || this.#layer.layerId !== id) {
-      this.disconnect();
-      this.connect();
-      return;
-    }
 
     Object.keys(
       omitBy(this.#props || {}, ['$map', 'type', 'url', 'id']),
     ).forEach((key) => {
       switch (key) {
-        case 'geometryType':
-          this.#layer.geometryType =
-            geometryMapping[this.#props[key]] || this.#props[key];
-          break;
-        case 'opacity':
-          this.#layer.opacity = parseInt(this.#props[key]);
+        case 'renderer':
+          const renderer = this.getRenderer(this.#props[key]);
+          if (renderer) {
+            this.#layer.renderer = renderer;
+          }
           break;
         default:
           this.#layer[key] = this.#props[key];
@@ -196,27 +198,15 @@ function Layer(props) {
 
   useEffect(() => {
     if (!$layer) return;
-
-    if ($map.isReady) {
-      console.log('CONNECTING LAYER');
-      $layer.connect();
-    }
-
+    $layer.connect();
     return () => {
-      console.log('DISCONNECTING LAYER');
+      if (!$layer) return;
       $layer.disconnect();
     };
-  }, [$map, $layer]);
+  }, [$map, $layer, context.url, context.id, context.source]);
 
   useEffect(() => {
-    console.log('HERE UPDATE', $layer.layer);
-    if (!$map.isReady) return;
-    if (!$layer.isReady) {
-      $layer.props = context;
-      $layer.disconnect();
-      $layer.connect();
-      return;
-    }
+    if (!$layer || !$map || !$map.isReady) return;
     $layer.props = context;
   }, [$map, $layer, context]);
 

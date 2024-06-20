@@ -1,11 +1,10 @@
 /**
- * SliderWidget component.
- * @module components/manage/Widgets/SliderWidget
+ * ArcgisSliderWidget component.
+ * @module components/manage/Widgets/ArcgisSliderWidget
  */
 
 import React, { Component } from 'react';
 
-import { injectIntl } from 'react-intl';
 import { FormFieldWrapper } from '@plone/volto/components';
 
 /**
@@ -14,7 +13,7 @@ import { FormFieldWrapper } from '@plone/volto/components';
  * It is the default fallback widget, so if no other widget is found based on
  * passed field properties, it will be used.
  */
-class SliderWidget extends Component {
+class ArcgisSliderWidget extends Component {
   /**
    * Component did mount lifecycle method
    * @method componentDidMount
@@ -36,7 +35,7 @@ class SliderWidget extends Component {
 
     return (
       <FormFieldWrapper {...this.props} className="text">
-        <div style={{ display: 'flex', columnGap: '0.5rem' }}>
+        <div style={{ display: 'flex', flexFlow: 'column', marginTop: '1rem' }}>
           <input
             className="map-number-input"
             type="number"
@@ -77,4 +76,4 @@ class SliderWidget extends Component {
   }
 }
 
-export default injectIntl(SliderWidget);
+export default ArcgisSliderWidget;

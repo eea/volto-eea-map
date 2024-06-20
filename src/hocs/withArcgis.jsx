@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { forwardRef, useEffect, useState } from 'react';
 import loadArcgis from '@eeacms/volto-eea-map/arcgis';
 
 export default function withArcgis(WrappedComponent) {
-  return (props) => {
+  return forwardRef((props, ref) => {
     const [agLoaded, setAgLoaded] = useState(false);
 
     const interceptArcgis = (event) => {
@@ -22,6 +22,6 @@ export default function withArcgis(WrappedComponent) {
       };
     }, []);
 
-    return <WrappedComponent {...props} agLoaded={agLoaded} />;
-  };
+    return <WrappedComponent {...props} agLoaded={agLoaded} ref={ref} />;
+  });
 }

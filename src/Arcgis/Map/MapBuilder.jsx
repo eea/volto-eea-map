@@ -1,15 +1,24 @@
-import React, { useMemo } from 'react';
+import React, { forwardRef, useEffect, useState, useMemo } from 'react';
 import Map from './Map';
 import Layer from '../Layer/Layer';
 import Widget from '../Widget/Widget';
 
-import { getBasemap, getLayers } from '../helpers';
+import { getBasemap, getLayers, getWidgets } from '../helpers';
 
-export default function MapBuilder(props) {
+const MapBuilder = forwardRef((props, ref) => {
   const { data } = props || {};
   const { styles } = data || {};
-  const basemap = useMemo(() => getBasemap(data), [data]);
-  const layers = useMemo(() => [getLayers(data)[0]], [data]);
+  const [renderWidgets, setRenderWidgets] = useState(true);
+  const basemap = useMemo(
+    () => getBasemap({ basemap: data.basemap, base: data.base }),
+    [data.basemap, data.base],
+  );
+  const layers = useMemo(() => getLayers({ layers: data.layers }), [
+    data.layers,
+  ]);
+  const widgets = useMemo(() => getWidgets({ widgets: data.widgets }), [
+    data.widgets,
+  ]);
   const settings = data?.settings || {};
 
   const rotationEnabled = settings.view?.constraints?.rotationEnabled ?? false;
@@ -41,45 +50,20 @@ export default function MapBuilder(props) {
     },
   };
 
-  // const layer0 = new AgFeatureLayer({
-  //   url:
-  //     'https://water.discomap.eea.europa.eu/arcgis/rest/services/Marine/MPA_networks_in_EEA_marine_assessment_areas_2021/MapServer/0',
-  //   // renderer: this.#props.customFeatureLayerRenderer,
-  //   opacity: 0.5,
-  // });
-  // const layer1 = new AgGroupLayer({
-  //   url:
-  //     'https://water.discomap.eea.europa.eu/arcgis/rest/services/Marine/MPA_networks_in_EEA_marine_assessment_areas_2021/MapServer/1',
-  //   renderer: this.#props.customFeatureLayerRenderer,
-  //   opacity: 0.5,
-  // });
-  // const layer2 = new AgFeatureLayer({
-  //   url:
-  //     'https://water.discomap.eea.europa.eu/arcgis/rest/services/Marine/MPA_networks_in_EEA_marine_assessment_areas_2021/MapServer/5',
-  //   renderer: this.#props.customFeatureLayerRenderer,
-  //   opacity: 0.5,
-  // });
-  // const layer3 = new AgFeatureLayer({
-  //   url:
-  //     'https://bio.discomap.eea.europa.eu/arcgis/rest/services/ProtectedSites/CDDA_Dyna_WM/MapServer/3',
-  //   renderer: this.#props.customFeatureLayerRenderer,
-  //   opacity: 0.5,
-  // });
-  // const layer4 = new AgFeatureLayer({
-  //   url:
-  //     'https://bio.discomap.eea.europa.eu/arcgis/rest/services/ProtectedSites/CDDA_Dyna_WM/MapServer/4',
-  //   renderer: this.#props.customFeatureLayerRenderer,
-  //   opacity: 0.5,
-  // });
+  useEffect(() => {
+    setRenderWidgets(false);
+  }, [widgets]);
 
-  // console.log(
-  //   lib.formatQuery(data.layers.map_layers[0].map_layer.query, 'sql'),
-  // );
+  useEffect(() => {
+    if (!renderWidgets) {
+      setRenderWidgets(true);
+    }
+  }, [renderWidgets]);
 
   return (
     <Map
-      // customFeatureLayerRenderer={customFeatureLayerRenderer}
       MapProperties={{
+        ...(settings.map || {}),
         basemap,
       }}
       ViewProperties={{
@@ -89,47 +73,17 @@ export default function MapBuilder(props) {
           rotationEnabled,
         },
       }}
+      ref={ref}
     >
-      {/* <Widget name="Home" order={1} />
-      <Widget name="Compass" order={2} />
-      <Widget
-        name="LayerList"
-        order={3}
-        position="top-right"
-        ExpandProperties={{
-          expandTooltip: 'Layers',
-        }}
-        expand
-      />
-      <Widget
-        name="Print"
-        order={4}
-        position="top-right"
-        ExpandProperties={{
-          expandTooltip: 'Print',
-        }}
-        expand
-      />
-      <Widget name="Fullscreen" order={5} position="top-right" />
-      <Widget
-        name="Legend"
-        position="bottom-left"
-        respectLayerVisibility={false}
-        ExpandProperties={{
-          expandTooltip: 'Legend',
-        }}
-        expand
-      />
-      <Widget name="ScaleBar" position="bottom-right" unit="dual" /> */}
+      {renderWidgets &&
+        widgets.map((widget, index) => (
+          <Widget key={index} order={index + 1} {...widget} />
+        ))}
       {layers.map((layer, index) => (
-        <Layer key={index} {...layer} />
+        <Layer key={index} {...layer} opacity={layer.opacity ?? 1} />
       ))}
-      {/* https://water.discomap.eea.europa.eu/arcgis/rest/services/Marine/MPA_networks_in_EEA_marine_assessment_areas_2021/MapServer */}
       {/* <Layer url="https://water.discomap.eea.europa.eu/arcgis/rest/services/Marine/MPA_networks_in_EEA_marine_assessment_areas_2021/MapServer/0" /> */}
       {/* <Layer url="https://bio.discomap.eea.europa.eu/arcgis/rest/services/ProtectedSites/CDDA_Dyna_WM/MapServer/0" /> */}
-      {/* <Layer url="https://bio.discomap.eea.europa.eu/arcgis/rest/services/ProtectedSites/CDDA_Dyna_WM/MapServer/2" /> */}
-      {/* <Layer url="https://bio.discomap.eea.europa.eu/arcgis/rest/services/ProtectedSites/CDDA_Dyna_WM/MapServer/3" /> */}
-      {/* <Layer url="https://bio.discomap.eea.europa.eu/arcgis/rest/services/ProtectedSites/CDDA_Dyna_WM/MapServer/4" /> */}
     </Map>
   );
 
@@ -199,35 +153,6 @@ export default function MapBuilder(props) {
   //     });
   //   }
   // }, [setModules]);
-
-  // var customFeatureLayerRenderer = {
-  //   type: 'simple', // autocasts as new SimpleRenderer()
-  //   symbol: {
-  //     type: 'simple-fill', // autocasts as new SimpleFillSymbol()
-  //     color: styles?.symbol_color
-  //       ? styles?.symbol_color?.rgb
-  //       : {
-  //           r: 0,
-  //           g: 0,
-  //           b: 0,
-  //           a: 1,
-  //         },
-  //     //color: 'rgba(255,255,255,0.4)',
-  //     style: 'solid',
-  //     outline: {
-  //       // autocasts as new SimpleLineSymbol()
-  //       color: styles?.outline_color
-  //         ? styles?.outline_color?.rgb
-  //         : {
-  //             r: 0,
-  //             g: 0,
-  //             b: 0,
-  //             a: 1,
-  //           },
-  //       width: styles?.outline_width ? styles?.outline_width : 1,
-  //     },
-  //   },
-  // };
 
   //eslint-disable-next-line no-unused-vars
   // const esri = React.useMemo(() => {
@@ -473,6 +398,7 @@ export default function MapBuilder(props) {
   //     <div ref={mapRef} className="esri-map"></div>
   //   </div>
   // );
-}
+});
 
 // export default withDeviceSize(React.memo(MapBuilder));
+export default MapBuilder;
