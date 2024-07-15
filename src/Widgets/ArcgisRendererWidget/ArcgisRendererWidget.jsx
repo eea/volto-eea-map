@@ -37,6 +37,7 @@ function ArcgisRendererWidget(props) {
         title={
           <button
             className="btn-primary"
+            style={{ fontSize: 'var(--font-size-small)' }}
             onClick={() => {
               setOpen(true);
             }}
