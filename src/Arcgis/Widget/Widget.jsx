@@ -90,6 +90,7 @@ class $Widget extends EventEmitter {
         view: $map.view,
         content: this.#widget,
         id: this.#name,
+        mode: 'floating',
         ...ExpandProperties,
       });
     }

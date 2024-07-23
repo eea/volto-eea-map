@@ -1,7 +1,7 @@
 import { uniqBy } from 'lodash';
 
-import EmbedMapView from './components/Blocks/EmbedEEAMap/View';
-import EmbedMapEdit from './components/Blocks/EmbedEEAMap/Edit';
+import EmbedMapView from './Blocks/EmbedEEAMap/View';
+import EmbedMapEdit from './Blocks/EmbedEEAMap/Edit';
 
 import world from '@plone/volto/icons/world.svg';
 
@@ -12,13 +12,9 @@ import ArcgisColorPickerWidget from './Widgets/ArcgisColorPickerWidget';
 import ArcgisSliderWidget from './Widgets/ArcgisSliderWidget';
 import ArcgisViewpointWidget from './Widgets/ArcgisViewpointWidget';
 
-import DataQueryWidget from './Widgets/DataQueryWidget';
-import LayerSelectWidget from './Widgets/LayerSelectWidget';
 import VisualizationViewWidget from './Widgets/VisualizationViewWidget';
 
 import VisualizationView from './Views/VisualizationView';
-
-import './less/global.less';
 
 const applyConfig = (config) => {
   config.settings.allowed_cors_destinations = [
@@ -75,8 +71,6 @@ const applyConfig = (config) => {
   config.widgets.widget.arcgis_slider = ArcgisSliderWidget;
   config.widgets.widget.arcgis_viewpoint = ArcgisViewpointWidget;
 
-  config.widgets.widget.map_layers_widget = LayerSelectWidget;
-  config.widgets.widget.data_query_widget = DataQueryWidget;
   config.widgets.id.map_visualization_data = VisualizationWidget;
   config.widgets.views.id.map_visualization_data = VisualizationViewWidget;
 

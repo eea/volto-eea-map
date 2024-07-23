@@ -167,10 +167,21 @@ function Layer({ $map, layer, layers, index, value, onChangeValue }) {
   );
 }
 
-export default function SettingsLayersPanel({ $map, value, onChangeValue }) {
+export default function SettingsLayersPanel({
+  $map,
+  value,
+  properties,
+  onChangeValue,
+}) {
+  const data_query = properties?.data_query;
+
   const layers = useMemo(
-    () => getLayers({ layers: value.layers }, false),
-    [value.layers],
+    () =>
+      getLayers(
+        { layers: value.layers, styles: value.styles, data_query },
+        false,
+      ),
+    [value.layers, value.styles, data_query],
   );
 
   return (

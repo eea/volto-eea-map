@@ -11,11 +11,11 @@ import {
 
 import '@eeacms/volto-embed/Toolbar/styles.less';
 
-const ExtraViews = ({ data, screen }) => {
-  const toolbar = useRef();
+const Toolbar = ({ data, screen, style }) => {
+  const el = useRef();
   const [mobile, setMobile] = useState(false);
   const {
-    map_visualization_data = {},
+    mapData = {},
     description,
     show_note = true,
     show_sources = true,
@@ -23,11 +23,11 @@ const ExtraViews = ({ data, screen }) => {
     show_share = true,
   } = data;
 
-  const { data_provenance = {}, figure_note = [] } = map_visualization_data;
+  const { data_provenance = {}, figure_note = [] } = mapData;
 
   useEffect(() => {
-    if (toolbar.current) {
-      const toolbarParentWidth = toolbar.current.parentElement.offsetWidth;
+    if (el.current) {
+      const toolbarParentWidth = el.current.parentElement.offsetWidth;
 
       if (toolbarParentWidth < 600 && !mobile) {
         setMobile(true);
@@ -39,14 +39,18 @@ const ExtraViews = ({ data, screen }) => {
 
   return (
     <>
-      <div className={cx('visualization-toolbar', { mobile })} ref={toolbar}>
+      <div
+        className={cx('visualization-toolbar', { mobile })}
+        style={style}
+        ref={el}
+      >
         <div className="left-col">
           {show_note && <FigureNote notes={figure_note || []} />}
           {show_sources && <Sources sources={data_provenance?.data} />}
-          {show_more_info && <MoreInfo href={map_visualization_data['@id']} />}
+          {show_more_info && <MoreInfo href={mapData['@id']} />}
         </div>
         <div className="right-col">
-          {show_share && <Share href={map_visualization_data['@id']} />}
+          {show_share && <Share href={mapData['@id']} />}
         </div>
       </div>
       {description && serializeNodes(description)}
@@ -56,4 +60,4 @@ const ExtraViews = ({ data, screen }) => {
 
 export default connect((state) => ({
   screen: state.screen,
-}))(ExtraViews);
+}))(Toolbar);

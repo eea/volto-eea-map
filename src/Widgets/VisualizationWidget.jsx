@@ -99,12 +99,15 @@ function MapEditorModal(props) {
   const [value, setValue] = useState(props.value);
   const [open, setOpen] = useState(false);
 
+  const properties = props.formData;
+
   return (
     <>
       <Modal open={true} size="fullscreen" className="chart-editor-modal">
         <Modal.Content scrolling>
           <MapEditor
             value={value}
+            properties={properties}
             onChangeValue={(value) => {
               setValue(value);
             }}

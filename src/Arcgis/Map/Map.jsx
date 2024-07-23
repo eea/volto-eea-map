@@ -7,11 +7,14 @@ import {
   useMemo,
 } from 'react';
 import { EventEmitter } from 'events';
+import { isNaN, isObject } from 'lodash';
 
 import useClass from '@eeacms/volto-eea-map/hooks/useClass';
+import useChangedProps from '@eeacms/volto-eea-map/hooks/useChangedProps';
+
+import withArcgis from '@eeacms/volto-eea-map/hocs/withArcgis';
 
 import MapContext from './MapContext';
-import withArcgis from '@eeacms/volto-eea-map/hocs/withArcgis';
 
 import '@eeacms/volto-eea-map/styles/map.less';
 
@@ -97,9 +100,16 @@ class $Map extends EventEmitter {
     return this.#view;
   }
 
+  get props() {
+    return this.#props;
+  }
+
   set props(props) {
-    this.updateProps(props);
-    this.update();
+    this.#props = props;
+  }
+
+  set withCustomViewpoint(value) {
+    this.withCustomViewpoint = value;
   }
 
   async loadModules() {
@@ -147,13 +157,18 @@ class $Map extends EventEmitter {
   }
 
   updateProps(props) {
-    this.#props = props;
+    if (isNaN(props) || !isObject(props)) return;
+    Object.keys(props).forEach((key) => {
+      if (key === 'mapEl') return;
+      this.#props[key] = props[key];
+    });
+    this.update(props);
   }
 
-  update() {
+  update(props) {
     if (!this.isReady) return;
 
-    const { ViewProperties = {}, MapProperties = {} } = this.#props;
+    const { ViewProperties = {}, MapProperties = {} } = props || this.#props;
 
     if (
       this.#view.constraints.rotationEnabled &&
@@ -220,10 +235,10 @@ const Map = forwardRef((props, ref) => {
 
   useImperativeHandle(ref, () => $map, [$map]);
 
-  useEffect(() => {
+  useChangedProps((props) => {
     if (!$map.isReady) return;
-    $map.props = context;
-  }, [$map, context]);
+    $map.updateProps(props);
+  }, props);
 
   useEffect(() => {
     if (!$map) return;
@@ -236,7 +251,7 @@ const Map = forwardRef((props, ref) => {
       setIsReady(false);
     }
 
-    $map.updateProps(context);
+    $map.props = context;
 
     if (agLoaded) {
       $map.connect();

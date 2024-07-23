@@ -86,7 +86,7 @@ function useApi() {
   return { data, loading, loaded, error, load };
 }
 
-export default function Editor({ value, onChangeValue }) {
+export default function Editor({ value, properties, onChangeValue }) {
   const $map = useRef(null);
   const [active, setActive] = useState({
     sidebar: 'structure',
@@ -113,7 +113,12 @@ export default function Editor({ value, onChangeValue }) {
             ))}
           </div>
           <div className="arcgis-map__panel">
-            <Panel $map={$map} value={value} onChangeValue={onChangeValue} />
+            <Panel
+              $map={$map}
+              value={value}
+              properties={properties}
+              onChangeValue={onChangeValue}
+            />
           </div>
         </div>
         <div className="arcgis-map__view">

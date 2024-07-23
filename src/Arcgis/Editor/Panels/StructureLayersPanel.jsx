@@ -1,9 +1,11 @@
-import { useState, useEffect, useContext, useMemo } from 'react';
+import { memo, useState, useEffect, useContext, useMemo } from 'react';
+import { compose } from 'redux';
 import { isNil, toNumber } from 'lodash';
 import { v4 as uuid } from 'uuid';
-import { QueryBuilder } from 'react-querybuilder';
+import { QueryBuilder, Rule as QBRule, useRule } from 'react-querybuilder';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import { Icon, InlineForm } from '@plone/volto/components';
+import { injectLazyLibs } from '@plone/volto/helpers/Loadable/Loadable';
 import addSVG from '@plone/volto/icons/add.svg';
 import {
   debounce,
@@ -35,6 +37,80 @@ function getSublayers(subLayerIds, data) {
     return acc;
   }, []);
 }
+
+const RuleComponent = memo((props) => {
+  const [inputValue, setInputValue] = useState('');
+  const r = useRule(props);
+
+  const dataQuery = props.rule.dataQuery;
+
+  function handleKeyDown(event) {
+    if (!inputValue) return;
+    switch (event.key) {
+      case 'Enter':
+      case 'Tab':
+        if (dataQuery?.includes(inputValue)) {
+          setInputValue('');
+          event.preventDefault();
+          break;
+        }
+        r.generateOnChangeHandler('dataQuery')([
+          ...(dataQuery || []),
+          event.target.value,
+        ]);
+        setInputValue('');
+        event.preventDefault();
+        break;
+      default:
+        break;
+    }
+  }
+
+  const Select = props.reactSelectCreateable.default;
+
+  return (
+    <div className="custom-rule">
+      <div>
+        <label htmlFor="dataQuery" style={{ fontWeight: '500' }}>
+          Query parameters
+        </label>
+        <p
+          style={{
+            fontSize: '90%',
+            marginBottom: '0.25rem',
+            fontStyle: 'italic',
+          }}
+        >
+          When using page level parameters to filter the map, please specify the
+          corresponding name
+        </p>
+        <Select
+          id="dataQuery"
+          title="Data Query"
+          className="react-select"
+          classNamePrefix="react-select"
+          placeholder=""
+          isClearable
+          isMulti
+          menuIsOpen={false}
+          options={[]}
+          inputValue={inputValue}
+          value={dataQuery?.map((value) => ({ label: value, value })) || null}
+          onChange={(newValue) => {
+            r.generateOnChangeHandler('dataQuery')(
+              newValue?.map((value) => value.value) || [],
+            );
+          }}
+          onInputChange={(newValue) => setInputValue(newValue)}
+          onKeyDown={handleKeyDown}
+        />
+      </div>
+      <QBRule {...props} />
+    </div>
+  );
+});
+
+const Rule = compose(injectLazyLibs(['reactSelectCreateable']))(RuleComponent);
 
 function Layer({ layer, layers, index, value, onChangeValue }) {
   const uid = useState(uuid());
@@ -228,6 +304,10 @@ function Layer({ layer, layers, index, value, onChangeValue }) {
                 });
               }
             }}
+            valueSource={'x'}
+            controlElements={{
+              rule: Rule,
+            }}
           />
         </>
       )}
@@ -235,10 +315,20 @@ function Layer({ layer, layers, index, value, onChangeValue }) {
   );
 }
 
-export default function StructureLayersPanel({ value, onChangeValue }) {
+export default function StructureLayersPanel({
+  value,
+  properties,
+  onChangeValue,
+}) {
+  const data_query = properties?.data_query;
+
   const layers = useMemo(
-    () => getLayers({ layers: value.layers }, false),
-    [value.layers],
+    () =>
+      getLayers(
+        { layers: value.layers, styles: value.styles, data_query },
+        false,
+      ),
+    [value.layers, value.styles, data_query],
   );
 
   return (

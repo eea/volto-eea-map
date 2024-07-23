@@ -1,8 +1,10 @@
 import { useContext, useEffect, useMemo, memo } from 'react';
 import { EventEmitter } from 'events';
-import { uniq } from 'lodash';
+import { uniq, isObject, isNaN } from 'lodash';
 
 import useClass from '@eeacms/volto-eea-map/hooks/useClass';
+import useChangedProps from '@eeacms/volto-eea-map/hooks/useChangedProps';
+
 import { omitBy } from '@eeacms/volto-eea-map/Arcgis/helpers';
 import { layersMapping, withSublayers } from '@eeacms/volto-eea-map/constants';
 
@@ -36,7 +38,6 @@ class $Layer extends EventEmitter {
 
   set props(props = {}) {
     this.#props = props;
-    this.update();
   }
 
   getUrl(id) {
@@ -141,6 +142,21 @@ class $Layer extends EventEmitter {
 
     this.#layer = this.createLayer(this.#props);
 
+    if (this.#props.zoomToExtent) {
+      this.#layer.when(async () => {
+        const data = await this.#layer.queryExtent();
+        if (!$map.view) return;
+        $map.view.goTo(data.extent).then(() => {
+          const homeWidget = $map.view.ui.find('Home');
+          if (!homeWidget) return;
+          homeWidget.viewpoint = new $map.modules.AgViewpoint({
+            center: $map.view.center,
+            zoom: $map.view.zoom,
+          });
+        });
+      });
+    }
+
     if (this.#layer) {
       $map.map.add(this.#layer);
     }
@@ -150,12 +166,21 @@ class $Layer extends EventEmitter {
     this.emit('connected');
   }
 
-  update() {
+  updateProps(props) {
+    if (isNaN(props) || !isObject(props)) return;
+    Object.keys(props).forEach((key) => {
+      if (key === '$map') return;
+      this.#props[key] = props[key];
+    });
+    this.update(props);
+  }
+
+  update(props) {
     const { $map } = this.#props;
     if (!this.isReady || !$map.isReady) return;
 
     Object.keys(
-      omitBy(this.#props || {}, ['$map', 'type', 'url', 'id']),
+      omitBy(props || this.#props || {}, ['$map', 'id', 'type', 'url']),
     ).forEach((key) => {
       switch (key) {
         case 'renderer':
@@ -196,19 +221,25 @@ function Layer(props) {
 
   const $layer = useClass($Layer, context);
 
+  useChangedProps((props) => {
+    if (!$layer || !$map || !$map.isReady) return;
+    $layer.updateProps(props);
+  }, props);
+
   useEffect(() => {
     if (!$layer) return;
+
+    $layer.props = context;
+
     $layer.connect();
+
     return () => {
       if (!$layer) return;
       $layer.disconnect();
     };
-  }, [$map, $layer, context.url, context.id, context.source]);
-
-  useEffect(() => {
-    if (!$layer || !$map || !$map.isReady) return;
-    $layer.props = context;
-  }, [$map, $layer, context]);
+    // We handle the props change in the useEffect above.
+    /* eslint-disable-next-line */
+  }, [$map, $layer, context.id, context.type, context.url, context.source]);
 
   return null;
 }

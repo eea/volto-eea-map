@@ -90,6 +90,37 @@
         }
       }
     }
+
+    .ruleGroup .rule .rule-value:has(.rule-value-list-item) {
+      input {
+        width: 50%;
+      }
+    }
+
+    .ruleGroup .ruleGroup-body {
+      gap: 1rem;
+    }
+
+    .ruleGroup .custom-rule {
+      display: flex;
+      flex-flow: column;
+      gap: 0.5rem;
+
+      .react-select {
+        .react-select__control {
+          min-height: auto;
+          width: 100%;
+        }
+
+        .react-select__value-container {
+          padding: 0.3em !important;
+        }
+
+        .react-select__indicator {
+          padding: 0.3em !important;
+        }
+      }
+    }
   }
 
   &__view {
@@ -273,9 +304,7 @@
         color: var(--fold-header-text-color-closed);
         font-size: var(--font-size-base);
         text-shadow: var(--text-shadow-dark-ui);
-        transition:
-          background-color 0.1s ease-in-out,
-          color 0.1s ease-in-out,
+        transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out,
           border 0.1s ease-in-out;
 
         &__content {
@@ -369,9 +398,7 @@
     column-gap: calc(var(--spacing-half-unit) / 3);
     font-size: var(--font-size-medium);
     text-shadow: var(--text-shadow-dark-ui-inactive);
-    transition:
-      background-color 0.1s ease-in-out,
-      color 0.1s ease-in-out,
+    transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out,
       border 0.1s ease-in-out;
 
     svg {
