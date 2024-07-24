@@ -43,11 +43,16 @@ const MapBuilder = forwardRef((props, ref) => {
     () => ({ center: viewSettings.center, zoom: viewSettings.zoom }),
     [viewSettings.center, viewSettings.zoom],
   );
-  const zoomToLayer = useMemo(
-    () =>
-      layers.filter((layer) => layer.zoomToExtent).length === 0 ? 0 : null,
-    [layers],
-  );
+  const zoomToLayer = useMemo(() => {
+    let cIndex = 0;
+    return layers.reduce((index, layer) => {
+      if (layer.zoomToExtent) {
+        index = cIndex;
+      }
+      cIndex++;
+      return index;
+    }, 0);
+  }, [layers]);
 
   const rotationEnabled = settings.view?.constraints?.rotationEnabled ?? false;
 
