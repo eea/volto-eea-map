@@ -1,6 +1,6 @@
 import React from 'react';
 import { Popup, Input, Button } from 'semantic-ui-react';
-import { useCopyToClipboard } from '../utils.js';
+import useCopyToClipboard from '@eeacms/volto-eea-map/hooks/useCopyToClipboard';
 import cx from 'classnames';
 
 const Share = ({ contentTypeLink = '' }) => {
