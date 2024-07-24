@@ -33,9 +33,10 @@ const MapBuilder = forwardRef((props, ref) => {
       }),
     [data.layers, data.styles, data_query, definitionExpression],
   );
-  const widgets = useMemo(() => getWidgets({ widgets: data.widgets }), [
-    data.widgets,
-  ]);
+  const widgets = useMemo(
+    () => getWidgets({ widgets: data.widgets }),
+    [data.widgets],
+  );
   const settings = useMemo(() => data.settings || {}, [data.settings]);
   const viewSettings = useMemo(() => settings.view || {}, [settings.view]);
   const initialViewpoint = useMemo(
