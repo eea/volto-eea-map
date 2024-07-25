@@ -14,7 +14,7 @@ export default function arcgis(version = '4.29') {
       link = document.createElement('link');
       link.rel = 'stylesheet';
       link.href = `https://js.arcgis.com/${version}/esri/themes/light/main.css`;
-      link.id = getId('css', version);
+      link.id = getId('css');
       document.head.appendChild(link);
       link.addEventListener('load', () => {
         loadScript();

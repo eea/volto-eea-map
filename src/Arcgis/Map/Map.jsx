@@ -218,7 +218,7 @@ class $Map extends EventEmitter {
  * @param {object} props.ViewProperties - The properties of the view. See https://developers.arcgis.com/javascript/latest/api-reference/esri-views-View.html
  * @returns {JSX.Element} The rendered map component.
  */
-const Map = forwardRef((props, ref) => {
+const ArcgisMap = forwardRef((props, ref) => {
   const mapEl = useRef(null);
   const [isReady, setIsReady] = useState(false);
   const { children, agLoaded, MapProperties = {} } = props;
@@ -284,4 +284,4 @@ const Map = forwardRef((props, ref) => {
   );
 });
 
-export default withArcgis(Map);
+export default withArcgis(ArcgisMap);
