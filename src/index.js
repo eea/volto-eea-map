@@ -1,20 +1,20 @@
 import { uniqBy } from 'lodash';
 
-import EmbedMapView from './components/Blocks/EmbedEEAMap/View';
-import EmbedMapEdit from './components/Blocks/EmbedEEAMap/Edit';
+import EmbedMapView from './Blocks/EmbedEEAMap/View';
+import EmbedMapEdit from './Blocks/EmbedEEAMap/Edit';
 
 import world from '@plone/volto/icons/world.svg';
 
-import DataQueryWidget from './components/widgets/DataQueryWidget';
-import LayerSelectWidget from './components/widgets/LayerSelectWidget';
+import VisualizationWidget from './Widgets/VisualizationWidget';
 
-import VisualizationEditorWidget from './components/visualization/VisualizationEditorWidget';
-import VisualizationViewWidget from './components/visualization/VisualizationViewWidget';
-import VisualizationView from './components/visualization/VisualizationView';
+import ArcgisRendererWidget from './Widgets/ArcgisRendererWidget/ArcgisRendererWidget';
+import ArcgisColorPickerWidget from './Widgets/ArcgisColorPickerWidget';
+import ArcgisSliderWidget from './Widgets/ArcgisSliderWidget';
+import ArcgisViewpointWidget from './Widgets/ArcgisViewpointWidget';
 
-import SimpleColorPickerWidget from './components/widgets/SimpleColorPickerWidget';
+import VisualizationViewWidget from './Widgets/VisualizationViewWidget';
 
-import './less/global.less';
+import VisualizationView from './Views/VisualizationView';
 
 const applyConfig = (config) => {
   config.settings.allowed_cors_destinations = [
@@ -64,15 +64,15 @@ const applyConfig = (config) => {
     'id',
   );
 
-  config.widgets.widget.map_layers_widget = LayerSelectWidget;
-  config.widgets.widget.data_query_widget = DataQueryWidget;
-  config.widgets.widget.simple_color_picker_widget = SimpleColorPickerWidget;
-
-  //map editor for the visualization(content-type)
-  config.widgets.id.map_visualization_data = VisualizationEditorWidget;
-  config.widgets.views.id.map_visualization_data = VisualizationViewWidget;
-  //map viewer for the visualization(content-type)
   config.views.contentTypesViews.map_visualization = VisualizationView;
+
+  config.widgets.widget.arcgis_renderer = ArcgisRendererWidget;
+  config.widgets.widget.arcgis_color_picker = ArcgisColorPickerWidget;
+  config.widgets.widget.arcgis_slider = ArcgisSliderWidget;
+  config.widgets.widget.arcgis_viewpoint = ArcgisViewpointWidget;
+
+  config.widgets.id.map_visualization_data = VisualizationWidget;
+  config.widgets.views.id.map_visualization_data = VisualizationViewWidget;
 
   return config;
 };
