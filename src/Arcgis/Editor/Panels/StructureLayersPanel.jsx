@@ -122,21 +122,27 @@ function Layer({ layer, layers, index, value, onChangeValue }) {
     [layer.url, layer.id],
   );
 
-  const $service = {
-    data: servicesApi.data[layer.url],
-    error: servicesApi.error[layer.url],
-    loading: servicesApi.loading[layer.url],
-    loaded: servicesApi.loaded[layer.url],
-    load: servicesApi.load,
-  };
+  const $service = useMemo(
+    () => ({
+      data: servicesApi.data[layer.url],
+      error: servicesApi.error[layer.url],
+      loading: servicesApi.loading[layer.url],
+      loaded: servicesApi.loaded[layer.url],
+      load: servicesApi.load,
+    }),
+    [servicesApi, layer.url],
+  );
 
-  const $layer = {
-    data: layersApi.data[layerPath],
-    error: layersApi.error[layerPath],
-    loading: layersApi.loading[layerPath],
-    loaded: layersApi.loaded[layerPath],
-    load: layersApi.load,
-  };
+  const $layer = useMemo(
+    () => ({
+      data: layersApi.data[layerPath],
+      error: layersApi.error[layerPath],
+      loading: layersApi.loading[layerPath],
+      loaded: layersApi.loaded[layerPath],
+      load: layersApi.load,
+    }),
+    [layersApi, layerPath],
+  );
 
   useEffect(() => {
     if (!$service.loaded && !$service.loading && layer.url) {

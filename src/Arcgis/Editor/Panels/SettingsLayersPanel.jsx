@@ -24,13 +24,16 @@ function Layer({ $map, layer, layers, index, value, onChangeValue }) {
     [layer.url, layer.id],
   );
 
-  const $layer = {
-    data: layersApi.data[layerPath],
-    error: layersApi.error[layerPath],
-    loading: layersApi.loading[layerPath],
-    loaded: layersApi.loaded[layerPath],
-    load: layersApi.load,
-  };
+  const $layer = useMemo(
+    () => ({
+      data: layersApi.data[layerPath],
+      error: layersApi.error[layerPath],
+      loading: layersApi.loading[layerPath],
+      loaded: layersApi.loaded[layerPath],
+      load: layersApi.load,
+    }),
+    [layersApi, layerPath],
+  );
 
   const schema = useMemo(
     () => ({
