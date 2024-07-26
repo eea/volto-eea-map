@@ -1,6 +1,6 @@
 {
   "name": "@eeacms/volto-eea-map",
-  "version": "4.1.0",
+  "version": "5.0.0",
   "description": "@eeacms/volto-eea-map: Volto add-on",
   "main": "src/index.js",
   "author": "European Environment Agency: IDM2 A-Team",
@@ -21,16 +21,19 @@
     "@eeacms/volto-object-widget"
   ],
   "dependencies": {
+    "@arcgis/core": "4.29.10",
     "@eeacms/volto-embed": "*",
     "@eeacms/volto-object-widget": "*",
     "@plone/scripts": "*",
     "esri-loader": "3.6.0",
+    "jsoneditor": "10.1.0",
     "lodash": "4.17.21",
     "razzle-plugin-scss": "4.2.18",
     "react-color": "~2.19.3",
-    "react-querybuilder": "4.2.3"
+    "react-querybuilder": "6.5.5"
   },
   "devDependencies": {
+    "@babel/preset-env": "7.24.6",
     "@cypress/code-coverage": "^3.10.0",
     "@plone/scripts": "*",
     "babel-plugin-transform-class-properties": "^6.24.1",
