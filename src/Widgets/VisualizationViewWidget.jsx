@@ -4,11 +4,13 @@ import MapBuilder from '@eeacms/volto-eea-map/Arcgis/Map/MapBuilder';
 import Toolbar from '../Toolbar/Toolbar';
 
 function VisualizationViewWidget(props) {
-  const { value: mapData = {}, content } = props;
+  const { value, content } = props;
+
+  if (!value) return null;
 
   return (
     <>
-      <MapBuilder data={mapData} />
+      <MapBuilder data={value} />
       <Toolbar
         style={{ marginTop: '1rem' }}
         data={{
@@ -17,7 +19,7 @@ function VisualizationViewWidget(props) {
           show_more_info: false,
           show_share: true,
           mapData: {
-            ...mapData,
+            ...value,
             ...pickMetadata(content),
           },
         }}
