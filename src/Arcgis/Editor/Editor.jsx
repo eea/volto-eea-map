@@ -129,7 +129,6 @@ const Editor = forwardRef(({ value, properties, onChangeValue }, ref) => {
           </div>
           <div className="arcgis-map__panel">
             <Panel
-              $map={$map}
               value={value}
               properties={properties}
               onChangeValue={onChangeValue}
