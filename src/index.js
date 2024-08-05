@@ -72,6 +72,7 @@ const applyConfig = (config) => {
   config.widgets.widget.arcgis_viewpoint = ArcgisViewpointWidget;
 
   config.widgets.id.map_visualization_data = VisualizationWidget;
+
   config.widgets.views.id.map_visualization_data = VisualizationViewWidget;
 
   return config;

@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { connect } from 'react-redux';
 import { Modal, Button, Grid } from 'semantic-ui-react';
 import { toast } from 'react-toastify';
 
@@ -16,6 +17,7 @@ import editSVG from '@plone/volto/icons/editing.svg';
 
 import '@eeacms/volto-eea-map/styles/editor.less';
 import MapEditor from '../Arcgis/Editor/Editor';
+import { debounce } from '../Arcgis/helpers';
 
 function JsonEditorModal(props) {
   const { value, onClose, onChange } = props;
@@ -164,8 +166,55 @@ function MapEditorModal(props) {
 }
 
 const VisualizationWidget = (props) => {
+  const $map = useRef();
+  const controller = useRef({});
   const { id, title, description, value } = props;
   const [showMapEditor, setShowMapEditor] = useState(false);
+
+  function onConnect() {
+    if (controller.current.multiple && !props.block) return;
+    controller.current.agReactive = $map.current.modules.agReactiveUtils.watch(
+      () => $map.current.view.updating,
+      async (updating) => {
+        if (updating || !$map.current.view) return;
+        debounce(
+          async () => {
+            console.log(
+              await $map.current.view.takeScreenshot({ format: 'png' }),
+            );
+          },
+          300,
+          'visualization-widget-screenshot',
+        );
+      },
+    );
+  }
+
+  function onDisconnect() {
+    if (!controller.current.agReactive) return;
+    controller.current.agReactive.remove();
+  }
+
+  useEffect(() => {
+    if (!$map.current) return;
+
+    const widgets = document.querySelectorAll(
+      '.field-wrapper-map_visualization_data',
+    );
+
+    if (widgets.length > 1) {
+      controller.current.multiple = true;
+    }
+
+    $map.current.on('connected', onConnect);
+    $map.current.on('disconnected', onDisconnect);
+
+    return () => {
+      if (!$map.current) return;
+      $map.current.off('connected', onConnect);
+      $map.current.off('disconnected', onDisconnect);
+    };
+  }, []);
 
   if (__SERVER__ || !value) return null;
 
@@ -185,7 +234,7 @@ const VisualizationWidget = (props) => {
         </Button>
       </div>
       {description && <p className="help">{description}</p>}
-      <MapBuilder data={value} />
+      <MapBuilder data={value} ref={$map} />
       {showMapEditor && (
         <MapEditorModal
           {...props}
