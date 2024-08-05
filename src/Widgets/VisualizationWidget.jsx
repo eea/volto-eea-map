@@ -16,7 +16,6 @@ import editSVG from '@plone/volto/icons/editing.svg';
 
 import '@eeacms/volto-eea-map/styles/editor.less';
 import MapEditor from '../Arcgis/Editor/Editor';
-import { format } from 'prettier';
 
 function JsonEditorModal(props) {
   const { value, onClose, onChange } = props;

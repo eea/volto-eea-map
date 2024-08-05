@@ -7,6 +7,7 @@ import Toolbar from '../Toolbar/Toolbar';
 
 const VisualizationView = (props) => {
   const content = props && props.content ? props.content : {};
+
   const mapData =
     content && content.map_visualization_data
       ? content.map_visualization_data

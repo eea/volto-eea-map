@@ -92,7 +92,6 @@ const View = (props) => {
           data={mapData}
           properties={{ ...(props.properties || {}), definitionExpression }}
           height={height}
-          mode={props.mode}
         />
         <Toolbar
           style={{ marginTop: '1rem' }}
