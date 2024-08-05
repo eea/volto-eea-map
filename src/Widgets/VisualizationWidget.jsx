@@ -179,9 +179,13 @@ const VisualizationWidget = (props) => {
         if (updating || !$map.current.view) return;
         debounce(
           async () => {
-            console.log(
-              await $map.current.view.takeScreenshot({ format: 'png' }),
-            );
+            const preview = await $map.current.view.takeScreenshot({
+              format: 'png',
+            });
+            props.onChange(props.id, {
+              ...value,
+              preview: preview.dataUrl,
+            });
           },
           300,
           'visualization-widget-screenshot',
