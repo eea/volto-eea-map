@@ -16,6 +16,7 @@ import editSVG from '@plone/volto/icons/editing.svg';
 
 import '@eeacms/volto-eea-map/styles/editor.less';
 import MapEditor from '../Arcgis/Editor/Editor';
+import { format } from 'prettier';
 
 function JsonEditorModal(props) {
   const { value, onClose, onChange } = props;
@@ -96,6 +97,7 @@ function JsonEditorModal(props) {
 }
 
 function MapEditorModal(props) {
+  const $map = useRef();
   const [value, setValue] = useState(props.value);
   const [open, setOpen] = useState(false);
 
@@ -106,6 +108,7 @@ function MapEditorModal(props) {
       <Modal open={true} size="fullscreen" className="chart-editor-modal">
         <Modal.Content scrolling>
           <MapEditor
+            ref={$map}
             value={value}
             properties={properties}
             onChangeValue={(value) => {
@@ -139,8 +142,18 @@ function MapEditorModal(props) {
                   <Button
                     primary
                     floated="right"
-                    onClick={() => {
-                      props.onChange(props.id, value);
+                    onClick={async () => {
+                      const map = $map.current();
+                      if (map.view) {
+                        const preview = await map.view.takeScreenshot({
+                          format: 'png',
+                        });
+
+                        props.onChange(props.id, {
+                          ...value,
+                          preview: preview.dataUrl,
+                        });
+                      } else props.onChange(props.id, value);
                       props.onClose();
                     }}
                   >

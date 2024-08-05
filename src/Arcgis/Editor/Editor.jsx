@@ -1,4 +1,11 @@
-import { memo, useRef, useState, useMemo } from 'react';
+import {
+  memo,
+  useRef,
+  useState,
+  useMemo,
+  useImperativeHandle,
+  forwardRef,
+} from 'react';
 import { isNil } from 'lodash';
 
 import SidebarGroup from './SidebarGroup';
@@ -86,7 +93,7 @@ function useApi() {
   return { data, loading, loaded, error, load };
 }
 
-export default function Editor({ value, properties, onChangeValue }) {
+const Editor = forwardRef(({ value, properties, onChangeValue }, ref) => {
   const $map = useRef(null);
   const [active, setActive] = useState({
     sidebar: 'structure',
@@ -96,6 +103,14 @@ export default function Editor({ value, properties, onChangeValue }) {
   const layersApi = useApi();
 
   const Panel = useMemo(() => active.panel.Panel, [active]);
+
+  useImperativeHandle(
+    ref,
+    () => () => {
+      return $map.current;
+    },
+    [$map],
+  );
 
   return (
     <EditorContext.Provider value={{ servicesApi, layersApi }}>
@@ -127,4 +142,6 @@ export default function Editor({ value, properties, onChangeValue }) {
       </div>
     </EditorContext.Provider>
   );
-}
+});
+
+export default Editor;

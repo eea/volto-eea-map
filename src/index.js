@@ -16,6 +16,8 @@ import VisualizationViewWidget from './Widgets/VisualizationViewWidget';
 
 import VisualizationView from './Views/VisualizationView';
 
+import { preview_image } from './middlewares/preview_image';
+
 const applyConfig = (config) => {
   config.settings.allowed_cors_destinations = [
     ...(config.settings.allowed_cors_destinations || []),
@@ -63,6 +65,10 @@ const applyConfig = (config) => {
     ],
     'id',
   );
+  config.settings.storeExtenders = [
+    ...(config.settings.storeExtenders || []),
+    preview_image,
+  ];
 
   config.views.contentTypesViews.map_visualization = VisualizationView;
 

@@ -76,7 +76,13 @@ const MapBuilder = forwardRef((props, ref) => {
     });
   }, [ref, initialViewpoint]);
 
-  useImperativeHandle(ref, () => $map.current);
+  useImperativeHandle(
+    ref,
+    () => {
+      return $map.current;
+    },
+    [$map],
+  );
 
   return (
     <Map

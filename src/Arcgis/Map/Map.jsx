@@ -233,7 +233,7 @@ const ArcgisMap = forwardRef((props, ref) => {
 
   const $map = useClass($Map, context);
 
-  useImperativeHandle(ref, () => $map, [$map]);
+  useImperativeHandle(ref, () => $map, [$map, $map.loaded]);
 
   useChangedProps((props) => {
     if (!$map.isReady) return;
