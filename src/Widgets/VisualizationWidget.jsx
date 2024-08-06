@@ -222,7 +222,7 @@ const VisualizationWidget = (props) => {
       map.off('connected', onConnect);
       map.off('disconnected', onDisconnect);
     };
-  }, []);
+  }, [onConnect, onDisconnect]);
 
   if (__SERVER__ || !value) return null;
 
