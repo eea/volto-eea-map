@@ -1,9 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
-
 import { Modal, Button, Grid } from 'semantic-ui-react';
 import { toast } from 'react-toastify';
 import { FormFieldWrapper, Icon, Toast } from '@plone/volto/components';
-
 import MapBuilder from '@eeacms/volto-eea-map/Arcgis/Map/MapBuilder';
 import {
   initEditor,
@@ -11,9 +9,7 @@ import {
   validateEditor,
   onPasteEditor,
 } from '@eeacms/volto-eea-map/jsoneditor';
-
 import editSVG from '@plone/volto/icons/editing.svg';
-
 import '@eeacms/volto-eea-map/styles/editor.less';
 import MapEditor from '../Arcgis/Editor/Editor';
 import { debounce } from '../Arcgis/helpers';
@@ -170,7 +166,7 @@ const VisualizationWidget = (props) => {
   const { id, title, description, value } = props;
   const [showMapEditor, setShowMapEditor] = useState(false);
 
-  function onConnect() {
+  const onConnect = useRef(() => {
     if (controller.current.multiple && !props.block) return;
     props.onChange(props.id, {
       ...value,
@@ -195,12 +191,12 @@ const VisualizationWidget = (props) => {
         );
       },
     );
-  }
+  }).current;
 
-  function onDisconnect() {
+  const onDisconnect = useRef(() => {
     if (!controller.current.agReactive) return;
     controller.current.agReactive.remove();
-  }
+  }).current;
 
   useEffect(() => {
     if (!$map.current) return;
@@ -221,7 +217,7 @@ const VisualizationWidget = (props) => {
       $map.current.off('connected', onConnect);
       $map.current.off('disconnected', onDisconnect);
     };
-  }, []);
+  }, [$map, onConnect, onDisconnect]);
 
   if (__SERVER__ || !value) return null;
 

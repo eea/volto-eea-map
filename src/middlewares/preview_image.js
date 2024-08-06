@@ -60,7 +60,6 @@ export const preview_image = (middlewares) => [
         },
       });
     } catch (error) {
-      console.error(error);
       return next(action);
     }
   },
