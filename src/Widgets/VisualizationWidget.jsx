@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { connect } from 'react-redux';
+
 import { Modal, Button, Grid } from 'semantic-ui-react';
 import { toast } from 'react-toastify';
 import { FormFieldWrapper, Icon, Toast } from '@plone/volto/components';
