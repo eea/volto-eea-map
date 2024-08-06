@@ -146,15 +146,15 @@ class $Layer extends EventEmitter {
       this.#layer.when(async () => {
         const data = await this.#layer.queryExtent();
         if (!$map.view) return;
-        // $map.view.goTo(data.extent).then(() => {
-        //   if (!$map.view) return;
-        //   const homeWidget = $map.view.ui.find('Home');
-        //   if (!homeWidget) return;
-        //   homeWidget.viewpoint = new $map.modules.AgViewpoint({
-        //     center: $map.view.center,
-        //     zoom: $map.view.zoom,
-        //   });
-        // });
+        $map.view.goTo(data.extent).then(() => {
+          if (!$map.view) return;
+          const homeWidget = $map.view.ui.find('Home');
+          if (!homeWidget) return;
+          homeWidget.viewpoint = new $map.modules.AgViewpoint({
+            center: $map.view.center,
+            zoom: $map.view.zoom,
+          });
+        });
       });
     }
 

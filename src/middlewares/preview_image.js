@@ -10,7 +10,7 @@ export const preview_image = (middlewares) => [
     }
     const state = store.getState();
     const contentData = state.content.data;
-    console.log({ action });
+
     if (
       !contentData ||
       contentData['@type'] !== 'map_visualization' ||
@@ -27,7 +27,9 @@ export const preview_image = (middlewares) => [
     ) {
       return next(action);
     }
-
+    if (action?.request?.data?.map_visualization_data?.preview === 'loading') {
+      return;
+    }
     try {
       const previewImage = {
         preview_image: {

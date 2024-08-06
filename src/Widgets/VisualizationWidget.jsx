@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Modal, Button, Grid } from 'semantic-ui-react';
 import { toast } from 'react-toastify';
-
 import { FormFieldWrapper, Icon, Toast } from '@plone/volto/components';
 
 import MapBuilder from '@eeacms/volto-eea-map/Arcgis/Map/MapBuilder';
@@ -173,6 +172,10 @@ const VisualizationWidget = (props) => {
 
   function onConnect() {
     if (controller.current.multiple && !props.block) return;
+    props.onChange(props.id, {
+      ...value,
+      preview: 'loading',
+    });
     controller.current.agReactive = $map.current.modules.agReactiveUtils.watch(
       () => $map.current.view.updating,
       async (updating) => {
