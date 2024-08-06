@@ -56,6 +56,25 @@ const MapBuilder = forwardRef((props, ref) => {
 
   const rotationEnabled = settings.view?.constraints?.rotationEnabled ?? false;
 
+  const MapProperties = useMemo(
+    () => ({
+      ...(settings.map || {}),
+      basemap,
+    }),
+    [settings.map, basemap],
+  );
+
+  const ViewProperties = useMemo(
+    () => ({
+      ...(settings.view || {}),
+      constraints: {
+        ...(settings.view?.constraints || {}),
+        rotationEnabled,
+      },
+    }),
+    [settings.view, rotationEnabled],
+  );
+
   useEffect(() => {
     setRenderWidgets(false);
   }, [widgets]);
@@ -80,17 +99,8 @@ const MapBuilder = forwardRef((props, ref) => {
 
   return (
     <Map
-      MapProperties={{
-        ...(settings.map || {}),
-        basemap,
-      }}
-      ViewProperties={{
-        ...(settings.view || {}),
-        constraints: {
-          ...(settings.view?.constraints || {}),
-          rotationEnabled,
-        },
-      }}
+      MapProperties={MapProperties}
+      ViewProperties={ViewProperties}
       ref={$map}
     >
       {renderWidgets &&

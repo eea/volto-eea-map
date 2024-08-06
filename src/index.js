@@ -15,6 +15,7 @@ import ArcgisViewpointWidget from './Widgets/ArcgisViewpointWidget';
 import VisualizationViewWidget from './Widgets/VisualizationViewWidget';
 
 import VisualizationView from './Views/VisualizationView';
+import { preview_image } from './middlewares/preview_image';
 
 const applyConfig = (config) => {
   config.settings.allowed_cors_destinations = [
@@ -63,6 +64,10 @@ const applyConfig = (config) => {
     ],
     'id',
   );
+  config.settings.storeExtenders = [
+    ...(config.settings.storeExtenders || []),
+    preview_image,
+  ];
 
   config.views.contentTypesViews.map_visualization = VisualizationView;
 
@@ -72,6 +77,7 @@ const applyConfig = (config) => {
   config.widgets.widget.arcgis_viewpoint = ArcgisViewpointWidget;
 
   config.widgets.id.map_visualization_data = VisualizationWidget;
+
   config.widgets.views.id.map_visualization_data = VisualizationViewWidget;
 
   return config;
