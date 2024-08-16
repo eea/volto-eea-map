@@ -142,7 +142,7 @@ class $Layer extends EventEmitter {
 
     this.#layer = this.createLayer(this.#props);
 
-    if (this.#props.zoomToExtent) {
+    if (this.#layer?.queryExtent && this.#props.zoomToExtent) {
       this.#layer.when(async () => {
         const data = await this.#layer.queryExtent();
         if (!$map.view) return;
@@ -203,13 +203,13 @@ class $Layer extends EventEmitter {
   }
 
   disconnect() {
+    this.#modulesLoaded = false;
     if (!this.#isReady) return;
     if (this.#layer) {
       this.#layer.destroy();
     }
     this.#layer = null;
     this.#isReady = false;
-    this.#modulesLoaded = false;
     this.emit('disconnected');
   }
 }

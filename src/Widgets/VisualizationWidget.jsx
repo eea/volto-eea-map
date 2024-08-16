@@ -167,7 +167,7 @@ const VisualizationWidget = (props) => {
   const { id, title, description, value } = props;
   const [showMapEditor, setShowMapEditor] = useState(false);
 
-  if (__SERVER__) return '';
+  if (__SERVER__ || !value) return null;
 
   return (
     <FormFieldWrapper {...props} columns={1}>
