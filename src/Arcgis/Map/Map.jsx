@@ -172,7 +172,7 @@ class $Map extends EventEmitter {
 
     if (
       this.#view.constraints.rotationEnabled &&
-      !ViewProperties.constraints.rotationEnabled
+      !ViewProperties.constraints?.rotationEnabled
     ) {
       this.#view.rotation = 0;
     }
