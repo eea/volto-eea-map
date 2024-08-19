@@ -221,6 +221,7 @@ const VisualizationWidget = (props) => {
       map.off('connected', onConnect);
       map.off('disconnected', onDisconnect);
     };
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {

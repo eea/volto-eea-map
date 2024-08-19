@@ -30,12 +30,15 @@ export const preview_image = (middlewares) => [
     const preview = action?.request?.data?.map_visualization_data?.preview;
     if (
       preview === 'loading' &&
+      // eslint-disable-next-line no-confirm
       window.confirm('Do you want to save a preview image?')
     ) {
+      // eslint-disable-next-line no-alert
       window.alert('Wait for the preview image to generate!');
       return;
     } else if (
       preview !== 'loading' &&
+      // eslint-disable-next-line no-confirm
       !window.confirm('Do you want to save a preview image?')
     ) {
       return next(action);
