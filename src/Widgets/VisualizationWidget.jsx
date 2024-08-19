@@ -221,7 +221,7 @@ const VisualizationWidget = (props) => {
       map.off('connected', onConnect);
       map.off('disconnected', onDisconnect);
     };
-  }, [onConnect, onDisconnect]);
+  }, []);
 
   useEffect(() => {
     $value.current = value;
