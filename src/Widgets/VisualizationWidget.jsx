@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Modal, Button, Grid } from 'semantic-ui-react';
 import { toast } from 'react-toastify';
 import { FormFieldWrapper, Icon, Toast } from '@plone/volto/components';
@@ -183,7 +183,6 @@ const VisualizationWidget = (props) => {
             const preview = await $map.current.view.takeScreenshot({
               format: 'png',
             });
-            console.log('HERE LOADED');
             props.onChange(props.id, {
               ...$value.current,
               preview: preview.dataUrl,
@@ -222,7 +221,7 @@ const VisualizationWidget = (props) => {
       map.off('connected', onConnect);
       map.off('disconnected', onDisconnect);
     };
-  }, []);
+  }, [onConnect, onDisconnect]);
 
   useEffect(() => {
     $value.current = value;
