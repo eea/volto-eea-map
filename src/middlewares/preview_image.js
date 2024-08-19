@@ -27,8 +27,17 @@ export const preview_image = (middlewares) => [
     ) {
       return next(action);
     }
-    if (action?.request?.data?.map_visualization_data?.preview === 'loading') {
+    const preview = action?.request?.data?.map_visualization_data?.preview;
+    if (
+      preview === 'loading' &&
+      confirm('Do you want to save a preview image?')
+    ) {
       return;
+    } else if (
+      preview !== 'loading' &&
+      !confirm('Do you want to save a preview image?')
+    ) {
+      return next(action);
     }
     try {
       const previewImage = {

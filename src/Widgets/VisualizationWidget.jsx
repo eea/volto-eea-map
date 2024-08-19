@@ -163,26 +163,29 @@ function MapEditorModal(props) {
 const VisualizationWidget = (props) => {
   const $map = useRef();
   const controller = useRef({});
+  const $value = useRef(props.value);
   const { id, title, description, value } = props;
   const [showMapEditor, setShowMapEditor] = useState(false);
 
-  const onConnect = useCallback(() => {
-    if (controller.current.multiple && !props.block) return;
+  const onConnect = () => {
+    if (controller.current.multiple && !props.block && !$map.current) return;
     props.onChange(props.id, {
-      ...value,
+      ...$value.current,
       preview: 'loading',
     });
     controller.current.agReactive = $map.current.modules.agReactiveUtils.watch(
-      () => $map.current.view.updating,
+      () => $map.current?.view?.updating,
       async (updating) => {
-        if (updating || !$map.current.view) return;
+        if (updating || !$map.current?.view) return;
         debounce(
           async () => {
+            if (!$map.current?.view) return;
             const preview = await $map.current.view.takeScreenshot({
               format: 'png',
             });
+            console.log('HERE LOADED');
             props.onChange(props.id, {
-              ...value,
+              ...$value.current,
               preview: preview.dataUrl,
             });
           },
@@ -191,15 +194,16 @@ const VisualizationWidget = (props) => {
         );
       },
     );
-  }, [props, value]);
+  };
 
-  const onDisconnect = useCallback(() => {
+  const onDisconnect = () => {
     if (!controller.current.agReactive) return;
     controller.current.agReactive.remove();
-  }, []);
+  };
 
   useEffect(() => {
     const map = $map.current;
+
     if (!map) return;
 
     const widgets = document.querySelectorAll(
@@ -218,7 +222,11 @@ const VisualizationWidget = (props) => {
       map.off('connected', onConnect);
       map.off('disconnected', onDisconnect);
     };
-  }, [onConnect, onDisconnect]);
+  }, []);
+
+  useEffect(() => {
+    $value.current = value;
+  }, [value]);
 
   if (__SERVER__ || !value) return null;
 
