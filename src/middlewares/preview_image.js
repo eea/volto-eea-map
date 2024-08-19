@@ -32,7 +32,7 @@ export const preview_image = (middlewares) => [
       preview === 'loading' &&
       confirm('Do you want to save a preview image?')
     ) {
-      alert("Wait for the preview image to generate!")
+      alert('Wait for the preview image to generate!');
       return;
     } else if (
       preview !== 'loading' &&
