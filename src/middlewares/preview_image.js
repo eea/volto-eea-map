@@ -30,13 +30,13 @@ export const preview_image = (middlewares) => [
     const preview = action?.request?.data?.map_visualization_data?.preview;
     if (
       preview === 'loading' &&
-      confirm('Do you want to save a preview image?')
+      window.confirm('Do you want to save a preview image?')
     ) {
-      alert('Wait for the preview image to generate!');
+      window.alert('Wait for the preview image to generate!');
       return;
     } else if (
       preview !== 'loading' &&
-      !confirm('Do you want to save a preview image?')
+      !window.confirm('Do you want to save a preview image?')
     ) {
       return next(action);
     }
