@@ -30,7 +30,7 @@ export const preview_image = (middlewares) => [
     const preview = action?.request?.data?.map_visualization_data?.preview;
     if (
       preview === 'loading' &&
-      // eslint-disable-next-line no-confirm
+      // eslint-disable-next-line no-alert
       window.confirm('Do you want to save a preview image?')
     ) {
       // eslint-disable-next-line no-alert
@@ -38,7 +38,7 @@ export const preview_image = (middlewares) => [
       return;
     } else if (
       preview !== 'loading' &&
-      // eslint-disable-next-line no-confirm
+      // eslint-disable-next-line no-alert
       !window.confirm('Do you want to save a preview image?')
     ) {
       return next(action);
