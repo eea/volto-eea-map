@@ -29,7 +29,23 @@ export const preview_image = (middlewares) => [
       lastPreviewImage &&
       lastPreviewImage?.filename !== 'preview_image_generated_map_simple.png'
     ) {
-      return next(action);
+      if (action?.request?.data?.map_visualization_data) {
+        const mapVisualizationData = {
+          ...action.request.data.map_visualization_data,
+        };
+        delete mapVisualizationData.preview;
+
+        return next({
+          ...action,
+          request: {
+            ...action.request,
+            data: {
+              ...action.request.data,
+              map_visualization_data: mapVisualizationData,
+            },
+          },
+        });
+      } else return next(action);
     }
     const preview = action?.request?.data?.map_visualization_data?.preview;
     if (
