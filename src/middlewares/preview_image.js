@@ -10,7 +10,7 @@ export const preview_image = (middlewares) => [
     }
     const state = store.getState();
     const contentData = state.content.data;
-    const type = action?.request?.data.type || contentData['@type'];
+    const type = action?.request?.data?.['@type'] || contentData['@type'];
 
     if (
       !contentData ||
