@@ -29,7 +29,7 @@ export const preview_image = (middlewares) => [
       lastPreviewImage &&
       lastPreviewImage?.filename !== 'preview_image_generated_map_simple.png'
     ) {
-      if (action?.request?.data?.map_visualization_data) {
+      if (action?.request?.data?.map_visualization_data?.preview) {
         const mapVisualizationData = {
           ...action.request.data.map_visualization_data,
         };
