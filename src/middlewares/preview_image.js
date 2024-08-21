@@ -23,9 +23,11 @@ export const preview_image = (middlewares) => [
 
     if (
       (contentData?.preview_image &&
-      contentData?.preview_image?.filename !==
-        'preview_image_generated_map_simple.png') ||  (action?.request?.data?.preview_image &&
-        action?.request?.data?.preview_image?.filename !== 'preview_image_generated_map_simple.png')
+        contentData?.preview_image?.filename !==
+          'preview_image_generated_map_simple.png') ||
+      (action?.request?.data?.preview_image &&
+        action?.request?.data?.preview_image?.filename !==
+          'preview_image_generated_map_simple.png')
     ) {
       return next(action);
     }
