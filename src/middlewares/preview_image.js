@@ -11,7 +11,11 @@ export const preview_image = (middlewares) => [
     const state = store.getState();
     const contentData = state.content.data;
     const type = action?.request?.data?.['@type'] || contentData['@type'];
-
+    const lastPreviewImage = Object.keys(action?.request?.data).includes(
+      'preview_image',
+    )
+      ? action?.request?.data.preview_image
+      : contentData?.preview_image;
     if (
       !contentData ||
       type !== 'map_visualization' ||
@@ -22,12 +26,8 @@ export const preview_image = (middlewares) => [
     }
 
     if (
-      (contentData?.preview_image &&
-        contentData?.preview_image?.filename !==
-          'preview_image_generated_map_simple.png') ||
-      (action?.request?.data?.preview_image &&
-        action?.request?.data?.preview_image?.filename !==
-          'preview_image_generated_map_simple.png')
+      lastPreviewImage &&
+      lastPreviewImage?.filename !== 'preview_image_generated_map_simple.png'
     ) {
       return next(action);
     }
