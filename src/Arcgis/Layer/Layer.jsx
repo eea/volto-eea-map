@@ -145,7 +145,7 @@ class $Layer extends EventEmitter {
     if (this.#layer?.queryExtent && this.#props.zoomToExtent) {
       this.#layer.when(async () => {
         const data = await this.#layer.queryExtent();
-        if (!$map.view) return;
+        if (!$map.view?.ready) return;
         $map.view.goTo(data.extent).then(() => {
           const homeWidget = $map.view.ui.find('Home');
           if (!homeWidget) return;

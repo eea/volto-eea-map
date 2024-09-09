@@ -1,9 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Modal, Button, Grid } from 'semantic-ui-react';
 import { toast } from 'react-toastify';
-
 import { FormFieldWrapper, Icon, Toast } from '@plone/volto/components';
-
 import MapBuilder from '@eeacms/volto-eea-map/Arcgis/Map/MapBuilder';
 import {
   initEditor,
@@ -11,11 +9,10 @@ import {
   validateEditor,
   onPasteEditor,
 } from '@eeacms/volto-eea-map/jsoneditor';
-
 import editSVG from '@plone/volto/icons/editing.svg';
-
 import '@eeacms/volto-eea-map/styles/editor.less';
 import MapEditor from '../Arcgis/Editor/Editor';
+import { debounce } from '../Arcgis/helpers';
 
 function JsonEditorModal(props) {
   const { value, onClose, onChange } = props;
@@ -164,8 +161,72 @@ function MapEditorModal(props) {
 }
 
 const VisualizationWidget = (props) => {
+  const $map = useRef();
+  const controller = useRef({});
+  const $value = useRef(props.value);
   const { id, title, description, value } = props;
   const [showMapEditor, setShowMapEditor] = useState(false);
+
+  const onConnect = () => {
+    if (controller.current.multiple && !props.block && !$map.current) return;
+    props.onChange(props.id, {
+      ...$value.current,
+      preview: 'loading',
+    });
+    controller.current.agReactive = $map.current.modules.agReactiveUtils.watch(
+      () => $map.current?.view?.updating,
+      async (updating) => {
+        if (updating || !$map.current?.view) return;
+        debounce(
+          async () => {
+            if (!$map.current?.view) return;
+            const preview = await $map.current.view.takeScreenshot({
+              format: 'png',
+            });
+            props.onChange(props.id, {
+              ...$value.current,
+              preview: preview.dataUrl,
+            });
+          },
+          300,
+          'visualization-widget-screenshot',
+        );
+      },
+    );
+  };
+
+  const onDisconnect = () => {
+    if (!controller.current.agReactive) return;
+    controller.current.agReactive.remove();
+  };
+
+  useEffect(() => {
+    const map = $map.current;
+
+    if (!map) return;
+
+    const widgets = document.querySelectorAll(
+      '.field-wrapper-map_visualization_data',
+    );
+
+    if (widgets.length > 1) {
+      controller.current.multiple = true;
+    }
+
+    map.on('connected', onConnect);
+    map.on('disconnected', onDisconnect);
+
+    return () => {
+      if (!map) return;
+      map.off('connected', onConnect);
+      map.off('disconnected', onDisconnect);
+    };
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    $value.current = value;
+  }, [value]);
 
   if (__SERVER__ || !value) return null;
 
@@ -185,7 +246,7 @@ const VisualizationWidget = (props) => {
         </Button>
       </div>
       {description && <p className="help">{description}</p>}
-      <MapBuilder data={value} />
+      <MapBuilder data={value} ref={$map} />
       {showMapEditor && (
         <MapEditorModal
           {...props}
