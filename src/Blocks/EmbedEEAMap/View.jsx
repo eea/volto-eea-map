@@ -90,7 +90,10 @@ const View = (props) => {
       <div className="embed-map-visualization">
         <MapBuilder
           data={mapData}
-          properties={{ ...(props.properties || {}), definitionExpression }}
+          properties={{
+            ...(props.metadata || props.properties || {}),
+            definitionExpression,
+          }}
           height={height}
         />
         <Toolbar
