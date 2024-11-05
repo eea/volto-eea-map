@@ -84,7 +84,6 @@ const View = (props) => {
 
   return (
     <PrivacyProtection
-      {...props}
       data={mapServiceURL ? { ...data, url: mapServiceURL } : data}
     >
       <div className="embed-map-visualization">
