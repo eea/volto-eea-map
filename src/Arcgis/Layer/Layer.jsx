@@ -69,6 +69,7 @@ class $Layer extends EventEmitter {
     if (renderer.autocast) {
       return renderer;
     }
+    console.log(renderer, agJsonUtils.fromJSON(renderer));
     return agJsonUtils.fromJSON(renderer);
   }
 
@@ -147,6 +148,7 @@ class $Layer extends EventEmitter {
         const data = await this.#layer.queryExtent();
         if (!$map.view?.ready) return;
         $map.view.goTo(data.extent).then(() => {
+          if ($map.view) return;
           const homeWidget = $map.view.ui.find('Home');
           if (!homeWidget) return;
           homeWidget.viewpoint = new $map.modules.AgViewpoint({
