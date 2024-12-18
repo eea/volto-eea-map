@@ -69,7 +69,6 @@ class $Layer extends EventEmitter {
     if (renderer.autocast) {
       return renderer;
     }
-    console.log(renderer, agJsonUtils.fromJSON(renderer));
     return agJsonUtils.fromJSON(renderer);
   }
 
