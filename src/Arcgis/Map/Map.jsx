@@ -76,6 +76,7 @@ class $Map extends EventEmitter {
   #props = {};
   #map = null;
   #view = null;
+  #withCustomViewpoint = undefined;
   reactiveUtils = null;
 
   constructor(props) {
@@ -104,12 +105,16 @@ class $Map extends EventEmitter {
     return this.#props;
   }
 
+  get withCustomViewpoint() {
+    return this.#withCustomViewpoint;
+  }
+
   set props(props) {
     this.#props = props;
   }
 
   set withCustomViewpoint(value) {
-    this.withCustomViewpoint = value;
+    this.#withCustomViewpoint = value;
   }
 
   async loadModules() {
