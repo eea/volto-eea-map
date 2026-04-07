@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import cx from 'classnames';
 
-import { Icon } from '@plone/volto/components';
+import Icon from '@plone/volto/components/theme/Icon/Icon';
 
 import clearSVG from '@plone/volto/icons/clear.svg';
 import upKeySVG from '@plone/volto/icons/up-key.svg';

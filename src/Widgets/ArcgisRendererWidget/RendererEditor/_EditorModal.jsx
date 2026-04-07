@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { Modal, Button } from 'semantic-ui-react';
 import { toast } from 'react-toastify';
-import { Toast } from '@plone/volto/components';
+import Toast from '@plone/volto/components/manage/Toast/Toast';
 import {
   initEditor,
   destroyEditor,

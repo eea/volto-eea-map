@@ -1,4 +1,4 @@
-import { uniqBy } from 'lodash';
+import uniqBy from 'lodash/uniqBy';
 
 import EmbedMapView from './Blocks/EmbedEEAMap/View';
 import EmbedMapEdit from './Blocks/EmbedEEAMap/Edit';

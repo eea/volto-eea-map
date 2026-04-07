@@ -1,4 +1,4 @@
-import { isArray } from 'lodash';
+import isArray from 'lodash/isArray';
 import { formatQuery as $formatQuery } from 'react-querybuilder';
 import { getDefaultWidgets } from '@eeacms/volto-eea-map/constants';
 

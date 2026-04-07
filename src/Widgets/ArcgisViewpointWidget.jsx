@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { toNumber } from 'lodash';
-import { FormFieldWrapper, InlineForm } from '@plone/volto/components';
+import toNumber from 'lodash/toNumber';
+import { FormFieldWrapper } from '@plone/volto/components/manage/Widgets';
+import { InlineForm } from '@plone/volto/components/manage/Form';
 
 export default function ArcgisViewpointWidget(props) {
   const [watchViewpoint, setWatchViewpoint] = useState(false);

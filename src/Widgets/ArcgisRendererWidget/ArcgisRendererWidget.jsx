@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { compose } from 'redux';
 import { injectIntl } from 'react-intl';
-import { FormFieldWrapper, Icon } from '@plone/volto/components';
+import Icon from '@plone/volto/components/theme/Icon/Icon';
+import { FormFieldWrapper } from '@plone/volto/components/manage/Widgets';
 import { injectLazyLibs } from '@plone/volto/helpers/Loadable/Loadable';
 import {
   customSelectStyles,

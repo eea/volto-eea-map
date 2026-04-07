@@ -5,7 +5,7 @@ import {
   serializeNodes,
   serializeNodesToText,
 } from '@plone/volto-slate/editor/render';
-import { isArray } from 'lodash';
+import isArray from 'lodash/isArray';
 
 export const serializeText = (note) => {
   if (!serializeNodesToText(note))

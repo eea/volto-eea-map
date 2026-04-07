@@ -5,7 +5,7 @@
 
 import React, { Component } from 'react';
 
-import { FormFieldWrapper } from '@plone/volto/components';
+import { FormFieldWrapper } from '@plone/volto/components/manage/Widgets';
 
 /**
  * The simple slider widget.

@@ -1,5 +1,5 @@
-import { toNumber } from 'lodash';
-import { InlineForm } from '@plone/volto/components';
+import toNumber from 'lodash/toNumber';
+import { InlineForm } from '@plone/volto/components/manage/Form';
 import Panel from './Panel';
 import Fold from '../Fold/Fold';
 import { getDefaultWidgets } from '@eeacms/volto-eea-map/constants';

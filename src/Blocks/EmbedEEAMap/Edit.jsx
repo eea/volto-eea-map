@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
 import { Message } from 'semantic-ui-react';
 
-import { SidebarPortal } from '@plone/volto/components';
-import { flattenToAppURL } from '@plone/volto/helpers';
+import SidebarPortal from '@plone/volto/components/manage/Sidebar/SidebarPortal';
+import { flattenToAppURL } from '@plone/volto/helpers/Url/Url';
 import BlockDataForm from '@plone/volto/components/manage/Form/BlockDataForm';
 
 import { schema } from './schema';
