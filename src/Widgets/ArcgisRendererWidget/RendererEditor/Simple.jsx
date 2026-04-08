@@ -1,6 +1,5 @@
+import InlineForm from '@plone/volto/components/manage/Form/InlineForm';
 import toNumber from 'lodash/toNumber';
-
-import { InlineForm } from '@plone/volto/components/manage/Form';
 
 import { simpleSymbols as simpleSymbolsOptions } from '@eeacms/volto-eea-map/constants';
 

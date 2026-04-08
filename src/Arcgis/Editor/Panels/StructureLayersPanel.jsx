@@ -6,7 +6,7 @@ import { v4 as uuid } from 'uuid';
 import { QueryBuilder, Rule as QBRule, useRule } from 'react-querybuilder';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import Icon from '@plone/volto/components/theme/Icon/Icon';
-import { InlineForm } from '@plone/volto/components/manage/Form';
+import InlineForm from '@plone/volto/components/manage/Form/InlineForm';
 import { injectLazyLibs } from '@plone/volto/helpers/Loadable/Loadable';
 import addSVG from '@plone/volto/icons/add.svg';
 import {

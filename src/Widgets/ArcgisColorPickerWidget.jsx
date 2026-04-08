@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import Icon from '@plone/volto/components/theme/Icon/Icon';
-import { FormFieldWrapper } from '@plone/volto/components/manage/Widgets';
+import FormFieldWrapper from '@plone/volto/components/manage/Widgets/FormFieldWrapper';
 import { Button } from 'semantic-ui-react';
 import loadable from '@loadable/component';
 import clearSVG from '@plone/volto/icons/clear.svg';

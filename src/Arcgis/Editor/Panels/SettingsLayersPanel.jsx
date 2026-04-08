@@ -3,7 +3,7 @@ import { Segment, Dimmer, Loader } from 'semantic-ui-react';
 import isNil from 'lodash/isNil';
 import toNumber from 'lodash/toNumber';
 import { v4 as uuid } from 'uuid';
-import { InlineForm } from '@plone/volto/components/manage/Form';
+import InlineForm from '@plone/volto/components/manage/Form/InlineForm';
 import {
   debounce,
   getLayers,
