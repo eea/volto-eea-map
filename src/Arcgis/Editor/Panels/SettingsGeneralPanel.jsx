@@ -1,7 +1,7 @@
 import InlineForm from '@plone/volto/components/manage/Form/InlineForm';
 import toNumber from 'lodash/toNumber';
 import Panel from './Panel';
-import Fold from '../Fold/Fold';
+import Fold from '@eeacms/volto-eea-map/Arcgis/Editor/Fold/Fold';
 import { getDefaultWidgets } from '@eeacms/volto-eea-map/constants';
 
 const mapSchema = {

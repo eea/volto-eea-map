@@ -13,8 +13,8 @@ import {
 } from '@eeacms/volto-eea-map/jsoneditor';
 import editSVG from '@plone/volto/icons/editing.svg';
 import '@eeacms/volto-eea-map/styles/editor.less';
-import MapEditor from '../Arcgis/Editor/Editor';
-import { debounce } from '../Arcgis/helpers';
+import MapEditor from '@eeacms/volto-eea-map/Arcgis/Editor/Editor';
+import { debounce } from '@eeacms/volto-eea-map/Arcgis/helpers';
 
 function JsonEditorModal(props) {
   const { value, onClose, onChange } = props;

@@ -8,10 +8,14 @@ import React, {
   useRef,
 } from 'react';
 import Map from './Map';
-import Layer from '../Layer/Layer';
-import Widget from '../Widget/Widget';
+import Layer from '@eeacms/volto-eea-map/Arcgis/Layer/Layer';
+import Widget from '@eeacms/volto-eea-map/Arcgis/Widget/Widget';
 
-import { getBasemap, getLayers, getWidgets } from '../helpers';
+import {
+  getBasemap,
+  getLayers,
+  getWidgets,
+} from '@eeacms/volto-eea-map/Arcgis/helpers';
 
 const MapBuilder = forwardRef((props, ref) => {
   const { data, properties } = props || {};

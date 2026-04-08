@@ -3,7 +3,7 @@ import toNumber from 'lodash/toNumber';
 
 import { simpleSymbols as simpleSymbolsOptions } from '@eeacms/volto-eea-map/constants';
 
-import { simpleSymbols } from '../RendererEditor/_defaults';
+import { simpleSymbols } from '@eeacms/volto-eea-map/Widgets/ArcgisRendererWidget/RendererEditor/_defaults';
 
 export default function Simple(props) {
   const { $map, value, id, onChange } = props;
