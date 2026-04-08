@@ -1,6 +1,8 @@
 import { useContext, useEffect, useMemo, memo } from 'react';
 import { EventEmitter } from 'events';
-import { uniq, isObject, isNaN } from 'lodash';
+import uniq from 'lodash/uniq';
+import isObject from 'lodash/isObject';
+import isNaN from 'lodash/isNaN';
 
 import useClass from '@eeacms/volto-eea-map/hooks/useClass';
 import useChangedProps from '@eeacms/volto-eea-map/hooks/useChangedProps';

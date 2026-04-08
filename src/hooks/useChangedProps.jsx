@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
-import { isFunction, isEqual } from 'lodash';
+import isFunction from 'lodash/isFunction';
+import isEqual from 'lodash/isEqual';
 
 export default function useChangedEffect(callback, props) {
   const prevPropsRef = useRef(props);

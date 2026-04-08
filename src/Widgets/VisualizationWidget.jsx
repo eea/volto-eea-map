@@ -1,7 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Modal, Button, Grid } from 'semantic-ui-react';
 import { toast } from 'react-toastify';
-import { FormFieldWrapper, Icon, Toast } from '@plone/volto/components';
+import Icon from '@plone/volto/components/theme/Icon/Icon';
+import Toast from '@plone/volto/components/manage/Toast/Toast';
+import FormFieldWrapper from '@plone/volto/components/manage/Widgets/FormFieldWrapper';
 import MapBuilder from '@eeacms/volto-eea-map/Arcgis/Map/MapBuilder';
 import {
   initEditor,

@@ -1,5 +1,5 @@
 import { memo, useRef, useState, useMemo } from 'react';
-import { isNil } from 'lodash';
+import isNil from 'lodash/isNil';
 
 import SidebarGroup from './SidebarGroup';
 

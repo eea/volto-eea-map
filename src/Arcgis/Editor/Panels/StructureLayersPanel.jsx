@@ -1,10 +1,12 @@
 import { memo, useState, useEffect, useContext, useMemo } from 'react';
 import { compose } from 'redux';
-import { isNil, toNumber } from 'lodash';
+import isNil from 'lodash/isNil';
+import toNumber from 'lodash/toNumber';
 import { v4 as uuid } from 'uuid';
 import { QueryBuilder, Rule as QBRule, useRule } from 'react-querybuilder';
 import { Dimmer, Loader } from 'semantic-ui-react';
-import { Icon, InlineForm } from '@plone/volto/components';
+import Icon from '@plone/volto/components/theme/Icon/Icon';
+import InlineForm from '@plone/volto/components/manage/Form/InlineForm';
 import { injectLazyLibs } from '@plone/volto/helpers/Loadable/Loadable';
 import addSVG from '@plone/volto/icons/add.svg';
 import {
