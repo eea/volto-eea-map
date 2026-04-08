@@ -12,7 +12,7 @@ import {
 import { blendModes } from '@eeacms/volto-eea-map/constants';
 import EditorContext from '@eeacms/volto-eea-map/Arcgis/Editor/EditorContext';
 import Panel from './Panel';
-import Fold from '../Fold/Fold';
+import Fold from '@eeacms/volto-eea-map/Arcgis/Editor/Fold/Fold';
 
 function Layer({ $map, layer, layers, index, value, onChangeValue }) {
   const uid = useState(uuid());

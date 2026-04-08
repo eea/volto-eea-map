@@ -16,7 +16,7 @@ import {
 } from '@eeacms/volto-eea-map/Arcgis/helpers';
 import EditorContext from '@eeacms/volto-eea-map/Arcgis/Editor/EditorContext';
 import Panel from './Panel';
-import Fold from '../Fold/Fold';
+import Fold from '@eeacms/volto-eea-map/Arcgis/Editor/Fold/Fold';
 
 function getLayersChoices(layers = []) {
   return layers.map((layer) => [

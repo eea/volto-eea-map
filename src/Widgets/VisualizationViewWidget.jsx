@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { pickMetadata } from '@eeacms/volto-embed/helpers';
 import MapBuilder from '@eeacms/volto-eea-map/Arcgis/Map/MapBuilder';
-import Toolbar from '../Toolbar/Toolbar';
+import Toolbar from '@eeacms/volto-eea-map/Toolbar/Toolbar';
 
 function VisualizationViewWidget(props) {
   const { value, content } = props;

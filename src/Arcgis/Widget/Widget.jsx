@@ -1,7 +1,7 @@
 import { useContext, useEffect, useMemo, memo } from 'react';
 import { EventEmitter } from 'events';
 
-import MapContext from '../Map/MapContext';
+import MapContext from '@eeacms/volto-eea-map/Arcgis/Map/MapContext';
 
 import useClass from '@eeacms/volto-eea-map/hooks/useClass';
 
