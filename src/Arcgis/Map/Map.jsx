@@ -7,7 +7,8 @@ import {
   useMemo,
 } from 'react';
 import { EventEmitter } from 'events';
-import { isNaN, isObject } from 'lodash';
+import isNaN from 'lodash/isNaN';
+import isObject from 'lodash/isObject';
 
 import useClass from '@eeacms/volto-eea-map/hooks/useClass';
 import useChangedProps from '@eeacms/volto-eea-map/hooks/useChangedProps';

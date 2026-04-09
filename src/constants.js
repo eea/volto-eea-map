@@ -1,4 +1,4 @@
-import { capitalize } from 'lodash';
+import capitalize from 'lodash/capitalize';
 
 export const positions = [
   'top-left',

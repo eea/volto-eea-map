@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
-import { InlineForm } from '@plone/volto/components';
+import InlineForm from '@plone/volto/components/manage/Form/InlineForm';
 import { basemaps } from '@eeacms/volto-eea-map/constants';
 import { getBasemap } from '@eeacms/volto-eea-map/Arcgis/helpers';
-import Fold from '../Fold/Fold';
+import Fold from '@eeacms/volto-eea-map/Arcgis/Editor/Fold/Fold';
 
 import Panel from './Panel';
 

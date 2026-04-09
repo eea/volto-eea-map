@@ -1,7 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Modal, Button, Grid } from 'semantic-ui-react';
 import { toast } from 'react-toastify';
-import { FormFieldWrapper, Icon, Toast } from '@plone/volto/components';
+import Icon from '@plone/volto/components/theme/Icon/Icon';
+import Toast from '@plone/volto/components/manage/Toast/Toast';
+import FormFieldWrapper from '@plone/volto/components/manage/Widgets/FormFieldWrapper';
 import MapBuilder from '@eeacms/volto-eea-map/Arcgis/Map/MapBuilder';
 import {
   initEditor,
@@ -11,8 +13,8 @@ import {
 } from '@eeacms/volto-eea-map/jsoneditor';
 import editSVG from '@plone/volto/icons/editing.svg';
 import '@eeacms/volto-eea-map/styles/editor.less';
-import MapEditor from '../Arcgis/Editor/Editor';
-import { debounce } from '../Arcgis/helpers';
+import MapEditor from '@eeacms/volto-eea-map/Arcgis/Editor/Editor';
+import { debounce } from '@eeacms/volto-eea-map/Arcgis/helpers';
 
 function JsonEditorModal(props) {
   const { value, onClose, onChange } = props;

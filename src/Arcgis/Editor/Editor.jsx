@@ -1,9 +1,9 @@
 import { memo, useRef, useState, useMemo } from 'react';
-import { isNil } from 'lodash';
+import isNil from 'lodash/isNil';
 
 import SidebarGroup from './SidebarGroup';
 
-import _MapBuilder from '../Map/MapBuilder';
+import _MapBuilder from '@eeacms/volto-eea-map/Arcgis/Map/MapBuilder';
 
 import {
   StructureBaseLayerPanel,

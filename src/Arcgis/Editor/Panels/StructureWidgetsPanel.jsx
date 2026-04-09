@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { Icon, InlineForm } from '@plone/volto/components';
-import { withVariationSchemaEnhancer } from '@plone/volto/helpers';
+import Icon from '@plone/volto/components/theme/Icon/Icon';
+import InlineForm from '@plone/volto/components/manage/Form/InlineForm';
+import { withVariationSchemaEnhancer } from '@plone/volto/helpers//Extensions';
 import addSVG from '@plone/volto/icons/add.svg';
 import Panel from './Panel';
-import Fold from '../Fold/Fold';
-import { debounce, getWidgets } from '../../helpers';
+import Fold from '@eeacms/volto-eea-map/Arcgis/Editor/Fold/Fold';
+import { debounce, getWidgets } from '@eeacms/volto-eea-map/Arcgis/helpers';
 import {
   expandKeys,
   positions,

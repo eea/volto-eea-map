@@ -1,9 +1,9 @@
 import React from 'react';
-import { hasBlocksData } from '@plone/volto/helpers';
+import { hasBlocksData } from '@plone/volto/helpers/Blocks/Blocks';
 import RenderBlocks from '@plone/volto/components/theme/View/RenderBlocks';
 import { pickMetadata } from '@eeacms/volto-embed/helpers';
 import MapBuilder from '@eeacms/volto-eea-map/Arcgis/Map/MapBuilder';
-import Toolbar from '../Toolbar/Toolbar';
+import Toolbar from '@eeacms/volto-eea-map/Toolbar/Toolbar';
 
 const VisualizationView = (props) => {
   const content = props && props.content ? props.content : {};
