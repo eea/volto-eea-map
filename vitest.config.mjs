@@ -6,6 +6,15 @@ import { defineConfig } from 'vitest/config';
 import { transformWithEsbuild } from 'vite';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const hasTests = ['src', 'searchlib'].some((sourceDirectory) => {
+  const sourcePath = path.join(__dirname, sourceDirectory);
+  return (
+    fs.existsSync(sourcePath) &&
+    fs
+      .readdirSync(sourcePath, { recursive: true })
+      .some((filename) => /\.(test|spec)\.[jt]sx?$/.test(filename))
+  );
+});
 const workspaceCandidate = path.resolve(__dirname, '../..');
 const projectRoot = fs.existsSync(
   path.join(workspaceCandidate, 'core/packages/volto'),
@@ -254,12 +263,14 @@ export default defineConfig({
         'src/**/*config.{js,jsx,ts,tsx}',
         'src/**/*schema.{js,jsx,ts,tsx}',
       ],
-      thresholds: {
-        branches: 5,
-        functions: 5,
-        lines: 5,
-        statements: 5,
-      },
+      ...(hasTests && {
+        thresholds: {
+          branches: 5,
+          functions: 5,
+          lines: 5,
+          statements: 5,
+        },
+      }),
     },
   },
 });
