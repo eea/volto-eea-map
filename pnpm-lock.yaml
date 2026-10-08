@@ -1352,9 +1352,6 @@ importers:
       '@eeacms/volto-object-widget':
         specifier: '*'
         version: 9.1.1
-      '@plone/scripts':
-        specifier: '*'
-        version: 3.10.7
       esri-loader:
         specifier: 3.6.0
         version: 3.6.0
@@ -1392,6 +1389,9 @@ importers:
       '@plone/registry':
         specifier: workspace:*
         version: link:../../core/packages/registry
+      '@plone/scripts':
+        specifier: workspace:*
+        version: link:../../core/packages/scripts
       '@plone/types':
         specifier: workspace:*
         version: link:../../core/packages/types
@@ -3684,10 +3684,6 @@ packages:
   '@pkgr/core@0.3.6':
     resolution: {integrity: sha512-SEeaJLb3qBNF/OaXnaR1NmmBbFYk1zC0ZH/52fATcRPLFg/p791YrcyFFy44Bo9sLaGuSuLp5Q6axbb/O+v/RA==}
     engines: {node: ^14.18.0 || >=16.0.0}
-
-  '@plone/scripts@3.10.7':
-    resolution: {integrity: sha512-LV3xrMoCPS6nI1ap3i8lqs5dIc7dMTFlZmYdvujxSLigd4k2w9pG+4/ttrFAt5Qgt4ywy/rxT38dSPAhx9fP3Q==}
-    hasBin: true
 
   '@pmmmwh/react-refresh-webpack-plugin@0.5.17':
     resolution: {integrity: sha512-tXDyE1/jzFsHXjhRZQ3hMl0IVhYe5qula43LDWIhVfjp9G/nT5OQY5AORVOrkEGAUltBJOfOWeETbmhm6kHhuQ==}
@@ -16484,27 +16480,6 @@ snapshots:
     optional: true
 
   '@pkgr/core@0.3.6': {}
-
-  '@plone/scripts@3.10.7':
-    dependencies:
-      '@babel/core': 7.29.7
-      babel-plugin-react-intl: 5.1.17
-      babel-preset-razzle: 4.2.17
-      chalk: 4.1.2
-      commander: 8.2.0
-      comment-json: 4.6.2
-      execa: 9.6.0
-      find-parent-dir: 0.3.1
-      fs-extra: 10.1.0
-      git-url-parse: 13.1.1
-      glob: 10.5.0
-      lodash: 4.18.1
-      mrs-developer: 2.3.2
-      pofile: 1.0.10
-      wait-on: 9.1.0
-    transitivePeerDependencies:
-      - debug
-      - supports-color
 
   '@pmmmwh/react-refresh-webpack-plugin@0.5.17(react-refresh@0.14.2)(sockjs-client@1.4.0)(type-fest@4.18.2)(webpack-dev-server@5.2.6(webpack@5.105.4(esbuild@0.25.12)))(webpack-hot-middleware@2.26.1)(webpack@5.105.4(esbuild@0.25.12))':
     dependencies:

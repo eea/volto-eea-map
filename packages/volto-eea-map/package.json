@@ -28,7 +28,6 @@
     "@arcgis/core": "4.29.10",
     "@eeacms/volto-embed": "*",
     "@eeacms/volto-object-widget": "*",
-    "@plone/scripts": "*",
     "esri-loader": "3.6.0",
     "events": "3.3.0",
     "jsoneditor": "10.1.0",
