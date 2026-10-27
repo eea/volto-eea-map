@@ -32,7 +32,6 @@
     "events": "3.3.0",
     "jsoneditor": "10.1.0",
     "lodash": "4.17.21",
-    "razzle-plugin-scss": "4.2.18",
     "react-color": "~2.19.3",
     "react-querybuilder": "6.5.5"
   },
