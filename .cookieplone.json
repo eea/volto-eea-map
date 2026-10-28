@@ -1,0 +1,7 @@
+{
+  "title": "Eea Map",
+  "frontend_addon_name": "volto-eea-map",
+  "description": "@eeacms/volto-eea-map: Volto add-on",
+  "volto_version": "19.3.0",
+  "__template__": "frontend_addon"
+}
