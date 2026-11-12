@@ -18,7 +18,7 @@ import {
 } from '@eeacms/volto-eea-map/Arcgis/helpers';
 
 const MapBuilder = forwardRef((props, ref) => {
-  const { data, properties } = props || {};
+  const { data, properties, onError, onLoading, onReady } = props || {};
   const data_query = properties?.data_query;
   const definitionExpression = properties?.definitionExpression;
   const $map = useRef(null);
@@ -105,6 +105,10 @@ const MapBuilder = forwardRef((props, ref) => {
     <Map
       MapProperties={MapProperties}
       ViewProperties={ViewProperties}
+      expectedLayerCount={layers.length}
+      onError={onError}
+      onLoading={onLoading}
+      onReady={onReady}
       ref={$map}
     >
       {renderWidgets &&

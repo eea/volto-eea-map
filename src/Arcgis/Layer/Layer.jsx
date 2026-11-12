@@ -145,19 +145,20 @@ class $Layer extends EventEmitter {
     this.#layer = this.createLayer(this.#props);
 
     if (this.#layer?.queryExtent && this.#props.zoomToExtent) {
-      this.#layer.when(async () => {
+      const initialViewOperation = this.#layer.when(async () => {
         const data = await this.#layer.queryExtent();
-        if (!$map.view?.ready) return;
-        $map.view.goTo(data.extent).then(() => {
-          if ($map.view) return;
-          const homeWidget = $map.view.ui.find('Home');
-          if (!homeWidget) return;
-          homeWidget.viewpoint = new $map.modules.AgViewpoint({
-            center: $map.view.center,
-            zoom: $map.view.zoom,
-          });
+        if (!$map.view) return;
+        await $map.view.when();
+        await $map.view.goTo(data.extent);
+
+        const homeWidget = $map.view.ui.find('Home');
+        if (!homeWidget) return;
+        homeWidget.viewpoint = new $map.modules.AgViewpoint({
+          center: $map.view.center,
+          zoom: $map.view.zoom,
         });
       });
+      $map.trackOperation(initialViewOperation);
     }
 
     if (this.#layer) {

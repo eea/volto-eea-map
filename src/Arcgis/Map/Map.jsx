@@ -77,6 +77,7 @@ class $Map extends EventEmitter {
   #props = {};
   #map = null;
   #view = null;
+  #pendingOperations = new Set();
   #withCustomViewpoint = undefined;
   reactiveUtils = null;
 
@@ -116,6 +117,20 @@ class $Map extends EventEmitter {
 
   set withCustomViewpoint(value) {
     this.#withCustomViewpoint = value;
+  }
+
+  trackOperation(operation) {
+    const trackedOperation = Promise.resolve(operation).finally(() => {
+      this.#pendingOperations.delete(trackedOperation);
+    });
+    this.#pendingOperations.add(trackedOperation);
+    return trackedOperation;
+  }
+
+  async waitForPendingOperations() {
+    while (this.#pendingOperations.size > 0) {
+      await Promise.allSettled(Array.from(this.#pendingOperations));
+    }
   }
 
   async loadModules() {
@@ -200,9 +215,11 @@ class $Map extends EventEmitter {
   }
 
   connect() {
-    this.loadModules().then(() => {
-      this.init();
-    });
+    this.loadModules()
+      .then(() => {
+        this.init();
+      })
+      .catch((error) => this.emit('failed', error));
   }
 
   disconnect() {
@@ -211,6 +228,7 @@ class $Map extends EventEmitter {
     }
     this.#map = null;
     this.#view = null;
+    this.#pendingOperations.clear();
     this.#isReady = false;
     this.emit('disconnected');
   }
@@ -248,29 +266,69 @@ const ArcgisMap = forwardRef((props, ref) => {
 
   useEffect(() => {
     if (!$map) return;
+    let cancelled = false;
+    let updatingHandle;
+    let layerViews = [];
 
-    function onConnect() {
+    const isUpdating = () =>
+      Boolean($map.view?.updating) ||
+      layerViews.some((layerView) => Boolean(layerView?.updating));
+
+    async function onConnect() {
       setIsReady(true);
+
+      try {
+        await $map.view.when();
+        await $map.reactiveUtils.whenOnce(
+          () => $map.map.layers.length >= (props.expectedLayerCount || 0),
+        );
+        const layers = $map.map.layers.toArray();
+        await Promise.all(layers.map((layer) => layer.when()));
+        await $map.waitForPendingOperations();
+        layerViews = await Promise.all(
+          layers.map((layer) => $map.view.whenLayerView(layer)),
+        );
+        await $map.reactiveUtils.whenOnce(() => !isUpdating());
+
+        if (!cancelled) {
+          props.onReady?.($map);
+          updatingHandle = $map.reactiveUtils.watch(isUpdating, (updating) => {
+            if (cancelled) return;
+            if (updating) props.onLoading?.($map);
+            else props.onReady?.($map);
+          });
+        }
+      } catch (error) {
+        if (!cancelled) props.onError?.(error);
+      }
     }
 
     function onDisconnect() {
       setIsReady(false);
+      props.onLoading?.($map);
+    }
+
+    function onError(error) {
+      props.onError?.(error);
     }
 
     $map.props = context;
+    $map.on('connected', onConnect);
+    $map.on('disconnected', onDisconnect);
+    $map.on('failed', onError);
 
     if (agLoaded) {
       $map.connect();
     }
 
-    $map.on('connected', onConnect);
-    $map.on('disconnected', onDisconnect);
-
     return () => {
+      cancelled = true;
+      updatingHandle?.remove();
       if (!$map) return;
       $map.disconnect();
       $map.off('connected', onConnect);
       $map.off('disconnected', onDisconnect);
+      $map.off('failed', onError);
     };
     // We handle the props change in the useEffect above.
     /* eslint-disable-next-line */

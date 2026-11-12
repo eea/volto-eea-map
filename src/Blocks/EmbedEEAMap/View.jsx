@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -11,7 +11,7 @@ import Toolbar from '@eeacms/volto-eea-map/Toolbar/Toolbar';
 
 import { getMapData } from './helpers';
 
-const View = (props) => {
+export const View = (props) => {
   const { id, mode, data, getContent, content } = props;
   const {
     vis_url,
@@ -27,6 +27,11 @@ const View = (props) => {
   const url = useMemo(() => flattenToAppURL(vis_url), [vis_url]);
 
   const mapData = useMemo(() => getMapData({ content, data }), [content, data]);
+  const [liveMapStatus, setLiveMapStatus] = useState('loading');
+
+  const onMapLoading = useCallback(() => setLiveMapStatus('loading'), []);
+  const onMapReady = useCallback(() => setLiveMapStatus('ready'), []);
+  const onMapError = useCallback(() => setLiveMapStatus('failed'), []);
 
   const mapServiceURL = useMemo(() => {
     const url = getLayers(mapData)?.[0]?.url;
@@ -83,32 +88,41 @@ const View = (props) => {
   }
 
   return (
-    <PrivacyProtection
-      data={mapServiceURL ? { ...data, url: mapServiceURL } : data}
+    <div
+      data-print-block="eea-map"
+      data-print-block-id={id}
+      data-print-status={liveMapStatus}
     >
-      <div className="embed-map-visualization">
-        <MapBuilder
-          data={mapData}
-          properties={{
-            ...(props.metadata || props.properties || {}),
-            definitionExpression,
-          }}
-          height={height}
-        />
-        <Toolbar
-          style={{ marginTop: '1rem' }}
-          data={{
-            ...data,
-            show_note,
-            show_sources: true,
-            show_more_info,
-            show_share,
-            dataprotection,
-            mapData,
-          }}
-        />
-      </div>
-    </PrivacyProtection>
+      <PrivacyProtection
+        data={mapServiceURL ? { ...data, url: mapServiceURL } : data}
+      >
+        <div className="embed-map-visualization">
+          <MapBuilder
+            data={mapData}
+            properties={{
+              ...(props.metadata || props.properties || {}),
+              definitionExpression,
+            }}
+            height={height}
+            onLoading={onMapLoading}
+            onReady={onMapReady}
+            onError={onMapError}
+          />
+          <Toolbar
+            style={{ marginTop: '1rem' }}
+            data={{
+              ...data,
+              show_note,
+              show_sources: true,
+              show_more_info,
+              show_share,
+              dataprotection,
+              mapData,
+            }}
+          />
+        </div>
+      </PrivacyProtection>
+    </div>
   );
 };
 
