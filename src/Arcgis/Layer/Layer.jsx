@@ -147,16 +147,10 @@ class $Layer extends EventEmitter {
     if (this.#layer?.queryExtent && this.#props.zoomToExtent) {
       const initialViewOperation = this.#layer.when(async () => {
         const data = await this.#layer.queryExtent();
-        if (!$map.view) return;
-        await $map.view.when();
+        // Preserve the existing zoomToExtent behaviour: do not wait for a
+        // view that was not ready when the layer extent became available.
+        if (!$map.view?.ready) return;
         await $map.view.goTo(data.extent);
-
-        const homeWidget = $map.view.ui.find('Home');
-        if (!homeWidget) return;
-        homeWidget.viewpoint = new $map.modules.AgViewpoint({
-          center: $map.view.center,
-          zoom: $map.view.zoom,
-        });
       });
       $map.trackOperation(initialViewOperation);
     }
