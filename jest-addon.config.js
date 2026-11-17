@@ -1,13 +1,20 @@
-require('dotenv').config({ path: __dirname + '/.env' })
+require('dotenv').config({ path: __dirname + '/.env' });
 
-const fs = require('fs')
-const path = require('path')
+const fs = require('fs');
+const path = require('path');
 
 const voltoSlatePath = fs.existsSync(
   path.join(__dirname, '../../../node_modules/@plone/volto-slate/src'),
 )
   ? '<rootDir>/node_modules/@plone/volto-slate/src'
-  : '<rootDir>/node_modules/@plone/volto/packages/volto-slate/src'
+  : '<rootDir>/node_modules/@plone/volto/packages/volto-slate/src';
+
+// In Volto 18+ the root-level uuid can be ESM-only, which Jest 26 cannot
+// resolve. When the add-on has its own CommonJS uuid, map imports to it.
+const addonUuidPath = path.join(__dirname, 'node_modules', 'uuid');
+const uuidMapper = fs.existsSync(addonUuidPath)
+  ? { '^uuid$': addonUuidPath }
+  : {};
 
 module.exports = {
   testMatch: ['**/src/addons/**/?(*.)+(spec|test).[jt]s?(x)'],
@@ -17,6 +24,7 @@ module.exports = {
   ],
   moduleNameMapper: {
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
+    ...uuidMapper,
     '@plone/volto/cypress': '<rootDir>/node_modules/@plone/volto/cypress',
     '@plone/volto/babel': '<rootDir>/node_modules/@plone/volto/babel',
     '@plone/volto/(.*)$': '<rootDir>/node_modules/@plone/volto/src/$1',
@@ -55,4 +63,4 @@ module.exports = {
       '<rootDir>/node_modules/@eeacms/volto-eea-map/jest.setup.js',
     ],
   }),
-}
+};
