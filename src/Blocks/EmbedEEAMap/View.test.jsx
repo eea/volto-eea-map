@@ -74,4 +74,82 @@ describe('EmbedEEAMap print readiness', () => {
 
     expect(wrapper).toHaveAttribute('data-print-status', 'failed');
   });
+
+  it('builds a definition expression from valid data queries', () => {
+    renderView({
+      metadata: { country: 'RO' },
+      data: {
+        ...data,
+        enable_queries: true,
+        data_query_params: [
+          { alias: 'country', i: 'country-code' },
+          { alias: '', i: 'missing-alias' },
+          { alias: 'missing-index', i: '' },
+        ],
+        map_visualization_data: {
+          ...data.map_visualization_data,
+          layers: [{ url: 'https://example.com/MapServer' }],
+        },
+      },
+    });
+
+    expect(mockMapBuilder.mock.calls.at(-1)[0].properties).toMatchObject({
+      country: 'RO',
+      definitionExpression: {
+        combinator: 'and',
+        not: false,
+        rules: [
+          {
+            dataQuery: ['country-code'],
+            field: 'country',
+            operator: '=',
+            value: '',
+            valueSource: 'value',
+          },
+        ],
+      },
+    });
+  });
+
+  it('loads referenced map data while editing', () => {
+    const getContent = jest.fn();
+
+    renderView({
+      mode: 'edit',
+      getContent,
+      data: {
+        ...data,
+        map_visualization_data: {
+          ...data.map_visualization_data,
+          '@id': '/different-map',
+        },
+      },
+    });
+
+    expect(getContent).toHaveBeenCalledWith('/map', null, 'map-block');
+  });
+
+  it('handles missing and erroneous map data', () => {
+    const { container, rerender } = renderView({
+      data: { ...data, vis_url: '' },
+    });
+
+    expect(container).toBeEmptyDOMElement();
+
+    rerender(
+      <View
+        id="map-block"
+        mode="view"
+        data={{
+          ...data,
+          map_visualization_data: { error: '<strong>Map unavailable</strong>' },
+        }}
+        getContent={jest.fn()}
+        content={{}}
+      />,
+    );
+
+    expect(container).toHaveTextContent('Map unavailable');
+    expect(mockMapBuilder).not.toHaveBeenCalled();
+  });
 });
