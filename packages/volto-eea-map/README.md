@@ -16,6 +16,25 @@ Sources (Data provenance) should be set on the visualization. To enable this, "E
 After this, sources can be added from the visualization edit interface. "Data Provenance" tab => "Add source"
 [EEA MAP](https://raw.githubusercontent.com/eea/volto-eea-map/master/docs/volto-eea-map.gif)
 
+## Upgrade
+
+### Upgrading to 7.x
+
+> This version requires `Volto 18` or `Volto 19` and Node.js 22.
+
+No API or behaviour change: the blocks, the schema fields, the settings keys and the stored block data
+are the same as 6.x, so an upgrade renders the same maps. The release adds Volto 19 support and moves
+the repository to the Volto 19 layout, where the published package lives in
+`packages/volto-eea-map`.
+
+#### Breaking changes
+
+- **Node.js 22 or newer is required** (`engines.node >= 22`), 6.x declared no engine.
+- **React 18 is required.** The package declares `react` and `react-dom` as `^18.2.0` peers, 6.x
+  declared no peers.
+- **The package no longer ships the repository tooling.** The Cypress specs and the Jest setup are
+  gone and the unit tests moved to Vitest next to the add-on, so nothing a site imports was removed.
+
 ## Requirements
 
 ### Backend
