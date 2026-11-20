@@ -147,8 +147,6 @@ class $Layer extends EventEmitter {
     if (this.#layer?.queryExtent && this.#props.zoomToExtent) {
       const initialViewOperation = this.#layer.when(async () => {
         const data = await this.#layer.queryExtent();
-        // Preserve the existing zoomToExtent behaviour: do not wait for a
-        // view that was not ready when the layer extent became available.
         if (!$map.view?.ready) return;
         await $map.view.goTo(data.extent);
       });
