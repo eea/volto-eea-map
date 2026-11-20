@@ -105,7 +105,10 @@ const MapBuilder = forwardRef((props, ref) => {
     <Map
       MapProperties={MapProperties}
       ViewProperties={ViewProperties}
-      expectedLayerCount={layers.length}
+      expectedLayerCount={
+        layers.filter((layer) => layer.type && (layer.url || layer.source))
+          .length
+      }
       onError={onError}
       onLoading={onLoading}
       onReady={onReady}

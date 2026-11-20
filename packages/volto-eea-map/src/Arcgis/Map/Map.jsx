@@ -120,9 +120,12 @@ class $Map extends EventEmitter {
   }
 
   trackOperation(operation) {
-    const trackedOperation = Promise.resolve(operation).finally(() => {
-      this.#pendingOperations.delete(trackedOperation);
-    });
+    const trackedOperation = Promise.resolve(operation)
+      // A failed initial extent change must not block an otherwise usable map.
+      .catch(() => undefined)
+      .finally(() => {
+        this.#pendingOperations.delete(trackedOperation);
+      });
     this.#pendingOperations.add(trackedOperation);
     return trackedOperation;
   }

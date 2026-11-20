@@ -88,41 +88,40 @@ export const View = (props) => {
   }
 
   return (
-    <div
-      data-print-block="eea-map"
-      data-print-block-id={id}
-      data-print-status={liveMapStatus}
+    <PrivacyProtection
+      data={mapServiceURL ? { ...data, url: mapServiceURL } : data}
     >
-      <PrivacyProtection
-        data={mapServiceURL ? { ...data, url: mapServiceURL } : data}
+      <div
+        className="embed-map-visualization"
+        data-print-block="eea-map"
+        data-print-block-id={id}
+        data-print-status={liveMapStatus}
       >
-        <div className="embed-map-visualization">
-          <MapBuilder
-            data={mapData}
-            properties={{
-              ...(props.metadata || props.properties || {}),
-              definitionExpression,
-            }}
-            height={height}
-            onLoading={onMapLoading}
-            onReady={onMapReady}
-            onError={onMapError}
-          />
-          <Toolbar
-            style={{ marginTop: '1rem' }}
-            data={{
-              ...data,
-              show_note,
-              show_sources: true,
-              show_more_info,
-              show_share,
-              dataprotection,
-              mapData,
-            }}
-          />
-        </div>
-      </PrivacyProtection>
-    </div>
+        <MapBuilder
+          data={mapData}
+          properties={{
+            ...(props.metadata || props.properties || {}),
+            definitionExpression,
+          }}
+          height={height}
+          onLoading={onMapLoading}
+          onReady={onMapReady}
+          onError={onMapError}
+        />
+        <Toolbar
+          style={{ marginTop: '1rem' }}
+          data={{
+            ...data,
+            show_note,
+            show_sources: true,
+            show_more_info,
+            show_share,
+            dataprotection,
+            mapData,
+          }}
+        />
+      </div>
+    </PrivacyProtection>
   );
 };
 

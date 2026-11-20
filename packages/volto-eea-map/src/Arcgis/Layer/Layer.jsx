@@ -195,9 +195,11 @@ class $Layer extends EventEmitter {
   }
 
   connect() {
-    this.loadModules().then(() => {
-      this.init();
-    });
+    this.loadModules()
+      .then(() => {
+        this.init();
+      })
+      .catch((error) => this.#props.$map?.emit('failed', error));
   }
 
   disconnect() {
