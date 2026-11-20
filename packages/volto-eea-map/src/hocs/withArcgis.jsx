@@ -6,7 +6,10 @@ export default function withArcgis(WrappedComponent) {
     const [agLoaded, setAgLoaded] = useState(false);
 
     const interceptArcgis = (event) => {
-      if (event.type === 'message' && event.data.type === 'arcgis-loaded') {
+      // The loader posts this message to its own window, so ignore any
+      // message coming from another origin.
+      if (event.origin !== window.location.origin) return;
+      if (event.type === 'message' && event.data?.type === 'arcgis-loaded') {
         setAgLoaded(true);
       }
     };

@@ -31,9 +31,12 @@ export default function arcgis(version = '4.29') {
       document.body.appendChild(script);
       script.addEventListener('load', () => {
         if (window.$arcgis) {
-          window.postMessage({
-            type: 'arcgis-loaded',
-          });
+          window.postMessage(
+            {
+              type: 'arcgis-loaded',
+            },
+            window.location.origin,
+          );
         }
       });
     }
